@@ -13,7 +13,7 @@ import {
 
 const initialState = fromJS({ environments: [], loading: false, error: false });
 
-function environmentsPageReducer(state = initialState, action) {
+function environmentsReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_ENVIRONMENTS_REQUEST:
       return state
@@ -33,4 +33,4 @@ function environmentsPageReducer(state = initialState, action) {
   }
 }
 
-export default environmentsPageReducer;
+export default environmentsReducer;

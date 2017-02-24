@@ -4,7 +4,7 @@
 import axios from 'axios';
 
 
-const basePath = 'http://localhost:1337/192.168.99.100:31313/v1/';
+const basePath = 'http:///9ddc2b58.ngrok.io/192.168.99.100:31313/v1/'; // TODO find best solution, localhost:1337 is corsproxy
 
 /**
  * Parses the JSON returned by a network request
@@ -39,3 +39,24 @@ export function getEnvironments() {
     .then(checkStatus)
     .then(parseJSON);
 }
+export function getEnvironment(name) {
+  return axios.get(`${basePath}environments/${name}`)
+    .then(checkStatus)
+    .then(parseJSON);
+}
+export function deleteEnvironment(name) {
+  return axios.delete(`${basePath}environments/${name}`)
+    .then(checkStatus)
+    .then(parseJSON);
+}
+export function updateEnvironment(name, dockerImage) {
+  return axios.put(`${basePath}environments/`, { metadata: { name }, runContainerImageUrl: dockerImage })
+    .then(checkStatus)
+    .then(parseJSON);
+}
+export function createEnvironment(name, dockerImage) {
+  return axios.post(`${basePath}environments/`, { metadata: { name }, runContainerImageUrl: dockerImage })
+    .then(checkStatus)
+    .then(parseJSON);
+}
+

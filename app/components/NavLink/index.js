@@ -9,9 +9,8 @@ import { Link } from 'react-router';
 
 class NavLink extends PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const isActive = this.context.router.isActive(this.props.to, true);
+    const isActive = this.context.router.isActive(this.props.to, false);
     const className = isActive ? 'active' : '';
-
     return (
       <li className={className}>
         <Link {...this.props} />

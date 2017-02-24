@@ -22,7 +22,7 @@ export default function createRoutes(store) {
       name: 'home',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/HomePage'),
+          System.import('containers/HomePage'),
         ]);
 
         const renderRoute = loadModule(cb);
@@ -38,27 +38,65 @@ export default function createRoutes(store) {
       name: 'environments',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/EnvironmentsPage/reducer'),
-          import('containers/EnvironmentsPage/sagas'),
-          import('containers/EnvironmentsPage'),
+          System.import('containers/EnvironmentsPage/reducer'), // One reducer for all subroutes
+          System.import('containers/EnvironmentsPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, sagas, component]) => {
+        importModules.then(([reducer, component]) => {
           injectReducer('environments', reducer.default);
-          injectSagas(sagas.default);
 
           renderRoute(component);
         });
 
         importModules.catch(errorLoading);
       },
+      indexRoute: {
+        getComponent(nextState, cb) {
+          const importModules = Promise.all([
+            System.import('containers/EnvironmentsListPage/sagas'),
+            System.import('containers/EnvironmentsListPage'),
+          ]);
+
+          const renderRoute = loadModule(cb);
+
+          importModules.then(([sagas, component]) => {
+            injectSagas(sagas.default);
+
+            renderRoute(component);
+          });
+
+          importModules.catch(errorLoading);
+        },
+      },
+      childRoutes: [
+        {
+          path: '/environments/create',
+          name: 'environments_create',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              System.import('containers/EnvironmentCreatePage/sagas'),
+              System.import('containers/EnvironmentCreatePage'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([sagas, component]) => {
+              injectSagas(sagas.default);
+
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+      ],
     }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
-        import('containers/NotFoundPage')
+        System.import('containers/NotFoundPage')
           .then(loadModule(cb))
           .catch(errorLoading);
       },

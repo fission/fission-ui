@@ -13,6 +13,7 @@
 
 import React from 'react';
 import NavLink from 'components/NavLink';
+import { Link } from 'react-router';
 import withProgressBar from 'components/ProgressBar';
 
 export function App(props) {
@@ -27,14 +28,14 @@ export function App(props) {
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
-            <a className="navbar-brand" href="/">Fission UI</a>
+            <Link className="navbar-brand" to="/">Fission UI</Link>
           </div>
           <div id="navbar" className="navbar-collapse collapse">
             <ul className="nav navbar-nav">
               <NavLink to="/">
                 <i className="glyphicon glyphicon-flash"></i> <span>Functions</span>
               </NavLink>
-              <NavLink to="environments">
+              <NavLink to="/environments">
                 <i className="glyphicon glyphicon-tasks"></i> <span>Environment</span>
               </NavLink>
             </ul>

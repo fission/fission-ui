@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 /**
  * Direct selector to the environmentsPage state domain
  */
-const selectEnvironmentsListPageDomain = () => (state) => state.get('environments');
+const selectEnvironmentsPageDomain = () => (state) => state.get('environments');
 
 /**
  * Other specific selectors
@@ -14,17 +14,17 @@ const selectEnvironmentsListPageDomain = () => (state) => state.get('environment
  * Default selector used by EnvironmentsPage
  */
 const makeSelectLoading = () => createSelector(
-  selectEnvironmentsListPageDomain(),
+  selectEnvironmentsPageDomain(),
   (substate) => substate.get('loading')
 );
 
 const makeSelectError = () => createSelector(
-  selectEnvironmentsListPageDomain(),
+  selectEnvironmentsPageDomain(),
   (substate) => substate.get('error')
 );
 
 const makeSelectEnvironments = () => createSelector(
-  selectEnvironmentsListPageDomain(),
+  selectEnvironmentsPageDomain(),
   (substate) => substate.get('environments').map((e) => ({ name: e.metadata.name, image: e.runContainerImageUrl }))
 );
 

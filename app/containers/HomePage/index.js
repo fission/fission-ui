@@ -11,12 +11,16 @@
 
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import Helmet from 'react-helmet';
 import messages from './messages';
 
 export default class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div>
+        <Helmet
+          title="List functions"
+        />
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>

@@ -6,6 +6,7 @@
 
 import React, { PropTypes } from 'react';
 import LoadingIndicator from 'components/LoadingIndicator';
+import EnvironmentsListItem from 'components/EnvironmentsListItem';
 
 // import styled from 'styled-components';
 
@@ -29,14 +30,7 @@ function EnvironmentsList({ loading, error, environments }) {
       <tbody>
         {
           environments.map((item, index) => (
-            <tr key={`environment-${index}`}>
-              <td>{ item.name }</td>
-              <td>{ item.image }</td>
-              <td>
-                <a className="btn btn-success" href="">Edit</a>
-                <a className="btn btn-danger" href="">Delete</a>
-              </td>
-            </tr>
+            <EnvironmentsListItem item={item} key={`environment-${index}`} />
           ))
         }
       </tbody>
