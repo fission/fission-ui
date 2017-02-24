@@ -7,6 +7,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
 import EnvironmentsList from 'components/EnvironmentsList';
 import { loadEnvironmentAction } from './actions';
@@ -28,6 +29,7 @@ export class EnvironmentsListPage extends React.Component { // eslint-disable-li
         <Helmet
           title="List environments"
         />
+        <Link to="/environments/create" className="pull-right btn btn-primary">Add</Link>
         <EnvironmentsList {...environmentsListProps} />
       </div>
     );

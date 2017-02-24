@@ -5,11 +5,13 @@
  */
 
 import {
-  DEFAULT_ACTION,
+  CREATE_ENVIRONMENT_REQUEST,
 } from 'containers/EnvironmentsPage/constants';
 
-export function defaultAction() {
+export function createEnvironmentAction(name, dockerImage) {
   return {
-    type: DEFAULT_ACTION,
+    type: CREATE_ENVIRONMENT_REQUEST,
+    name,
+    dockerImage,
   };
 }

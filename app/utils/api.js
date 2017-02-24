@@ -4,7 +4,7 @@
 import axios from 'axios';
 
 
-const basePath = 'http:///9ddc2b58.ngrok.io/192.168.99.100:31313/v1/'; // TODO find best solution, localhost:1337 is corsproxy
+const basePath = '/proxy/controller/v1/';
 
 /**
  * Parses the JSON returned by a network request
