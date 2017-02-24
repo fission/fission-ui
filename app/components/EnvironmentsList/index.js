@@ -10,8 +10,7 @@ import EnvironmentsListItem from 'components/EnvironmentsListItem';
 
 // import styled from 'styled-components';
 
-
-function EnvironmentsList({ loading, error, environments }) {
+function EnvironmentsList({ loading, error, environments, onRemove }) {
   if (loading) {
     return <LoadingIndicator />;
   }
@@ -30,7 +29,7 @@ function EnvironmentsList({ loading, error, environments }) {
       <tbody>
         {
           environments.map((item, index) => (
-            <EnvironmentsListItem item={item} key={`environment-${index}`} />
+            <EnvironmentsListItem item={item} key={`environment-${index}`} onRemove={() => { onRemove(item); }} />
           ))
         }
       </tbody>
@@ -45,6 +44,7 @@ EnvironmentsList.propTypes = {
     PropTypes.object,
     PropTypes.array,
   ]),
+  onRemove: PropTypes.func,
 };
 
 export default EnvironmentsList;

@@ -44,19 +44,20 @@ export function getEnvironment(name) {
     .then(checkStatus)
     .then(parseJSON);
 }
-export function deleteEnvironment(name) {
-  return axios.delete(`${basePath}environments/${name}`)
+export function removeEnvironment(environment) {
+  return axios.delete(`${basePath}environments/${environment.name}`)
     .then(checkStatus)
     .then(parseJSON);
 }
-export function updateEnvironment(name, dockerImage) {
-  return axios.put(`${basePath}environments/`, { metadata: { name }, runContainerImageUrl: dockerImage })
+export function updateEnvironment(environment) {
+  return axios.put(`${basePath}environments/`, { metadata: { name: environment.name }, runContainerImageUrl: environment.image })
     .then(checkStatus)
     .then(parseJSON);
 }
-export function createEnvironment(name, dockerImage) {
-  return axios.post(`${basePath}environments/`, { metadata: { name }, runContainerImageUrl: dockerImage })
+export function createEnvironment(environment) {
+  return axios.post(`${basePath}environments`, { metadata: { name: environment.name }, runContainerImageUrl: environment.image })
     .then(checkStatus)
-    .then(parseJSON);
+    .then(parseJSON)
+    .then((response) => ({ runContainterImageUrl: environment.image, metadata: response }));
 }
 

@@ -5,13 +5,14 @@
  */
 
 import {
-  DEFAULT_ACTION,
   LOAD_ENVIRONMENTS_REQUEST,
+  DELETE_ENVIRONMENT_REQUEST,
 } from 'containers/EnvironmentsPage/constants';
 
-export function defaultAction() {
+export function removeEnvironmentAction(environment) {
   return {
-    type: DEFAULT_ACTION,
+    type: DELETE_ENVIRONMENT_REQUEST,
+    environment,
   };
 }
 export function loadEnvironmentAction() {

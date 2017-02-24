@@ -8,10 +8,9 @@ import {
   CREATE_ENVIRONMENT_REQUEST,
 } from 'containers/EnvironmentsPage/constants';
 
-export function createEnvironmentAction(name, dockerImage) {
+export function createEnvironmentAction(environment) {
   return {
     type: CREATE_ENVIRONMENT_REQUEST,
-    name,
-    dockerImage,
+    environment,
   };
 }
