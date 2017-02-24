@@ -1,10 +1,10 @@
 /**
  * Created by damien on 23/02/2017.
  */
-import 'whatwg-fetch';
+import axios from 'axios';
 
 
-const basePath = 'http://e502af2e.ngrok.io/192.168.99.100:31313/v1/';
+const basePath = 'http://localhost:1337/192.168.99.100:31313/v1/';
 
 /**
  * Parses the JSON returned by a network request
@@ -14,7 +14,7 @@ const basePath = 'http://e502af2e.ngrok.io/192.168.99.100:31313/v1/';
  * @return {object}          The parsed JSON from the request
  */
 function parseJSON(response) {
-  return response.json();
+  return response.data;
 }
 
 /**
@@ -35,7 +35,7 @@ function checkStatus(response) {
 }
 
 export function getEnvironments() {
-  return fetch(`${basePath}environments`)
+  return axios.get(`${basePath}environments`)
     .then(checkStatus)
     .then(parseJSON);
 }

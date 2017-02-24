@@ -7,7 +7,7 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 
-class NavLink extends PureComponent {
+class NavLink extends PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     const isActive = this.context.router.isActive(this.props.to, true);
     const className = isActive ? 'active' : '';
@@ -23,5 +23,7 @@ class NavLink extends PureComponent {
 NavLink.contextTypes = {
   router: React.PropTypes.object,
 };
-
+NavLink.propTypes = {
+  to: React.PropTypes.string,
+};
 export default NavLink;
