@@ -12,7 +12,7 @@ export class EnvironmentsPage extends React.Component { // eslint-disable-line r
 
   render() {
     return (
-      <div>
+      <div className="col-md-12">
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>

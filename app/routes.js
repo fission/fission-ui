@@ -54,6 +54,28 @@ export default function createRoutes(store) {
           importModules.catch(errorLoading);
         },
       },
+      childRoutes: [
+        {
+          path: '/functions/create',
+          name: 'function_create',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              System.import('containers/FunctionCreatePage/sagas'),
+              System.import('containers/FunctionCreatePage'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([sagas, component]) => {
+              injectSagas(sagas.default);
+
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+      ],
     }, {
       path: '/environments',
       name: 'environments',

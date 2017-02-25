@@ -21,8 +21,8 @@ export class FunctionListItem extends React.Component { // eslint-disable-line r
             {
               item.triggersHttp.map((trigger, index) => (
                 <li key={`triggerHttp-${index}`}>
-                  <span className="label label-info">{trigger.method}</span>
-                  {trigger.urlpattern}
+                  <span className="label label-info">{trigger.method}</span>{ ' ' }
+                  {trigger.urlpattern}{ ' ' }
                   <span className="label label-danger"><span className="glyphicon glyphicon-remove" aria-hidden="true"></span></span>
                 </li>
               ))

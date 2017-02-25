@@ -11,7 +11,7 @@ import messages from './messages';
 export class FunctionsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <div>
+      <div className="col-md-12">
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
