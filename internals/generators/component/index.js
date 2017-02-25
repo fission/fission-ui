@@ -2,7 +2,7 @@
  * Component Generator
  */
 
-/* eslint strict: ["off"] */
+/* eslint strict: [0] */
 
 'use strict';
 
