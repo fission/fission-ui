@@ -62,3 +62,20 @@ export function createEnvironment(environment) {
     .then((response) => ({ runContainterImageUrl: environment.image, metadata: response }));
 }
 
+export function getFunctions() {
+  return axios.get(`${basePath}functions`)
+    .then(checkStatus)
+    .then(parseJSON);
+}
+
+export function removeFunction(item) {
+  return axios.delete(`${basePath}environments/${item.name}`)
+    .then(checkStatus)
+    .then(parseJSON);
+}
+
+export function getTriggersHttp() {
+  return axios.get(`${basePath}triggers/http`)
+    .then(checkStatus)
+    .then(parseJSON);
+}

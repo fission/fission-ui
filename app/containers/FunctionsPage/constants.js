@@ -1,0 +1,19 @@
+/*
+ *
+ * EnvironmentsPage constants
+ *
+ */
+
+export const LOAD_FUNCTIONS_REQUEST = 'app/Functions/LOAD_FUNCTIONS_REQUEST';
+export const LOAD_FUNCTIONS_SUCCESS = 'app/Functions/LOAD_FUNCTIONS_SUCCESS';
+export const LOAD_FUNCTIONS_ERROR = 'app/Functions/LOAD_FUNCTIONS_ERROR';
+export const CREATE_FUNCTION_REQUEST = 'app/Functions/CREATE_FUNCTION_REQUEST';
+export const CREATE_FUNCTION_SUCCESS = 'app/Functions/CREATE_FUNCTION_SUCCESS';
+export const CREATE_FUNCTION_ERROR = 'app/Functions/CREATE_FUNCTION_ERROR';
+export const DELETE_FUNCTION_REQUEST = 'app/Functions/DELETE_FUNCTION_REQUEST';
+export const DELETE_FUNCTION_SUCCESS = 'app/Functions/DELETE_FUNCTION_SUCCESS';
+export const DELETE_FUNCTION_ERROR = 'app/Functions/DELETE_FUNCTION_ERROR';
+
+export const LOAD_TRIGGERSHTTP_REQUEST = 'app/Functions/LOAD_TRIGGERSHTTP_REQUEST';
+export const LOAD_TRIGGERSHTTP_SUCCESS = 'app/Functions/LOAD_TRIGGERSHTTP_SUCCESS';
+export const LOAD_TRIGGERSHTTP_ERROR = 'app/Functions/LOAD_TRIGGERSHTTP_ERROR';

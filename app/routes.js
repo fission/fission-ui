@@ -22,16 +22,37 @@ export default function createRoutes(store) {
       name: 'home',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/HomePage'),
+          System.import('containers/FunctionsPage/reducer'), // One reducer for all subroutes
+          System.import('containers/FunctionsPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([component]) => {
+        importModules.then(([reducer, component]) => {
+          injectReducer('functions', reducer.default);
+
           renderRoute(component);
         });
 
         importModules.catch(errorLoading);
+      },
+      indexRoute: {
+        getComponent(nextState, cb) {
+          const importModules = Promise.all([
+            System.import('containers/FunctionsListPage/sagas'),
+            System.import('containers/FunctionsListPage'),
+          ]);
+
+          const renderRoute = loadModule(cb);
+
+          importModules.then(([sagas, component]) => {
+            injectSagas(sagas.default);
+
+            renderRoute(component);
+          });
+
+          importModules.catch(errorLoading);
+        },
       },
     }, {
       path: '/environments',

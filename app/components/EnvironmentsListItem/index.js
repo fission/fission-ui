@@ -17,7 +17,7 @@ function EnvironmentsListItem({ item, onRemove }) {
       <td>{ item.name }</td>
       <td>{ item.image }</td>
       <td>
-        <Link to={`/environments/${item.name}`} className="btn btn-success"><FormattedMessage {...messages.edit} /></Link>
+        <Link to={`/environments/${item.name}`} className="btn btn-success"><FormattedMessage {...messages.edit} /></Link>{ ' ' }
         <a onClick={onRemove} className="btn btn-danger"><FormattedMessage {...messages.delete} /></a>
       </td>
     </tr>
