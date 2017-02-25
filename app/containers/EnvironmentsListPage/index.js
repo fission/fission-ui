@@ -10,8 +10,8 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
 import EnvironmentsList from 'components/EnvironmentsList';
+import { makeSelectEnvironments, makeSelectError, makeSelectLoading } from 'containers/EnvironmentsPage/selectors';
 import { loadEnvironmentAction, removeEnvironmentAction } from './actions';
-import { makeSelectEnvironments, makeSelectError, makeSelectLoading } from './selectors';
 
 export class EnvironmentsListPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {

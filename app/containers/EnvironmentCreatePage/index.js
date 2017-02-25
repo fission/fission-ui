@@ -7,10 +7,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import { createStructuredSelector } from 'reselect';
 import EnvironmentForm from 'components/EnvironmentForm';
 import { slug } from 'utils/util';
-import makeSelectEnvironmentCreatePage from './selectors';
 import { createEnvironmentAction } from './actions';
 
 export class EnvironmentCreatePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -42,7 +40,7 @@ export class EnvironmentCreatePage extends React.Component { // eslint-disable-l
         <Helmet
           title="Environment creation"
         />
-        <EnvironmentForm environment={this.state.environment} onChange={this.onChange} onSave={this.submitForm} />
+        <EnvironmentForm nameEditable environment={this.state.environment} onChange={this.onChange} onSave={this.submitForm} />
       </div>
     );
   }
@@ -52,9 +50,7 @@ EnvironmentCreatePage.propTypes = {
   createEnvironement: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  EnvironmentCreatePage: makeSelectEnvironmentCreatePage(),
-});
+const mapStateToProps = () => ({});
 
 function mapDispatchToProps(dispatch) {
   return {

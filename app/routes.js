@@ -91,6 +91,26 @@ export default function createRoutes(store) {
             importModules.catch(errorLoading);
           },
         },
+        {
+          path: '/environments/:name',
+          name: 'environments_edit',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              System.import('containers/EnvironmentEditPage/sagas'),
+              System.import('containers/EnvironmentEditPage'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([sagas, component]) => {
+              injectSagas(sagas.default);
+
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
       ],
     }, {
       path: '*',

@@ -11,12 +11,30 @@ import {
   LOAD_ENVIRONMENTS_ERROR,
   CREATE_ENVIRONMENT_SUCCESS,
   DELETE_ENVIRONMENT_SUCCESS,
+  GET_ENVIRONMENT_SUCCESS,
+  GET_ENVIRONMENT_REQUEST,
+  GET_ENVIRONMENT_ERROR,
+  EDIT_ENVIRONMENT_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({ environments: [], loading: false, error: false });
 
 function environmentsReducer(state = initialState, action) {
   switch (action.type) {
+    case EDIT_ENVIRONMENT_SUCCESS:
+      return state.set('environments', state.get('environments').map((env) => env.metadata.name === action.data.metadata.name ? action.data : env));
+    case GET_ENVIRONMENT_REQUEST:
+      return state
+        .set('loading', true)
+        .set('error', false);
+    case GET_ENVIRONMENT_ERROR:
+      return state
+        .set('error', action.error)
+        .set('loading', false);
+    case GET_ENVIRONMENT_SUCCESS:
+      return state
+        .set('loading', false)
+        .set('environments', state.get('environments').push(action.data));
     case CREATE_ENVIRONMENT_SUCCESS:
       state.update('environments', (env) => env.push(action.data));
       return state;
