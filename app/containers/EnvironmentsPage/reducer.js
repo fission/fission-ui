@@ -35,14 +35,15 @@ function environmentsReducer(state = initialState, action) {
         .set('loading', false);
     case GET_ENVIRONMENT_SUCCESS:
       return state
-        .update('environments', (env) => env.push(action.data))
+        .update('environments', (env) => { env.push(action.data); return env; })
         .set('loading', false);
     case CREATE_ENVIRONMENT_REQUEST:
       return state
         .set('loading', true)
         .set('error', false);
     case CREATE_ENVIRONMENT_SUCCESS:
-      return state.update('environments', (env) => env.push(action.data))
+      return state
+        .update('environments', (env) => { env.push(action.data); return env; })
         .set('loading', false)
         .set('error', false);
     case CREATE_ENVIRONMENT_ERROR:
