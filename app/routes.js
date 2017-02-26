@@ -80,6 +80,29 @@ export default function createRoutes(store) {
             importModules.catch(errorLoading);
           },
         },
+        {
+          path: '/functions/:name',
+          name: 'function_edit',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              System.import('containers/FunctionEditPage/sagas'),
+              System.import('containers/EnvironmentsListPage/sagas'),
+
+              System.import('containers/FunctionEditPage'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([sagas, sagasEnvironments, component]) => {
+              injectSagas(sagas.default);
+              injectSagas(sagasEnvironments.default);
+
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
       ],
     }, {
       path: '/environments',

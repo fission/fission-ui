@@ -68,6 +68,12 @@ export function getFunctions() {
     .then(parseJSON);
 }
 
+export function getFunction(name) {
+  return axios.get(`${basePath}functions/${name}`)
+    .then(checkStatus)
+    .then(parseJSON);
+}
+
 export function removeFunction(item) {
   return axios.delete(`${basePath}environments/${item.name}`)
     .then(checkStatus)

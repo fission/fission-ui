@@ -13,12 +13,27 @@ import {
   LOAD_TRIGGERSHTTP_REQUEST,
   LOAD_TRIGGERSHTTP_SUCCESS,
   LOAD_TRIGGERSHTTP_ERROR,
+  GET_FUNCTION_REQUEST,
+  GET_FUNCTION_ERROR,
+  GET_FUNCTION_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({ functions: [], triggersHttp: [], functionLoading: false, triggerHttpLoading: false, error: false });
 
 function functionsReducer(state = initialState, action) {
   switch (action.type) {
+    case GET_FUNCTION_REQUEST:
+      return state
+        .set('functionLoading', true)
+        .set('error', false);
+    case GET_FUNCTION_ERROR:
+      return state
+        .set('error', action.error)
+        .set('functionLoading', false);
+    case GET_FUNCTION_SUCCESS:
+      return state
+        .set('functions', state.get('functions').push(action.data))
+        .set('functionLoading', false);
     case DELETE_FUNCTION_SUCCESS:
       return state.set('functions', state.get('functions').filter((e) => e.metadata.name !== action.environment.name));
     case LOAD_FUNCTIONS_REQUEST:

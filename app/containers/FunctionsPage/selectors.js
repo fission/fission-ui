@@ -1,11 +1,26 @@
 import { createSelector } from 'reselect';
-
+import { decodeBase64 } from 'utils/util';
 /**
  * Direct selector to the environmentEditPage state domain
  */
 const selectFunctionsPageDomain = () => (state) => state.get('functions');
 const selectEnvironmentsPageDomain = () => (state) => state.get('environments');
 
+const makeSelectFunctionByName = () => createSelector(
+  selectFunctionsPageDomain(),
+  (substate) => (functionName) => {
+    const functionFound = substate.get('functions').find((func) => func.metadata.name === functionName);
+    if (functionFound) {
+      return ({
+        name: functionFound.metadata.name,
+        environment: functionFound.environment.name,
+        code: decodeBase64(functionFound.code),
+        triggersHttp: substate.get('triggersHttp').filter((trigger) => trigger.function.name === functionFound.metadata.name) || [],
+      });
+    }
+    return false;
+  }
+);
 
 const makeSelectLoading = () => createSelector(
   selectFunctionsPageDomain(),
@@ -32,4 +47,5 @@ export {
   makeSelectFunctions,
   makeSelectError,
   makeSelectLoading,
+  makeSelectFunctionByName,
 };

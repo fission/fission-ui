@@ -1,6 +1,6 @@
 /*
  *
- * FunctionCreatePage
+ * FunctionEditPage
  *
  */
 
@@ -11,18 +11,17 @@ import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import FunctionForm from 'components/FunctionForm';
 import LoadingIndicator from 'components/LoadingIndicator';
-import { makeSelectLoading } from 'containers/FunctionsPage/selectors';
+import { makeSelectLoading, makeSelectFunctionByName } from 'containers/FunctionsPage/selectors';
 import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
 import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
+import { getFunctionAction } from 'containers/FunctionEditPage/actions';
 
-export class FunctionCreatePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export class FunctionEditPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
 
     this.state = {
       loading: props.loading,
-      currentTab: 'function',
-      item: { name: '', environment: '', triggersHttp: [], code: '', temporaryFunction: '' },
       environments: props.environments,
     };
     if (typeof this.state.environments === 'object' && Array.isArray(this.state.environments) === false) { // Convert environments to array if it's a Immutable List
@@ -36,6 +35,7 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
     if (this.state.environments.length === 0) {
       this.props.loadEnvironmentData();
     }
+    this.props.loadFunctionData(this.props.params.name);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,6 +45,12 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
     if (nextProps.environments.length !== this.state.environments.length) {
       this.state.environments = nextProps.environments;
     }
+    console.log(nextProps);
+    if (!this.state.item && nextProps.loading === false) {
+      console.log("ff");
+      this.state.item = nextProps.functionByName(nextProps.params.name);
+    }
+
   }
 
   onChange(event) {
@@ -57,8 +63,9 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
   }
 
   render() {
+    console.log(this.state);
     const { item, environments, loading } = this.state;
-    if (loading) {
+    if (loading || item === undefined ) {
       return <LoadingIndicator />;
     }
     return (
@@ -77,17 +84,19 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
     );
   }
 }
-
-FunctionCreatePage.propTypes = {
+FunctionEditPage.propTypes = {
   environments: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array,
   ]),
   loading: PropTypes.bool,
+  functionByName: PropTypes.func.isRequired,
   loadEnvironmentData: PropTypes.func.isRequired,
+  loadFunctionData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
+  functionByName: makeSelectFunctionByName(),
   environments: makeSelectEnvironments(),
   loading: makeSelectLoading(),
 });
@@ -95,7 +104,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     loadEnvironmentData: () => dispatch(loadEnvironmentAction()),
+    loadFunctionData: (name) => dispatch(getFunctionAction(name)),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FunctionCreatePage);
+export default connect(mapStateToProps, mapDispatchToProps)(FunctionEditPage);

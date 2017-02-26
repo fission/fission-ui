@@ -29,7 +29,7 @@ export class FunctionListItem extends React.Component { // eslint-disable-line r
           </ul>
         </td>
         <td>
-          <Link className="btn btn-primary" to={`/function/${item.name}`}><FormattedMessage {...messages.edit} /></Link>{ ' ' }
+          <Link className="btn btn-primary" to={`/functions/${item.name}`}><FormattedMessage {...messages.edit} /></Link>{ ' ' }
           <a onClick={onRemove} className="btn btn-danger"><FormattedMessage {...messages.delete} /></a>
         </td>
       </tr>
