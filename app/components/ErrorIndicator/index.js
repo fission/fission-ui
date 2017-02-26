@@ -10,7 +10,7 @@ import React, { PropTypes } from 'react';
 
 function ErrorIndicator({ error }) {
   return (
-    <h3> Error: {error.response.data } </h3>
+    <div className="alert alert-danger">Error: { error.response.data }</div>
   );
 }
 
