@@ -8,6 +8,6 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   header: {
     id: 'app.components.FunctionForm.header',
-    defaultMessage: 'This is the FunctionForm component !',
+    defaultMessage: 'This is the FunctionTabForm component !',
   },
 });

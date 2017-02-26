@@ -4,11 +4,13 @@ import { createSelector } from 'reselect';
  * Direct selector to the environmentEditPage state domain
  */
 const selectFunctionsPageDomain = () => (state) => state.get('functions');
+const selectEnvironmentsPageDomain = () => (state) => state.get('environments');
 
 
 const makeSelectLoading = () => createSelector(
   selectFunctionsPageDomain(),
-  (substate) => substate.get('triggerHttpLoading') || substate.get('functionLoading')
+  selectEnvironmentsPageDomain(),
+  (substate, substateEnv) => substate.get('triggerHttpLoading') || substate.get('functionLoading') || substateEnv.get('loading')
 );
 
 const makeSelectError = () => createSelector(

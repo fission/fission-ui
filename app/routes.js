@@ -23,13 +23,15 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/FunctionsPage/reducer'), // One reducer for all subroutes
+          System.import('containers/EnvironmentsPage/reducer'),
           System.import('containers/FunctionsPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, component]) => {
-          injectReducer('functions', reducer.default);
+        importModules.then(([functionsReducer, environmentsReducer, component]) => {
+          injectReducer('functions', functionsReducer.default);
+          injectReducer('environments', environmentsReducer.default);
 
           renderRoute(component);
         });
@@ -61,13 +63,16 @@ export default function createRoutes(store) {
           getComponent(nextState, cb) {
             const importModules = Promise.all([
               System.import('containers/FunctionCreatePage/sagas'),
+              System.import('containers/EnvironmentsListPage/sagas'),
+
               System.import('containers/FunctionCreatePage'),
             ]);
 
             const renderRoute = loadModule(cb);
 
-            importModules.then(([sagas, component]) => {
+            importModules.then(([sagas, sagasEnvironments, component]) => {
               injectSagas(sagas.default);
+              injectSagas(sagasEnvironments.default);
 
               renderRoute(component);
             });

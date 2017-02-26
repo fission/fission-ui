@@ -9,9 +9,9 @@ const selectEnvironmentsPageDomain = () => (state) => state.get('environments');
 const makeSelectEnvironmentByName = () => createSelector(
   selectEnvironmentsPageDomain(),
   (substate) => (environmentName) => {
-    const environent = substate.get('environments').find((environment) => environment.metadata.name === environmentName);
-    if (environent) {
-      return ({ name: environent.metadata.name, image: environent.runContainerImageUrl });
+    const environementFound = substate.get('environments').find((environement) => environement.metadata.name === environmentName);
+    if (environementFound) {
+      return ({ name: environementFound.metadata.name, image: environementFound.runContainerImageUrl });
     }
     return false;
   }
