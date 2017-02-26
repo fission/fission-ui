@@ -9,7 +9,9 @@ import {
   LOAD_ENVIRONMENTS_REQUEST,
   LOAD_ENVIRONMENTS_SUCCESS,
   LOAD_ENVIRONMENTS_ERROR,
+  CREATE_ENVIRONMENT_REQUEST,
   CREATE_ENVIRONMENT_SUCCESS,
+  CREATE_ENVIRONMENT_ERROR,
   DELETE_ENVIRONMENT_SUCCESS,
   GET_ENVIRONMENT_SUCCESS,
   GET_ENVIRONMENT_REQUEST,
@@ -33,11 +35,20 @@ function environmentsReducer(state = initialState, action) {
         .set('loading', false);
     case GET_ENVIRONMENT_SUCCESS:
       return state
-        .set('loading', false)
-        .set('environments', state.get('environments').push(action.data));
+        .update('environments', (env) => env.push(action.data))
+        .set('loading', false);
+    case CREATE_ENVIRONMENT_REQUEST:
+      return state
+        .set('loading', true)
+        .set('error', false);
     case CREATE_ENVIRONMENT_SUCCESS:
-      state.update('environments', (env) => env.push(action.data));
-      return state;
+      return state.update('environments', (env) => env.push(action.data))
+        .set('loading', false)
+        .set('error', false);
+    case CREATE_ENVIRONMENT_ERROR:
+      return state
+        .set('loading', false)
+        .set('error', action.error);
     case DELETE_ENVIRONMENT_SUCCESS:
       return state.set('environments', state.get('environments').filter((e) => e.metadata.name !== action.environment.name));
     case LOAD_ENVIRONMENTS_REQUEST:

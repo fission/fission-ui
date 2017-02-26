@@ -10,6 +10,7 @@ import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import EnvironmentForm from 'components/EnvironmentForm';
 import LoadingIndicator from 'components/LoadingIndicator';
+import ErrorIndicator from 'components/ErrorIndicator';
 import { slug } from 'utils/util';
 
 import { makeSelectEnvironmentByName, makeSelectError, makeSelectLoading } from 'containers/EnvironmentsPage/selectors';
@@ -66,20 +67,13 @@ export class EnvironmentEditPage extends React.Component { // eslint-disable-lin
       return <LoadingIndicator />;
     }
 
-    if (error !== false) {
-      return <h3>{ error }</h3>;
-    }
-
     return (
       <div>
         <Helmet
           title="Edit environment"
         />
-        {loading &&
-          <LoadingIndicator />
-        }
         {error &&
-          <h3>{ error }</h3>
+          <ErrorIndicator error={error} />
         }
         {loading === false && environment &&
           <EnvironmentForm nameEditable={false} environment={environment} onChange={this.onChange} onSave={this.submitForm} />

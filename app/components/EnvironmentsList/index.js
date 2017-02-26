@@ -6,6 +6,7 @@
 
 import React, { PropTypes } from 'react';
 import LoadingIndicator from 'components/LoadingIndicator';
+import ErrorIndicator from 'components/ErrorIndicator';
 import EnvironmentsListItem from 'components/EnvironmentsListItem';
 
 // import styled from 'styled-components';
@@ -15,7 +16,7 @@ function EnvironmentsList({ loading, error, environments, onRemove }) {
     return <LoadingIndicator />;
   }
   if (error !== false) {
-    return <h3>{ error }</h3>;
+    return <ErrorIndicator error={error} />;
   }
   return (
     <table className="table table-bordered">
