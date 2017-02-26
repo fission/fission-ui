@@ -23,14 +23,13 @@ export class FunctionListItem extends React.Component { // eslint-disable-line r
                 <li key={`triggerHttp-${index}`}>
                   <span className="label label-info">{trigger.method}</span>{ ' ' }
                   {trigger.urlpattern}{ ' ' }
-                  <span className="label label-danger"><span className="glyphicon glyphicon-remove" aria-hidden="true"></span></span>
                 </li>
               ))
             }
-            <li><span className="label label-success"><span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Add</span></li>
           </ul>
         </td>
         <td>
+          <Link className="btn btn-primary" to={`/function/${item.name}`}><FormattedMessage {...messages.edit} /></Link>{ ' ' }
           <a onClick={onRemove} className="btn btn-danger"><FormattedMessage {...messages.delete} /></a>
         </td>
       </tr>
