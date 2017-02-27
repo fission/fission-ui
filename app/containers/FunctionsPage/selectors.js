@@ -42,9 +42,14 @@ const makeSelectFunctions = () => createSelector(
   }))
 );
 
+const makeSelectTriggersHttp = () => createSelector(
+  selectFunctionsPageDomain(),
+  (substate) => substate.get('triggersHttp')
+);
 
 export {
   makeSelectFunctions,
+  makeSelectTriggersHttp,
   makeSelectError,
   makeSelectLoading,
   makeSelectFunctionByName,

@@ -7,21 +7,24 @@
 import React from 'react';
 // import styled from 'styled-components';
 
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
 
 class TriggerHttpItemForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
+    const { trigger, onRemove } = this.props;
+    console.log(trigger);
     return (
-      <div>
-        <FormattedMessage {...messages.header} />
-      </div>
+      <tr>
+        <td>{trigger.method}</td>
+        <td>{trigger.urlpattern}</td>
+        <td><a className="btn btn-danger" onClick={onRemove}>Delete</a></td>
+      </tr>
     );
   }
 }
 
 TriggerHttpItemForm.propTypes = {
-
+  trigger: React.PropTypes.object,
+  onRemove: React.PropTypes.func,
 };
 
 export default TriggerHttpItemForm;

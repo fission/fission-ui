@@ -33,8 +33,14 @@ function functionsReducer(state = initialState, action) {
         .set('error', fromJS(action.error))
         .set('functionLoading', false);
     case GET_FUNCTION_SUCCESS:
+      const functionAlreadyExist = state.get('functions').filter((e) => e.getIn(['metadata', 'name']) !== action.data.name);
+      if (functionAlreadyExist.size === 1) {
+        return state
+          .update('functions', (fns) => fns.map((fn) => fn.getIn(['metadata', 'name']) === action.data.metadata.name ? fromJS(action.data) : fn))
+          .set('functionLoading', false);
+      }
       return state
-        .update('functions', (fns) => fns.map((fn) => fn.getIn(['metadata', 'name']) === action.data.metadata.name ? fromJS(action.data) : fn))
+        .set('functions', fromJS([action.data]))
         .set('functionLoading', false);
     case DELETE_FUNCTION_SUCCESS:
       return state

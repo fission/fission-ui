@@ -36,7 +36,7 @@ class FunctionForm extends React.Component { // eslint-disable-line react/prefer
 
   render() {
     const { item, currentTab, environments } = this.state;
-    const { onChange } = this.props;
+    const { onChange, onHttpTriggerRemove } = this.props;
 
     return (
       <div>
@@ -48,7 +48,7 @@ class FunctionForm extends React.Component { // eslint-disable-line react/prefer
           <FunctionTabForm item={item} environments={environments} onChange={onChange} />
         </div>
         <div style={{ display: currentTab === 'trigger' ? 'block' : 'none' }}>
-          <TriggerTabForm triggers={{ triggersHttp: item.triggersHttp }} onChange={onChange} />
+          <TriggerTabForm triggers={{ triggersHttp: item.triggersHttp }} onChange={onChange} onRemove={onHttpTriggerRemove} />
         </div>
       </div>
     );
@@ -61,7 +61,8 @@ FunctionForm.propTypes = {
     PropTypes.array,
   ]),
   item: PropTypes.object,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  onHttpTriggerRemove: PropTypes.func,
 };
 
 export default FunctionForm;
