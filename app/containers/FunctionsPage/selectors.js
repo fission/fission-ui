@@ -9,13 +9,13 @@ const selectEnvironmentsPageDomain = () => (state) => state.get('environments');
 const makeSelectFunctionByName = () => createSelector(
   selectFunctionsPageDomain(),
   (substate) => (functionName) => {
-    const functionFound = substate.get('functions').find((func) => func.metadata.name === functionName);
+    const functionFound = substate.get('functions').find((func) => func.getIn(['metadata', 'name']) === functionName);
     if (functionFound) {
       return ({
-        name: functionFound.metadata.name,
-        environment: functionFound.environment.name,
-        code: decodeBase64(functionFound.code),
-        triggersHttp: substate.get('triggersHttp').filter((trigger) => trigger.function.name === functionFound.metadata.name) || [],
+        name: functionFound.getIn(['metadata', 'name']),
+        environment: functionFound.getIn(['environment', 'name']),
+        code: decodeBase64(functionFound.get('code')),
+        triggersHttp: substate.get('triggersHttp').filter((trigger) => trigger.getIn(['function', 'name']) === functionFound.getIn(['metadata', 'name'])).toJS(),
       });
     }
     return false;
@@ -36,9 +36,9 @@ const makeSelectError = () => createSelector(
 const makeSelectFunctions = () => createSelector(
   selectFunctionsPageDomain(),
   (substate) => substate.get('functions').map((e) => ({
-    name: e.metadata.name,
-    environment: e.environment.name,
-    triggersHttp: substate.get('triggersHttp').filter((trigger) => trigger.function.name === e.metadata.name) || [], // TODO improve, simplify object
+    name: e.getIn(['metadata', 'name']),
+    environment: e.getIn(['environment', 'name']),
+    triggersHttp: (substate.get('triggersHttp').filter((trigger) => trigger.getIn(['function', 'name']) === e.getIn(['metadata', 'name']))).toJS(), // TODO improve, simplify object
   }))
 );
 

@@ -24,18 +24,20 @@ const initialState = fromJS({ environments: [], loading: false, error: false });
 function environmentsReducer(state = initialState, action) {
   switch (action.type) {
     case EDIT_ENVIRONMENT_SUCCESS:
-      return state.set('environments', state.get('environments').map((env) => env.metadata.name === action.data.metadata.name ? action.data : env));
+      return state.set('environments', state.get('environments').map((env) =>
+        env.getIn(['metadata', 'name']) === action.data.metadata.name ? fromJS(action.data) : env
+      ));
     case GET_ENVIRONMENT_REQUEST:
       return state
         .set('loading', true)
         .set('error', false);
     case GET_ENVIRONMENT_ERROR:
       return state
-        .set('error', action.error)
+        .set('error', fromJS(action.error))
         .set('loading', false);
     case GET_ENVIRONMENT_SUCCESS:
       return state
-        .update('environments', (env) => { env.push(action.data); return env; })
+        .update('environments', (env) => env.push(fromJS(action.data)))
         .set('loading', false);
     case CREATE_ENVIRONMENT_REQUEST:
       return state
@@ -43,27 +45,29 @@ function environmentsReducer(state = initialState, action) {
         .set('error', false);
     case CREATE_ENVIRONMENT_SUCCESS:
       return state
-        .update('environments', (env) => { env.push(action.data); return env; })
+        .update('environments', (env) => env.push(fromJS(action.data)))
         .set('loading', false)
         .set('error', false);
     case CREATE_ENVIRONMENT_ERROR:
       return state
         .set('loading', false)
-        .set('error', action.error);
+        .set('error', fromJS(action.error));
     case DELETE_ENVIRONMENT_SUCCESS:
-      return state.set('environments', state.get('environments').filter((e) => e.metadata.name !== action.environment.name));
+      return state.set('environments', state.get('environments').filter((e) =>
+        e.getIn(['metadata', 'name']) !== action.environment.name
+      ));
     case LOAD_ENVIRONMENTS_REQUEST:
       return state
         .set('loading', true)
         .set('error', false)
-        .set('environments', []);
+        .set('environments', fromJS([]));
     case LOAD_ENVIRONMENTS_ERROR:
       return state
-        .set('error', action.error)
+        .set('error', fromJS(action.error))
         .set('loading', false);
     case LOAD_ENVIRONMENTS_SUCCESS:
       return state
-        .set('environments', action.data)
+        .set('environments', fromJS(action.data))
         .set('loading', false);
     default:
       return state;

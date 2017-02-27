@@ -30,16 +30,16 @@ function functionsReducer(state = initialState, action) {
         .set('error', false);
     case GET_FUNCTION_ERROR:
       return state
-        .set('error', action.error)
+        .set('error', fromJS(action.error))
         .set('functionLoading', false);
     case GET_FUNCTION_SUCCESS:
       return state
-        .set('functions', state.get('functions').push(action.data))
+        .update('functions', (fns) => fns.map((fn) => fn.getIn(['metadata', 'name']) === action.data.metadata.name ? fromJS(action.data) : fn))
         .set('functionLoading', false);
     case DELETE_FUNCTION_SUCCESS:
       return state
         .set('functionLoading', false)
-        .set('functions', state.get('functions').filter((e) => e.metadata.name !== action.function.name));
+        .set('functions', state.get('functions').filter((e) => e.getIn(['metadata', 'name']) !== action.function.name));
     case DELETE_FUNCTION_REQUEST:
       return state
         .set('functionLoading', true)
@@ -48,25 +48,25 @@ function functionsReducer(state = initialState, action) {
       return state
         .set('functionLoading', true)
         .set('error', false)
-        .set('functions', []);
+        .set('functions', fromJS([]));
     case LOAD_TRIGGERSHTTP_REQUEST:
       return state
         .set('triggerHttpLoading', true)
         .set('error', false)
-        .set('triggersHttp', []);
+        .set('triggersHttp', fromJS([]));
     case LOAD_FUNCTIONS_ERROR:
     case LOAD_TRIGGERSHTTP_ERROR:
     case DELETE_FUNCTION_ERROR:
       return state
-        .set('error', action.error)
+        .set('error', fromJS(action.error))
         .set('functionLoading', false);
     case LOAD_TRIGGERSHTTP_SUCCESS:
       return state
-        .set('triggersHttp', action.data)
+        .set('triggersHttp', fromJS(action.data))
         .set('triggerHttpLoading', false);
     case LOAD_FUNCTIONS_SUCCESS:
       return state
-        .set('functions', action.data)
+        .set('functions', fromJS(action.data))
         .set('functionLoading', false);
     default:
       return state;
