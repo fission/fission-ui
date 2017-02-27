@@ -1,6 +1,6 @@
 // import { take, call, put, select } from 'redux-saga/effects';
 import { takeLatest, call, put, take, cancel } from 'redux-saga/effects';
-import { getFunctions, getTriggersHttp } from 'utils/api';
+import { getFunctions, getTriggersHttp, removeFunction, removeTriggerHttp } from 'utils/api';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import {
   LOAD_FUNCTIONS_REQUEST,
@@ -12,6 +12,9 @@ import {
   LOAD_TRIGGERSHTTP_REQUEST,
   LOAD_TRIGGERSHTTP_SUCCESS,
   LOAD_TRIGGERSHTTP_ERROR,
+  DELETE_TRIGGERHTTP_REQUEST,
+  DELETE_TRIGGERHTTP_SUCCESS,
+  DELETE_TRIGGERHTTP_ERROR,
 } from 'containers/FunctionsPage/constants';
 
 function* loadFunctions() {
@@ -30,7 +33,33 @@ function* loadTriggerHttp() {
     yield put({ type: LOAD_TRIGGERSHTTP_ERROR, error });
   }
 }
-
+function* deleteFunction(action) {
+  if (action.deleteHT) {
+    const triggers = action.function.triggersHttp;
+    for (let i = 0; i < triggers.length; i += 1) {
+      const trigger = triggers[i];
+      try {
+        yield call(removeTriggerHttp, trigger);
+      } catch (error) {
+        yield put({ type: DELETE_TRIGGERHTTP_ERROR, error });
+      }
+    }
+  }
+  try {
+    yield call(removeFunction, action.function);
+    yield put({ type: DELETE_FUNCTION_SUCCESS, function: action.function });
+  } catch (error) {
+    yield put({ type: DELETE_FUNCTION_ERROR, error });
+  }
+}
+function* deleteTriggerHttp(action) {
+  try {
+    yield call(removeTriggerHttp, action.trigger);
+    yield put({ type: DELETE_TRIGGERHTTP_SUCCESS, trigger: action.trigger });
+  } catch (error) {
+    yield put({ type: DELETE_TRIGGERHTTP_ERROR, error });
+  }
+}
 
 export function* getAllFunctionsSaga() {
   const watcher = yield takeLatest(LOAD_FUNCTIONS_REQUEST, loadFunctions);
@@ -46,9 +75,25 @@ export function* getAllTriggersHttpSaga() {
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
 }
+export function* removeFunctionSaga() {
+  const watcher = yield takeLatest(DELETE_FUNCTION_REQUEST, deleteFunction);
+
+  // Suspend execution until location changes
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
+export function* removeTriggerHttpSaga() {
+  const watcher = yield takeLatest(DELETE_TRIGGERHTTP_REQUEST, deleteTriggerHttp);
+
+  // Suspend execution until location changes
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
 
 // All sagas to be loaded
 export default [
   getAllFunctionsSaga,
   getAllTriggersHttpSaga,
+  removeFunctionSaga,
+  removeTriggerHttpSaga,
 ];

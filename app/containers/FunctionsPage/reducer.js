@@ -9,7 +9,9 @@ import {
   LOAD_FUNCTIONS_REQUEST,
   LOAD_FUNCTIONS_SUCCESS,
   LOAD_FUNCTIONS_ERROR,
+  DELETE_FUNCTION_REQUEST,
   DELETE_FUNCTION_SUCCESS,
+  DELETE_FUNCTION_ERROR,
   LOAD_TRIGGERSHTTP_REQUEST,
   LOAD_TRIGGERSHTTP_SUCCESS,
   LOAD_TRIGGERSHTTP_ERROR,
@@ -35,7 +37,13 @@ function functionsReducer(state = initialState, action) {
         .set('functions', state.get('functions').push(action.data))
         .set('functionLoading', false);
     case DELETE_FUNCTION_SUCCESS:
-      return state.set('functions', state.get('functions').filter((e) => e.metadata.name !== action.environment.name));
+      return state
+        .set('functionLoading', false)
+        .set('functions', state.get('functions').filter((e) => e.metadata.name !== action.function.name));
+    case DELETE_FUNCTION_REQUEST:
+      return state
+        .set('functionLoading', true)
+        .set('error', false);
     case LOAD_FUNCTIONS_REQUEST:
       return state
         .set('functionLoading', true)
@@ -48,9 +56,10 @@ function functionsReducer(state = initialState, action) {
         .set('triggersHttp', []);
     case LOAD_FUNCTIONS_ERROR:
     case LOAD_TRIGGERSHTTP_ERROR:
+    case DELETE_FUNCTION_ERROR:
       return state
         .set('error', action.error)
-        .set('loading', false);
+        .set('functionLoading', false);
     case LOAD_TRIGGERSHTTP_SUCCESS:
       return state
         .set('triggersHttp', action.data)

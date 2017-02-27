@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { decodeBase64 } from 'utils/util';
 /**
- * Direct selector to the environmentEditPage state domain
+ * Direct selector to the FunctionsPage state domain
  */
 const selectFunctionsPageDomain = () => (state) => state.get('functions');
 const selectEnvironmentsPageDomain = () => (state) => state.get('environments');

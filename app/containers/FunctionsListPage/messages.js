@@ -10,4 +10,8 @@ export default defineMessages({
     id: 'app.containers.FunctionsListPage.header',
     defaultMessage: 'This is FunctionsListPage container !',
   },
+  functionDeleteRelatedHttpTriggers: {
+    id: 'app.containers.FunctionsPage.function.delete.HttpTriggers',
+    defaultMessage: 'The function has related http triggers, delete these triggers?',
+  },
 });

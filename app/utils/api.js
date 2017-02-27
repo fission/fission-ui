@@ -75,13 +75,19 @@ export function getFunction(name) {
 }
 
 export function removeFunction(item) {
-  return axios.delete(`${basePath}environments/${item.name}`)
+  return axios.delete(`${basePath}functions/${item.name}`)
     .then(checkStatus)
     .then(parseJSON);
 }
 
 export function getTriggersHttp() {
   return axios.get(`${basePath}triggers/http`)
+    .then(checkStatus)
+    .then(parseJSON);
+}
+
+export function removeTriggerHttp(item) {
+  return axios.delete(`${basePath}triggers/http/${item.metadata.name}`)
     .then(checkStatus)
     .then(parseJSON);
 }
