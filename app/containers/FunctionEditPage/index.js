@@ -14,7 +14,7 @@ import LoadingIndicator from 'components/LoadingIndicator';
 import { makeSelectLoading, makeSelectFunctionByName, makeSelectTriggersHttp } from 'containers/FunctionsPage/selectors';
 import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
 import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
-import { getFunctionAction, loadTriggersHttpAction } from 'containers/FunctionEditPage/actions';
+import { getFunctionAction, loadTriggersHttpAction, deleteTriggerHttpAction } from 'containers/FunctionEditPage/actions';
 
 export class FunctionEditPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -56,11 +56,10 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     if (nextProps.environments.length !== this.state.environments.length) {
       this.state.environments = nextProps.environments;
     }
-    if (!this.state.item && nextProps.loading === false) {
-      this.state.item = nextProps.functionByName(nextProps.params.name);
-    }
-
+    // TODO this may cause user modified code lost in the editor buffer
+    this.state.item = nextProps.functionByName(nextProps.params.name);
   }
+
 
   onChange(event) {
     console.log(event);
@@ -68,8 +67,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
   }
 
   onHttpTriggerRemove(item) {
-    console.log(item);
-    console.log("trigger to remove");
+    this.props.deleteTriggerHttp(item);
   }
 
   onSave() {
@@ -77,8 +75,9 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
   }
 
   render() {
+    console.log('reredner');
     const { item, environments, loading } = this.state;
-    if (loading || item === undefined ) {
+    if (loading || item === undefined) {
       return <LoadingIndicator />;
     }
     return (
@@ -87,7 +86,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
           title="Create function"
         />
 
-        <FunctionForm environments={environments} onChange={this.onChange} item={item} onHttpTriggerRemove={this.onHttpTriggerRemove}/>
+        <FunctionForm environments={environments} onChange={this.onChange} item={item} onHttpTriggerRemove={this.onHttpTriggerRemove} />
 
         <div className="pull-right">
           <a className="btn btn-primary" onClick={this.onSave}>Save & exit</a> { ' ' }
@@ -111,6 +110,7 @@ FunctionEditPage.propTypes = {
   loadEnvironmentData: PropTypes.func.isRequired,
   loadFunctionData: PropTypes.func.isRequired,
   loadTriggersHttpData: PropTypes.func.isRequired,
+  deleteTriggerHttp: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -123,8 +123,9 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     loadEnvironmentData: () => dispatch(loadEnvironmentAction()),
-    loadTriggersHttpData: ()=> dispatch(loadTriggersHttpAction()),
+    loadTriggersHttpData: () => dispatch(loadTriggersHttpAction()),
     loadFunctionData: (name) => dispatch(getFunctionAction(name)),
+    deleteTriggerHttp: (trigger) => dispatch(deleteTriggerHttpAction(trigger)),
   };
 }
 

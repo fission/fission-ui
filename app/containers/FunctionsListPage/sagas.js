@@ -12,8 +12,6 @@ import {
   LOAD_TRIGGERSHTTP_REQUEST,
   LOAD_TRIGGERSHTTP_SUCCESS,
   LOAD_TRIGGERSHTTP_ERROR,
-  DELETE_TRIGGERHTTP_REQUEST,
-  DELETE_TRIGGERHTTP_SUCCESS,
   DELETE_TRIGGERHTTP_ERROR,
 } from 'containers/FunctionsPage/constants';
 
@@ -52,14 +50,6 @@ function* deleteFunction(action) {
     yield put({ type: DELETE_FUNCTION_ERROR, error });
   }
 }
-function* deleteTriggerHttp(action) {
-  try {
-    yield call(removeTriggerHttp, action.trigger);
-    yield put({ type: DELETE_TRIGGERHTTP_SUCCESS, trigger: action.trigger });
-  } catch (error) {
-    yield put({ type: DELETE_TRIGGERHTTP_ERROR, error });
-  }
-}
 
 export function* getAllFunctionsSaga() {
   const watcher = yield takeLatest(LOAD_FUNCTIONS_REQUEST, loadFunctions);
@@ -82,18 +72,10 @@ export function* removeFunctionSaga() {
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
 }
-export function* removeTriggerHttpSaga() {
-  const watcher = yield takeLatest(DELETE_TRIGGERHTTP_REQUEST, deleteTriggerHttp);
-
-  // Suspend execution until location changes
-  yield take(LOCATION_CHANGE);
-  yield cancel(watcher);
-}
 
 // All sagas to be loaded
 export default [
   getAllFunctionsSaga,
   getAllTriggersHttpSaga,
   removeFunctionSaga,
-  removeTriggerHttpSaga,
 ];
