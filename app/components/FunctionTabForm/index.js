@@ -11,11 +11,34 @@ import AceEditor from 'react-ace';
 import 'brace/mode/java';
 import 'brace/mode/php';
 import 'brace/mode/javascript';
+import 'brace/mode/python';
 import 'brace/theme/github';
 
 class FunctionTabForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      mode: 'javascript',
+    };
+
+    this.onCodeChange = this.onCodeChange.bind(this);
+    this.onModeChange = this.onModeChange.bind(this);
+  }
+
+  onCodeChange(newValue) {
+    const { item } = this.props;
+    item.code = newValue;
+  }
+
+  onModeChange(e) {
+    this.state.mode = e.target.value;
+    this.forceUpdate();
+  }
+
   render() {
     const { onChange, environments, item } = this.props;
+    const { mode } = this.state;
     return (
       <form>
         <div className="row">
@@ -43,19 +66,21 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
         <div className="row">
           <div className="col-md-6">
             <AceEditor
-              mode="javascript"
+              mode={mode}
               theme="github"
               name="FunctionForm"
-              defaultValue={item.code}
+              value={item.code}
               editorProps={{ $blockScrolling: true }}
+              onChange={this.onCodeChange}
             />
           </div>
           <div className="col-md-6">
             <label htmlFor="formFunctionName">Syntax</label>
-            <select className="form-control">
+            <select className="form-control" onChange={this.onModeChange}>
               <option value="javascript">Javascript</option>
               <option value="java">Java</option>
               <option value="php">Php</option>
+              <option value="python">Python</option>
             </select>
             <a className="btn btn-primary">Test code</a> { ' ' }
             <div>
