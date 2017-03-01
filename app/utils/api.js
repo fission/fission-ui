@@ -98,3 +98,9 @@ export function removeTriggerHttp(item) {
     .then(checkStatus)
     .then(parseJSON);
 }
+
+export function postTriggerHttp(item) {
+  return axios.post(`${basePath}triggers/http`, item)
+    .then(checkStatus)
+    .then(parseJSON);
+}

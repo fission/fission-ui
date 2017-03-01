@@ -14,7 +14,7 @@ import messages from './messages';
 
 class TriggerHttpForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { triggers, onRemove } = this.props;
+    const { triggers, onRemove, onCreate } = this.props;
     return (
       <div>
         <h3><FormattedMessage {...messages.headerhttptrigger} /></h3>
@@ -34,7 +34,7 @@ class TriggerHttpForm extends React.Component { // eslint-disable-line react/pre
             }
           </tbody>
         </table>
-        <TriggerHttpCreateForm />
+        <TriggerHttpCreateForm onCreate={onCreate} />
       </div>
     );
   }
@@ -43,6 +43,7 @@ class TriggerHttpForm extends React.Component { // eslint-disable-line react/pre
 TriggerHttpForm.propTypes = {
   triggers: React.PropTypes.array,
   onRemove: React.PropTypes.func,
+  onCreate: React.PropTypes.func,
 };
 
 export default TriggerHttpForm;

@@ -15,7 +15,7 @@ import ErrorIndicator from 'components/ErrorIndicator';
 import { makeSelectLoading, makeSelectFunctionByName, makeSelectTriggersHttp, makeSelectError } from 'containers/FunctionsPage/selectors';
 import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
 import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
-import { getFunctionAction, loadTriggersHttpAction, deleteTriggerHttpAction, updateFunctionAction } from 'containers/FunctionEditPage/actions';
+import { getFunctionAction, loadTriggersHttpAction, deleteTriggerHttpAction, updateFunctionAction, createTriggerHttpAction } from 'containers/FunctionEditPage/actions';
 
 export class FunctionEditPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -36,6 +36,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onHttpTriggerRemove = this.onHttpTriggerRemove.bind(this);
+    this.onHttpTriggerCreate = this.onHttpTriggerCreate.bind(this);
     this.onCodeChange = this.onCodeChange.bind(this);
   }
 
@@ -81,7 +82,17 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     this.props.deleteTriggerHttp(item);
   }
 
-  onSave() {
+  onHttpTriggerCreate(trigger) {
+    const { item } = this.state;
+    this.props.createTriggerHttp({
+      method: trigger.method,
+      urlpattern: trigger.urlpattern,
+      function: item.name,
+    });
+  }
+
+  onSave(event) {
+    event.preventDefault();
     const { item } = this.state;
     this.props.updateFunction(item);
   }
@@ -101,7 +112,12 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
           <ErrorIndicator error={error} />
         }
 
-        <FunctionForm environments={environments} onChange={this.onChange} item={item} onHttpTriggerRemove={this.onHttpTriggerRemove} nameEditable={Boolean(false)} onCodeChange={this.onCodeChange} />
+        <FunctionForm
+          environments={environments} onChange={this.onChange} item={item}
+          onHttpTriggerRemove={this.onHttpTriggerRemove}
+          onHttpTriggerCreate={this.onHttpTriggerCreate}
+          nameEditable={Boolean(false)} onCodeChange={this.onCodeChange}
+        />
 
         <div className="pull-right">
           <a className="btn btn-primary" onClick={this.onSave}>Save & exit</a> { ' ' }
@@ -131,6 +147,7 @@ FunctionEditPage.propTypes = {
   loadTriggersHttpData: PropTypes.func.isRequired,
   deleteTriggerHttp: PropTypes.func.isRequired,
   updateFunction: PropTypes.func.isRequired,
+  createTriggerHttp: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -148,6 +165,7 @@ function mapDispatchToProps(dispatch) {
     loadFunctionData: (name) => dispatch(getFunctionAction(name)),
     deleteTriggerHttp: (trigger) => dispatch(deleteTriggerHttpAction(trigger)),
     updateFunction: (fn) => dispatch(updateFunctionAction(fn)),
+    createTriggerHttp: (trigger) => dispatch(createTriggerHttpAction(trigger)),
   };
 }
 

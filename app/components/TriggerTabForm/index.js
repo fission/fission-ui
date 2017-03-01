@@ -10,11 +10,11 @@ import TriggerHttpForm from 'components/TriggerHttpForm';
 
 class TriggerTabForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { triggers, onRemove } = this.props;
+    const { triggers, onRemove, onCreate } = this.props;
 
     return (
       <div>
-        <TriggerHttpForm triggers={triggers.triggersHttp} onRemove={onRemove} />
+        <TriggerHttpForm triggers={triggers.triggersHttp} onRemove={onRemove} onCreate={onCreate} />
       </div>
     );
   }
@@ -23,6 +23,7 @@ class TriggerTabForm extends React.Component { // eslint-disable-line react/pref
 TriggerTabForm.propTypes = {
   triggers: React.PropTypes.object,
   onRemove: React.PropTypes.func,
+  onCreate: React.PropTypes.func,
 };
 
 export default TriggerTabForm;

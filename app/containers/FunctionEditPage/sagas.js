@@ -1,5 +1,6 @@
 import { take, call, put, cancel, takeLatest } from 'redux-saga/effects';
-import { getFunction, removeTriggerHttp, putFunction } from 'utils/api';
+import v4 from 'uuid';
+import { getFunction, removeTriggerHttp, putFunction, postTriggerHttp } from 'utils/api';
 import {
   GET_FUNCTION_REQUEST,
   GET_FUNCTION_SUCCESS,
@@ -10,6 +11,9 @@ import {
   UPDATE_FUNCTION_REQUEST,
   UPDATE_FUNCTION_SUCCESS,
   UPDATE_FUNCTION_ERROR,
+  CREATE_TRIGGERHTTP_REQUEST,
+  CREATE_TRIGGERHTTP_SUCCESS,
+  CREATE_TRIGGERHTTP_ERROR,
 } from 'containers/FunctionsPage/constants';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -42,6 +46,18 @@ function* updateFunction(action) {
     yield put({ type: UPDATE_FUNCTION_ERROR, error });
   }
 }
+function* createTriggerHttp(action) {
+  try {
+    const item = action.trigger;
+    const trigger = { metadata: { name: v4() }, method: item.method, urlpattern: item.urlpattern, function: { name: item.function } };
+    yield call(postTriggerHttp, trigger);
+
+    yield put({ type: CREATE_TRIGGERHTTP_SUCCESS, data: trigger });
+  } catch (error) {
+    yield put({ type: CREATE_TRIGGERHTTP_ERROR, error });
+  }
+}
+
 
 export function* getFunctionSaga() {
   // See example in containers/HomePage/sagas.js
@@ -65,11 +81,18 @@ export function* updateFunctionSaga() {
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
 }
+export function* createTriggerHttpSaga() {
+  const watcher = yield takeLatest(CREATE_TRIGGERHTTP_REQUEST, createTriggerHttp);
 
+  // Suspend execution until location changes
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
 
 // All sagas to be loaded
 export default [
   getFunctionSaga,
   removeTriggerHttpSaga,
   updateFunctionSaga,
+  createTriggerHttpSaga,
 ];

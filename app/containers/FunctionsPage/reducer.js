@@ -24,6 +24,9 @@ import {
   UPDATE_FUNCTION_REQUEST,
   UPDATE_FUNCTION_ERROR,
   UPDATE_FUNCTION_SUCCESS,
+  CREATE_TRIGGERHTTP_REQUEST,
+  CREATE_TRIGGERHTTP_ERROR,
+  CREATE_TRIGGERHTTP_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({ functions: [], triggersHttp: [], functionLoading: false, triggerHttpLoading: false, error: false });
@@ -74,6 +77,7 @@ function functionsReducer(state = initialState, action) {
         .set('functions', fromJS(action.data))
         .set('functionLoading', false);
     case DELETE_TRIGGERHTTP_REQUEST:
+    case CREATE_TRIGGERHTTP_REQUEST:
       return state.set('triggerHttpLoading', true);
     case DELETE_TRIGGERHTTP_SUCCESS:
       return state
@@ -81,6 +85,7 @@ function functionsReducer(state = initialState, action) {
         .update('triggersHttp', (triggers) => triggers.filter((e) => e.getIn(['metadata', 'name']) !== action.data.metadata.name));
     case LOAD_TRIGGERSHTTP_ERROR:
     case DELETE_TRIGGERHTTP_ERROR:
+    case CREATE_TRIGGERHTTP_ERROR:
       return state
         .set('error', fromJS(action.error))
         .set('triggerHttpLoading', false);
@@ -90,6 +95,11 @@ function functionsReducer(state = initialState, action) {
       return state
         .set('error', false)
         .set('functionLoading', false);
+    case CREATE_TRIGGERHTTP_SUCCESS:
+      return state
+        .set('error', false)
+        .set('triggerHttpLoading', false)
+        .update('triggersHttp', (triggers) => triggers.push(fromJS(action.data)));
     default:
       return state;
   }
