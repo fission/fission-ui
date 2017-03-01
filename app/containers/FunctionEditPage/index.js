@@ -26,7 +26,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
       error: props.error,
       environments: props.environments,
       httpTriggers: props.httpTriggers,
-      activeTab: 'function'
+      activeTab: 'function',
     };
     if (typeof this.state.environments === 'object' && Array.isArray(this.state.environments) === false) { // Convert environments to array if it's a Immutable List
       this.state.environments = this.state.environments.toArray();
@@ -71,13 +71,17 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
 
 
   onChange(event) {
-    const { item } = this.state;
-    item[event.target.name] = event.target.value;
+    let obj = Object.assign({}, this.state.item);
+    obj[event.target.name] = event.target.value;
+
+    this.setState({ item: obj });
   }
 
   onCodeChange(newValue) {
-    const { item } = this.state;
-    item.code = newValue;
+    let obj = Object.assign({}, this.state.item);
+    obj.code = newValue;
+
+    this.setState({ item: obj });
   }
 
   onHttpTriggerRemove(item) {
@@ -122,7 +126,8 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
           environments={environments} onChange={this.onChange} item={item}
           onHttpTriggerRemove={this.onHttpTriggerRemove}
           onHttpTriggerCreate={this.onHttpTriggerCreate}
-          nameEditable={Boolean(false)} onCodeChange={this.onCodeChange}
+          nameEditable={Boolean(false)}
+          onCodeChange={this.onCodeChange}
           activeTab={activeTab}
           onTabChange={this.onTabChange}
         />

@@ -33,9 +33,7 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
   render() {
     const { onChange, environments, item, nameEditable, onCodeChange } = this.props;
     const { mode } = this.state;
-    // TODO bug fix
-    // if change the function environment, after success, the code is updated successfully,
-    // the environment default value is updated, the ui is not updated
+
     return (
       <form>
         <div className="row">
@@ -48,7 +46,7 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
           <div className="col-md-6">
             <div className="form-group">
               <label htmlFor="formFunctionName">Environment</label>
-              <select className="form-control" defaultValue={item.environment} name="environment" onChange={onChange}>
+              <select className="form-control" value={item.environment} name="environment" id="formFunctionName" onChange={onChange}>
                 {
                   environments.map((environment, index) => (
                     <option value={environment.name} key={`environmentSelect-${index}`}>{environment.name}</option>

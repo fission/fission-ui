@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
-import FunctionForm from 'components/FunctionForm';
+import FunctionTabForm from 'components/FunctionTabForm';
 import LoadingIndicator from 'components/LoadingIndicator';
 import { makeSelectLoading } from 'containers/FunctionsPage/selectors';
 import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
@@ -30,6 +30,7 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
     }
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
+    this.onCodeChange = this.onCodeChange.bind(this);
   }
 
   componentDidMount() {
@@ -48,8 +49,17 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
   }
 
   onChange(event) {
-    console.log(event);
-    console.log('update state');
+    let obj = Object.assign({}, this.state.item);
+    obj[event.target.name] = event.target.value;
+
+    this.setState({ item: obj });
+  }
+
+  onCodeChange(newValue) {
+    let obj = Object.assign({}, this.state.item);
+    obj.code = newValue;
+
+    this.setState({ item:obj });
   }
 
   onSave() {
@@ -67,7 +77,13 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
           title="Create function"
         />
 
-        <FunctionForm environments={environments} onChange={this.onChange} item={item} nameEditable={Boolean(true)} />
+        <FunctionTabForm
+          item={item}
+          environments={environments}
+          onChange={this.onChange}
+          nameEditable={Boolean(true)}
+          onCodeChange={this.onCodeChange}
+        />
 
         <div className="pull-right">
           <a className="btn btn-primary" onClick={this.onSave}>Save & exit</a> { ' ' }
