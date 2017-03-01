@@ -67,7 +67,7 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
           title="Create function"
         />
 
-        <FunctionForm environments={environments} onChange={this.onChange} item={item}/>
+        <FunctionForm environments={environments} onChange={this.onChange} item={item} nameEditable={Boolean(true)} />
 
         <div className="pull-right">
           <a className="btn btn-primary" onClick={this.onSave}>Save & exit</a> { ' ' }

@@ -21,6 +21,9 @@ import {
   DELETE_TRIGGERHTTP_REQUEST,
   DELETE_TRIGGERHTTP_SUCCESS,
   DELETE_TRIGGERHTTP_ERROR,
+  UPDATE_FUNCTION_REQUEST,
+  UPDATE_FUNCTION_ERROR,
+  UPDATE_FUNCTION_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({ functions: [], triggersHttp: [], functionLoading: false, triggerHttpLoading: false, error: false });
@@ -28,6 +31,7 @@ const initialState = fromJS({ functions: [], triggersHttp: [], functionLoading: 
 function functionsReducer(state = initialState, action) {
   switch (action.type) {
     case GET_FUNCTION_REQUEST:
+    case UPDATE_FUNCTION_REQUEST:
       return state
         .set('functionLoading', true)
         .set('error', false);
@@ -57,6 +61,7 @@ function functionsReducer(state = initialState, action) {
         .set('triggersHttp', fromJS([]));
     case LOAD_FUNCTIONS_ERROR:
     case DELETE_FUNCTION_ERROR:
+    case UPDATE_FUNCTION_ERROR:
       return state
         .set('error', fromJS(action.error))
         .set('functionLoading', false);
@@ -79,6 +84,12 @@ function functionsReducer(state = initialState, action) {
       return state
         .set('error', fromJS(action.error))
         .set('triggerHttpLoading', false);
+    case UPDATE_FUNCTION_SUCCESS:
+      // TODO update the function in the store
+      // but it is easier just reload the whole function list or reload the function edit page
+      return state
+        .set('error', false)
+        .set('functionLoading', false);
     default:
       return state;
   }

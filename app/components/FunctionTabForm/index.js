@@ -22,36 +22,33 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
       mode: 'javascript',
     };
 
-    this.onCodeChange = this.onCodeChange.bind(this);
     this.onModeChange = this.onModeChange.bind(this);
   }
 
-  onCodeChange(newValue) {
-    const { item } = this.props;
-    item.code = newValue;
-  }
 
   onModeChange(e) {
-    this.state.mode = e.target.value;
-    this.forceUpdate();
+    this.setState({ mode: e.target.value });
   }
 
   render() {
-    const { onChange, environments, item } = this.props;
+    const { onChange, environments, item, nameEditable, onCodeChange } = this.props;
     const { mode } = this.state;
+    // TODO bug fix
+    // if change the function environment, after success, the code is updated successfully,
+    // the environment default value is updated, the ui is not updated
     return (
       <form>
         <div className="row">
           <div className="col-md-6">
             <div className="form-group">
               <label htmlFor="formFunctionName">Function name</label>
-              <input type="text" className="form-control" id="formFunctionName" name="name" value={item.name} onChange={onChange} />
+              <input type="text" className="form-control" id="formFunctionName" name="name" value={item.name} onChange={onChange} disabled={!nameEditable} />
             </div>
           </div>
           <div className="col-md-6">
             <div className="form-group">
               <label htmlFor="formFunctionName">Environment</label>
-              <select className="form-control" defaultValue={item.environment}>
+              <select className="form-control" defaultValue={item.environment} name="environment" onChange={onChange}>
                 {
                   environments.map((environment, index) => (
                     <option value={environment.name} key={`environmentSelect-${index}`}>{environment.name}</option>
@@ -71,7 +68,7 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
               name="FunctionForm"
               value={item.code}
               editorProps={{ $blockScrolling: true }}
-              onChange={this.onCodeChange}
+              onChange={onCodeChange}
             />
           </div>
           <div className="col-md-6">
@@ -97,6 +94,8 @@ FunctionTabForm.propTypes = {
   item: React.PropTypes.object,
   environments: React.PropTypes.array,
   onChange: React.PropTypes.func.isRequired,
+  onCodeChange: React.PropTypes.func.isRequired,
+  nameEditable: React.PropTypes.bool,
 };
 
 export default FunctionTabForm;

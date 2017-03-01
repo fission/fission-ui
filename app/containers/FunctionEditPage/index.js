@@ -11,10 +11,11 @@ import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import FunctionForm from 'components/FunctionForm';
 import LoadingIndicator from 'components/LoadingIndicator';
-import { makeSelectLoading, makeSelectFunctionByName, makeSelectTriggersHttp } from 'containers/FunctionsPage/selectors';
+import ErrorIndicator from 'components/ErrorIndicator';
+import { makeSelectLoading, makeSelectFunctionByName, makeSelectTriggersHttp, makeSelectError } from 'containers/FunctionsPage/selectors';
 import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
 import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
-import { getFunctionAction, loadTriggersHttpAction, deleteTriggerHttpAction } from 'containers/FunctionEditPage/actions';
+import { getFunctionAction, loadTriggersHttpAction, deleteTriggerHttpAction, updateFunctionAction } from 'containers/FunctionEditPage/actions';
 
 export class FunctionEditPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -22,6 +23,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
 
     this.state = {
       loading: props.loading,
+      error: props.error,
       environments: props.environments,
       httpTriggers: props.httpTriggers,
     };
@@ -34,6 +36,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onHttpTriggerRemove = this.onHttpTriggerRemove.bind(this);
+    this.onCodeChange = this.onCodeChange.bind(this);
   }
 
   componentDidMount() {
@@ -50,6 +53,9 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     if (nextProps.loading !== this.state.loading) {
       this.state.loading = nextProps.loading;
     }
+    if (nextProps.error !== this.state.error) {
+      this.state.error = nextProps.error;
+    }
     if (nextProps.httpTriggers.length !== this.state.httpTriggers.length) {
       this.state.httpTriggers = nextProps.httpTriggers;
     }
@@ -62,8 +68,13 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
 
 
   onChange(event) {
-    console.log(event);
-    console.log('update state');
+    const { item } = this.state;
+    item[event.target.name] = event.target.value;
+  }
+
+  onCodeChange(newValue) {
+    const { item } = this.state;
+    item.code = newValue;
   }
 
   onHttpTriggerRemove(item) {
@@ -71,12 +82,12 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
   }
 
   onSave() {
-    console.log('onSave');
+    const { item } = this.state;
+    this.props.updateFunction(item);
   }
 
   render() {
-    console.log('reredner');
-    const { item, environments, loading } = this.state;
+    const { item, environments, loading, error } = this.state;
     if (loading || item === undefined) {
       return <LoadingIndicator />;
     }
@@ -86,7 +97,11 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
           title="Create function"
         />
 
-        <FunctionForm environments={environments} onChange={this.onChange} item={item} onHttpTriggerRemove={this.onHttpTriggerRemove} />
+        {error &&
+          <ErrorIndicator error={error} />
+        }
+
+        <FunctionForm environments={environments} onChange={this.onChange} item={item} onHttpTriggerRemove={this.onHttpTriggerRemove} nameEditable={Boolean(false)} onCodeChange={this.onCodeChange} />
 
         <div className="pull-right">
           <a className="btn btn-primary" onClick={this.onSave}>Save & exit</a> { ' ' }
@@ -106,11 +121,16 @@ FunctionEditPage.propTypes = {
     PropTypes.array,
   ]),
   loading: PropTypes.bool,
+  error: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.bool,
+  ]),
   functionByName: PropTypes.func.isRequired,
   loadEnvironmentData: PropTypes.func.isRequired,
   loadFunctionData: PropTypes.func.isRequired,
   loadTriggersHttpData: PropTypes.func.isRequired,
   deleteTriggerHttp: PropTypes.func.isRequired,
+  updateFunction: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -118,6 +138,7 @@ const mapStateToProps = createStructuredSelector({
   environments: makeSelectEnvironments(),
   httpTriggers: makeSelectTriggersHttp(),
   loading: makeSelectLoading(),
+  error: makeSelectError(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -126,6 +147,7 @@ function mapDispatchToProps(dispatch) {
     loadTriggersHttpData: () => dispatch(loadTriggersHttpAction()),
     loadFunctionData: (name) => dispatch(getFunctionAction(name)),
     deleteTriggerHttp: (trigger) => dispatch(deleteTriggerHttpAction(trigger)),
+    updateFunction: (fn) => dispatch(updateFunctionAction(fn)),
   };
 }
 

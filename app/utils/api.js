@@ -3,6 +3,7 @@
  */
 import axios from 'axios';
 
+import { encodeBase64 } from './util';
 
 const basePath = '/proxy/controller/v1/';
 
@@ -76,6 +77,12 @@ export function getFunction(name) {
 
 export function removeFunction(item) {
   return axios.delete(`${basePath}functions/${item.name}`)
+    .then(checkStatus)
+    .then(parseJSON);
+}
+
+export function putFunction(item) {
+  return axios.put(`${basePath}functions/${item.name}`, { metadata: { name: item.name }, environment: { name: item.environment }, code: encodeBase64(item.code) })
     .then(checkStatus)
     .then(parseJSON);
 }
