@@ -26,6 +26,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
       error: props.error,
       environments: props.environments,
       httpTriggers: props.httpTriggers,
+      activeTab: 'function'
     };
     if (typeof this.state.environments === 'object' && Array.isArray(this.state.environments) === false) { // Convert environments to array if it's a Immutable List
       this.state.environments = this.state.environments.toArray();
@@ -38,6 +39,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     this.onHttpTriggerRemove = this.onHttpTriggerRemove.bind(this);
     this.onHttpTriggerCreate = this.onHttpTriggerCreate.bind(this);
     this.onCodeChange = this.onCodeChange.bind(this);
+    this.onTabChange = this.onTabChange.bind(this);
   }
 
   componentDidMount() {
@@ -91,6 +93,10 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     });
   }
 
+  onTabChange(newTabName) {
+    this.setState({ activeTab: newTabName });
+  }
+
   onSave(event) {
     event.preventDefault();
     const { item } = this.state;
@@ -98,7 +104,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
   }
 
   render() {
-    const { item, environments, loading, error } = this.state;
+    const { item, environments, loading, error, activeTab } = this.state;
     if (loading || item === undefined) {
       return <LoadingIndicator />;
     }
@@ -117,6 +123,8 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
           onHttpTriggerRemove={this.onHttpTriggerRemove}
           onHttpTriggerCreate={this.onHttpTriggerCreate}
           nameEditable={Boolean(false)} onCodeChange={this.onCodeChange}
+          activeTab={activeTab}
+          onTabChange={this.onTabChange}
         />
 
         <div className="pull-right">
@@ -148,6 +156,7 @@ FunctionEditPage.propTypes = {
   deleteTriggerHttp: PropTypes.func.isRequired,
   updateFunction: PropTypes.func.isRequired,
   createTriggerHttp: PropTypes.func.isRequired,
+  params: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
