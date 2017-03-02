@@ -33,6 +33,11 @@ const makeSelectError = () => createSelector(
   (substate) => substate.get('error')
 );
 
+const makeSelectFunctionTest = () => createSelector(
+  selectFunctionsPageDomain(),
+  (substate) => substate.get('functionTest').toJS()
+);
+
 const makeSelectFunctions = () => createSelector(
   selectFunctionsPageDomain(),
   (substate) => substate.get('functions').map((e) => ({
@@ -53,4 +58,5 @@ export {
   makeSelectError,
   makeSelectLoading,
   makeSelectFunctionByName,
+  makeSelectFunctionTest,
 };

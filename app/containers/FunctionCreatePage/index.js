@@ -9,13 +9,14 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
+import v4 from 'uuid';
 import FunctionTabForm from 'components/FunctionTabForm';
 import LoadingIndicator from 'components/LoadingIndicator';
 import ErrorIndicator from 'components/ErrorIndicator';
-import { makeSelectLoading, makeSelectError } from 'containers/FunctionsPage/selectors';
+import { makeSelectLoading, makeSelectError, makeSelectFunctionTest } from 'containers/FunctionsPage/selectors';
 import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
 import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
-import { createFunctionAction } from 'containers/FunctionCreatePage/actions';
+import { createFunctionAction, testFunctionAction, cleanTestFunctionAction } from 'containers/FunctionCreatePage/actions';
 
 export class FunctionCreatePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -23,6 +24,7 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
 
     this.state = {
       loading: props.loading,
+      functionTest: props.functionTest,
       error: props.error,
       currentTab: 'function',
       item: { name: '', environment: '', triggersHttp: [], code: '', temporaryFunction: '' },
@@ -31,23 +33,32 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
     if (typeof this.state.environments === 'object' && Array.isArray(this.state.environments) === false) { // Convert environments to array if it's a Immutable List
       this.state.environments = this.state.environments.toArray();
     }
+
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onCodeChange = this.onCodeChange.bind(this);
+    this.onFunctionTest = this.onFunctionTest.bind(this);
   }
 
   componentDidMount() {
     if (this.state.environments.length === 0) {
       this.props.loadEnvironmentData();
     }
+    this.props.cleanTestFunction();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.loading !== this.state.loading) {
       this.state.loading = nextProps.loading;
     }
+    if (nextProps.functionTest !== this.state.functionTest) {
+      this.state.functionTest = nextProps.functionTest;
+    }
     if (nextProps.environments.length !== this.state.environments.length) {
       this.state.environments = nextProps.environments;
+      if (this.state.environments.length > 0) {
+        this.state.item.environment = this.state.environments[0].name;
+      }
     }
   }
 
@@ -67,12 +78,20 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
 
   onSave() {
     const { item } = this.state;
-    console.log('onSave', item);
     this.props.createFunction(item);
   }
 
+  onFunctionTest(event) {
+    event.preventDefault();
+    const obj = Object.assign({}, this.state.item);
+    obj.name = `ui-${v4()}`;
+    obj.test = { header: {}, query: '', payload: {}, method: 'GET' };
+
+    this.props.testFunction(obj);
+  }
+
   render() {
-    const { item, environments, loading, error } = this.state;
+    const { item, environments, loading, error, functionTest } = this.state;
     if (loading) {
       return <LoadingIndicator />;
     }
@@ -92,6 +111,8 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
           onChange={this.onChange}
           nameEditable={Boolean(true)}
           onCodeChange={this.onCodeChange}
+          onFunctionTest={this.onFunctionTest}
+          functionTest={functionTest}
         />
 
         <div className="pull-right">
@@ -115,18 +136,24 @@ FunctionCreatePage.propTypes = {
   ]),
   loadEnvironmentData: PropTypes.func.isRequired,
   createFunction: PropTypes.func.isRequired,
+  testFunction: PropTypes.func.isRequired,
+  cleanTestFunction: PropTypes.func.isRequired,
+  functionTest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   environments: makeSelectEnvironments(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
+  functionTest: makeSelectFunctionTest(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     loadEnvironmentData: () => dispatch(loadEnvironmentAction()),
     createFunction: (fn) => dispatch(createFunctionAction(fn)),
+    testFunction: (fn) => dispatch(testFunctionAction(fn)),
+    cleanTestFunction: () => dispatch(cleanTestFunctionAction()),
   };
 }
 

@@ -30,9 +30,13 @@ import {
   CREATE_FUNCTION_REQUEST,
   CREATE_FUNCTION_ERROR,
   CREATE_FUNCTION_SUCCESS,
+  TEST_FUNCTION_REQUEST,
+  TEST_FUNCTION_ERROR,
+  TEST_FUNCTION_SUCCESS,
+  CLEAN_TEST_FUNCTION_REQUEST,
 } from './constants';
 
-const initialState = fromJS({ functions: [], triggersHttp: [], functionLoading: false, triggerHttpLoading: false, error: false });
+const initialState = fromJS({ functions: [], triggersHttp: [], functionLoading: false, triggerHttpLoading: false, functionTest: { loading: false, response: {} }, error: false });
 
 function functionsReducer(state = initialState, action) {
   switch (action.type) {
@@ -106,6 +110,25 @@ function functionsReducer(state = initialState, action) {
         .set('error', false)
         .set('triggerHttpLoading', false)
         .update('triggersHttp', (triggers) => triggers.push(fromJS(action.data)));
+    case TEST_FUNCTION_REQUEST:
+      return state
+        .setIn(['functionTest', 'loading'], true)
+        .setIn(['functionTest', 'response'], fromJS({}))
+        .set('error', false);
+    case TEST_FUNCTION_ERROR:
+      return state
+        .setIn(['functionTest', 'loading'], false)
+        .set('error', fromJS(action.error));
+    case TEST_FUNCTION_SUCCESS:
+      return state
+        .setIn(['functionTest', 'loading'], false)
+        .setIn(['functionTest', 'response'], fromJS(action.data))
+        .set('error', false);
+    case CLEAN_TEST_FUNCTION_REQUEST:
+      return state
+        .setIn(['functionTest', 'loading'], false)
+        .setIn(['functionTest', 'response'], fromJS({}))
+        .set('error', false);
     default:
       return state;
   }

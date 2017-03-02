@@ -9,12 +9,14 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
+import v4 from 'uuid';
 import FunctionForm from 'components/FunctionForm';
 import LoadingIndicator from 'components/LoadingIndicator';
 import ErrorIndicator from 'components/ErrorIndicator';
-import { makeSelectLoading, makeSelectFunctionByName, makeSelectTriggersHttp, makeSelectError } from 'containers/FunctionsPage/selectors';
+import { makeSelectLoading, makeSelectFunctionByName, makeSelectTriggersHttp, makeSelectError, makeSelectFunctionTest } from 'containers/FunctionsPage/selectors';
 import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
 import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
+import { testFunctionAction, cleanTestFunctionAction } from 'containers/FunctionCreatePage/actions';
 import { getFunctionAction, loadTriggersHttpAction, deleteTriggerHttpAction, updateFunctionAction, createTriggerHttpAction } from 'containers/FunctionEditPage/actions';
 
 export class FunctionEditPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -23,6 +25,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
 
     this.state = {
       loading: props.loading,
+      functionTest: props.functionTest,
       error: props.error,
       environments: props.environments,
       httpTriggers: props.httpTriggers,
@@ -40,6 +43,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     this.onHttpTriggerCreate = this.onHttpTriggerCreate.bind(this);
     this.onCodeChange = this.onCodeChange.bind(this);
     this.onTabChange = this.onTabChange.bind(this);
+    this.onFunctionTest = this.onFunctionTest.bind(this);
   }
 
   componentDidMount() {
@@ -50,11 +54,15 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
       this.props.loadTriggersHttpData();
     }
     this.props.loadFunctionData(this.props.params.name);
+    this.props.cleanTestFunction();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.loading !== this.state.loading) {
       this.state.loading = nextProps.loading;
+    }
+    if (nextProps.functionTest !== this.state.functionTest) {
+      this.state.functionTest = nextProps.functionTest;
     }
     if (nextProps.error !== this.state.error) {
       this.state.error = nextProps.error;
@@ -66,22 +74,32 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
       this.state.environments = nextProps.environments;
     }
     // TODO this may cause user modified code lost in the editor buffer
+    // TODO this causes editor buffer modification lost if user run test code
     this.state.item = nextProps.functionByName(nextProps.params.name);
   }
 
 
   onChange(event) {
-    let obj = Object.assign({}, this.state.item);
+    const obj = Object.assign({}, this.state.item);
     obj[event.target.name] = event.target.value;
 
     this.setState({ item: obj });
   }
 
   onCodeChange(newValue) {
-    let obj = Object.assign({}, this.state.item);
+    const obj = Object.assign({}, this.state.item);
     obj.code = newValue;
 
     this.setState({ item: obj });
+  }
+
+  onFunctionTest(event) {
+    event.preventDefault();
+    const obj = Object.assign({}, this.state.item);
+    obj.name = `ui-${v4()}`;
+    obj.test = { header: {}, query: '', payload: {}, method: 'GET' };
+
+    this.props.testFunction(obj);
   }
 
   onHttpTriggerRemove(item) {
@@ -108,7 +126,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
   }
 
   render() {
-    const { item, environments, loading, error, activeTab } = this.state;
+    const { item, environments, loading, error, activeTab, functionTest } = this.state;
     if (loading || item === undefined) {
       return <LoadingIndicator />;
     }
@@ -130,6 +148,8 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
           onCodeChange={this.onCodeChange}
           activeTab={activeTab}
           onTabChange={this.onTabChange}
+          onFunctionTest={this.onFunctionTest}
+          functionTest={functionTest}
         />
 
         <div className="pull-right">
@@ -162,6 +182,9 @@ FunctionEditPage.propTypes = {
   updateFunction: PropTypes.func.isRequired,
   createTriggerHttp: PropTypes.func.isRequired,
   params: PropTypes.object.isRequired,
+  testFunction: PropTypes.func.isRequired,
+  cleanTestFunction: PropTypes.func.isRequired,
+  functionTest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -170,6 +193,7 @@ const mapStateToProps = createStructuredSelector({
   httpTriggers: makeSelectTriggersHttp(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
+  functionTest: makeSelectFunctionTest(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -180,6 +204,8 @@ function mapDispatchToProps(dispatch) {
     deleteTriggerHttp: (trigger) => dispatch(deleteTriggerHttpAction(trigger)),
     updateFunction: (fn) => dispatch(updateFunctionAction(fn)),
     createTriggerHttp: (trigger) => dispatch(createTriggerHttpAction(trigger)),
+    testFunction: (fn) => dispatch(testFunctionAction(fn)),
+    cleanTestFunction: () => dispatch(cleanTestFunctionAction()),
   };
 }
 

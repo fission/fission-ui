@@ -13,6 +13,8 @@ import 'brace/mode/php';
 import 'brace/mode/javascript';
 import 'brace/mode/python';
 import 'brace/theme/github';
+import LoadingIndicator from 'components/LoadingIndicator';
+import FunctionTestForm from 'components/FunctionTestForm';
 
 class FunctionTabForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -31,7 +33,7 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
   }
 
   render() {
-    const { onChange, environments, item, nameEditable, onCodeChange } = this.props;
+    const { onChange, environments, item, nameEditable, onCodeChange, onFunctionTest, functionTest } = this.props;
     const { mode } = this.state;
 
     return (
@@ -77,10 +79,10 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
               <option value="php">Php</option>
               <option value="python">Python</option>
             </select>
-            <a className="btn btn-primary">Test code</a> { ' ' }
-            <div>
-              TODO Test code result
-            </div>
+            {
+              functionTest.loading ? <LoadingIndicator /> : <FunctionTestForm onFunctionTest={onFunctionTest} functionTest={functionTest} />
+            }
+
           </div>
         </div>
       </form>
@@ -93,7 +95,9 @@ FunctionTabForm.propTypes = {
   environments: React.PropTypes.array,
   onChange: React.PropTypes.func.isRequired,
   onCodeChange: React.PropTypes.func.isRequired,
+  onFunctionTest: React.PropTypes.func.isRequired,
   nameEditable: React.PropTypes.bool,
+  functionTest: React.PropTypes.object,
 };
 
 export default FunctionTabForm;

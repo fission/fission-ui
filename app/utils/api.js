@@ -6,6 +6,7 @@ import axios from 'axios';
 import { encodeBase64 } from './util';
 
 const basePath = '/proxy/controller/v1/';
+const routerPath = '/proxy/router';
 
 /**
  * Parses the JSON returned by a network request
@@ -113,4 +114,9 @@ export function postFunction(item) {
   return axios.post(`${basePath}functions`, buildFunction(item))
     .then(checkStatus)
     .then(parseJSON);
+}
+
+export function restRequest(url, method, header, query, payload) {
+  // TODO support url pattern and header
+  return axios[method.toLowerCase()](`${routerPath}${url}?${query}`, payload);
 }

@@ -35,7 +35,7 @@ class FunctionForm extends React.Component { // eslint-disable-line react/prefer
 
   render() {
     const { item, activeTab, environments } = this.state;
-    const { onChange, onHttpTriggerRemove, onHttpTriggerCreate, nameEditable, onCodeChange, onTabChange } = this.props;
+    const { onChange, onHttpTriggerRemove, onHttpTriggerCreate, nameEditable, onCodeChange, onTabChange, onFunctionTest, functionTest } = this.props;
 
     return (
       <div>
@@ -44,7 +44,7 @@ class FunctionForm extends React.Component { // eslint-disable-line react/prefer
           <li role="presentation" className={activeTab === 'trigger' ? 'active' : ''}><a onClick={() => onTabChange('trigger')}>Triggers</a></li>
         </ul>
         <div style={{ display: activeTab === 'function' ? 'block' : 'none' }}>
-          <FunctionTabForm item={item} environments={environments} onChange={onChange} nameEditable={nameEditable} onCodeChange={onCodeChange} />
+          <FunctionTabForm item={item} environments={environments} onChange={onChange} nameEditable={nameEditable} onCodeChange={onCodeChange} onFunctionTest={onFunctionTest} functionTest={functionTest} />
         </div>
         <div style={{ display: activeTab === 'trigger' ? 'block' : 'none' }}>
           <TriggerTabForm triggers={{ triggersHttp: item.triggersHttp }} onChange={onChange} onRemove={onHttpTriggerRemove} onCreate={onHttpTriggerCreate} />
@@ -66,8 +66,10 @@ FunctionForm.propTypes = {
   nameEditable: PropTypes.bool,
   onCodeChange: PropTypes.func,
   onTabChange: PropTypes.func,
+  onFunctionTest: PropTypes.func,
   activeTab: PropTypes.string,
   params: PropTypes.object,
+  functionTest: PropTypes.object,
 };
 
 export default FunctionForm;

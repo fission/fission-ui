@@ -1,6 +1,7 @@
 import { take, call, put, cancel, takeLatest } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 import v4 from 'uuid';
-import { getFunction, removeTriggerHttp, putFunction, postTriggerHttp } from 'utils/api';
+import { getFunction, removeTriggerHttp, putFunction, postTriggerHttp, postFunction, restRequest, removeFunction } from 'utils/api';
 import {
   GET_FUNCTION_REQUEST,
   GET_FUNCTION_SUCCESS,
@@ -14,6 +15,9 @@ import {
   CREATE_TRIGGERHTTP_REQUEST,
   CREATE_TRIGGERHTTP_SUCCESS,
   CREATE_TRIGGERHTTP_ERROR,
+  TEST_FUNCTION_REQUEST,
+  TEST_FUNCTION_SUCCESS,
+  TEST_FUNCTION_ERROR,
 } from 'containers/FunctionsPage/constants';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -57,6 +61,32 @@ function* createTriggerHttp(action) {
     yield put({ type: CREATE_TRIGGERHTTP_ERROR, error });
   }
 }
+function* testFunction(action) {
+  const { fn } = action;
+  const { method, header, query, payload } = fn.test;
+  const url = `/ui-test/${fn.name}`;
+  const httptrigger = {
+    metadata: { name: v4() },
+    method,
+    urlpattern: url,
+    function: { name: fn.name },
+  };
+
+  try {
+    yield call(postFunction, fn);
+    yield call(postTriggerHttp, httptrigger);
+
+    yield delay(4 * 1000);
+    const data = yield call(restRequest, url, method, header, query, payload);
+
+    yield call(removeTriggerHttp, httptrigger);
+    yield call(removeFunction, fn);
+
+    yield put({ type: TEST_FUNCTION_SUCCESS, data });
+  } catch (error) {
+    yield put({ type: TEST_FUNCTION_ERROR, error });
+  }
+}
 
 
 export function* getFunctionSaga() {
@@ -88,6 +118,14 @@ export function* createTriggerHttpSaga() {
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
 }
+export function* testFunctionSaga() {
+  const watcher = yield takeLatest(TEST_FUNCTION_REQUEST, testFunction);
+
+  // Suspend execution until location changes
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
+
 
 // All sagas to be loaded
 export default [
@@ -95,4 +133,5 @@ export default [
   removeTriggerHttpSaga,
   updateFunctionSaga,
   createTriggerHttpSaga,
+  testFunctionSaga,
 ];
