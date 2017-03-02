@@ -4,6 +4,7 @@ import {
   DELETE_TRIGGERHTTP_REQUEST,
   UPDATE_FUNCTION_REQUEST,
   CREATE_TRIGGERHTTP_REQUEST,
+  CREATE_FUNCTION_REQUEST,
 } from 'containers/FunctionsPage/constants';
 
 
@@ -38,5 +39,12 @@ export function createTriggerHttpAction(trigger) {
   return {
     type: CREATE_TRIGGERHTTP_REQUEST,
     trigger,
+  };
+}
+
+export function createFunctionAction(fn) {
+  return {
+    type: CREATE_FUNCTION_REQUEST,
+    fn,
   };
 }

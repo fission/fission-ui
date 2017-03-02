@@ -35,6 +35,10 @@ function checkStatus(response) {
   throw error;
 }
 
+function buildFunction(item) {
+  return { metadata: { name: item.name }, environment: { name: item.environment }, code: encodeBase64(item.code) };
+}
+
 export function getEnvironments() {
   return axios.get(`${basePath}environments`)
     .then(checkStatus)
@@ -82,7 +86,7 @@ export function removeFunction(item) {
 }
 
 export function putFunction(item) {
-  return axios.put(`${basePath}functions/${item.name}`, { metadata: { name: item.name }, environment: { name: item.environment }, code: encodeBase64(item.code) })
+  return axios.put(`${basePath}functions/${item.name}`, buildFunction(item))
     .then(checkStatus)
     .then(parseJSON);
 }
@@ -101,6 +105,12 @@ export function removeTriggerHttp(item) {
 
 export function postTriggerHttp(item) {
   return axios.post(`${basePath}triggers/http`, item)
+    .then(checkStatus)
+    .then(parseJSON);
+}
+
+export function postFunction(item) {
+  return axios.post(`${basePath}functions`, buildFunction(item))
     .then(checkStatus)
     .then(parseJSON);
 }

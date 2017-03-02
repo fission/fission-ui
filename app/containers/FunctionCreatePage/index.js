@@ -11,9 +11,11 @@ import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import FunctionTabForm from 'components/FunctionTabForm';
 import LoadingIndicator from 'components/LoadingIndicator';
-import { makeSelectLoading } from 'containers/FunctionsPage/selectors';
+import ErrorIndicator from 'components/ErrorIndicator';
+import { makeSelectLoading, makeSelectError } from 'containers/FunctionsPage/selectors';
 import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
 import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
+import { createFunctionAction } from 'containers/FunctionCreatePage/actions';
 
 export class FunctionCreatePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -21,6 +23,7 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
 
     this.state = {
       loading: props.loading,
+      error: props.error,
       currentTab: 'function',
       item: { name: '', environment: '', triggersHttp: [], code: '', temporaryFunction: '' },
       environments: props.environments,
@@ -49,25 +52,27 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
   }
 
   onChange(event) {
-    let obj = Object.assign({}, this.state.item);
+    const obj = Object.assign({}, this.state.item);
     obj[event.target.name] = event.target.value;
 
     this.setState({ item: obj });
   }
 
   onCodeChange(newValue) {
-    let obj = Object.assign({}, this.state.item);
+    const obj = Object.assign({}, this.state.item);
     obj.code = newValue;
 
-    this.setState({ item:obj });
+    this.setState({ item: obj });
   }
 
   onSave() {
-    console.log('onSave');
+    const { item } = this.state;
+    console.log('onSave', item);
+    this.props.createFunction(item);
   }
 
   render() {
-    const { item, environments, loading } = this.state;
+    const { item, environments, loading, error } = this.state;
     if (loading) {
       return <LoadingIndicator />;
     }
@@ -76,6 +81,10 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
         <Helmet
           title="Create function"
         />
+
+        {error &&
+          <ErrorIndicator error={error} />
+        }
 
         <FunctionTabForm
           item={item}
@@ -100,17 +109,24 @@ FunctionCreatePage.propTypes = {
     PropTypes.array,
   ]),
   loading: PropTypes.bool,
+  error: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.bool,
+  ]),
   loadEnvironmentData: PropTypes.func.isRequired,
+  createFunction: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   environments: makeSelectEnvironments(),
   loading: makeSelectLoading(),
+  error: makeSelectError(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     loadEnvironmentData: () => dispatch(loadEnvironmentAction()),
+    createFunction: (fn) => dispatch(createFunctionAction(fn)),
   };
 }
 
