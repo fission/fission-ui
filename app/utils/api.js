@@ -118,5 +118,6 @@ export function postFunction(item) {
 
 export function restRequest(url, method, header, query, payload) {
   // TODO support url pattern and header
-  return axios[method.toLowerCase()](`${routerPath}${url}?${query}`, payload);
+  return axios[method.toLowerCase()](`${routerPath}${url}?${query}`, payload)
+    .catch((e) => e.response);
 }

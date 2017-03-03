@@ -56,9 +56,6 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
     }
     if (nextProps.environments.length !== this.state.environments.length) {
       this.state.environments = nextProps.environments;
-      if (this.state.environments.length > 0) {
-        this.state.item.environment = this.state.environments[0].name;
-      }
     }
   }
 
@@ -138,7 +135,7 @@ FunctionCreatePage.propTypes = {
   createFunction: PropTypes.func.isRequired,
   testFunction: PropTypes.func.isRequired,
   cleanTestFunction: PropTypes.func.isRequired,
-  functionTest: PropTypes.func.isRequired,
+  functionTest: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({

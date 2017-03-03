@@ -49,9 +49,10 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
             <div className="form-group">
               <label htmlFor="formFunctionName">Environment</label>
               <select className="form-control" value={item.environment} name="environment" id="formFunctionName" onChange={onChange}>
+                <option value="" key={'environmentSelect-0'} />
                 {
                   environments.map((environment, index) => (
-                    <option value={environment.name} key={`environmentSelect-${index}`}>{environment.name}</option>
+                    <option value={environment.name} key={`environmentSelect-${index + 1}`}>{environment.name}</option>
                   ))
                 }
               </select>

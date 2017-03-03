@@ -19,9 +19,9 @@ function* createFunction(action) {
 
     yield put({ type: CREATE_FUNCTION_SUCCESS, data: action.fn });
 
-    // TODO if function is created successfully, jump to the homepage
+    // TODO if function is created successfully, jump to the function's edit page
     // the following code works, but not sure it is the best solution
-    browserHistory.push('/');
+    browserHistory.push(`/functions/${action.fn.name}`);
   } catch (error) {
     yield put({ type: CREATE_FUNCTION_ERROR, error });
   }

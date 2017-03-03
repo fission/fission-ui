@@ -30,6 +30,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
       environments: props.environments,
       httpTriggers: props.httpTriggers,
       activeTab: 'function',
+      editing: false,
     };
     if (typeof this.state.environments === 'object' && Array.isArray(this.state.environments) === false) { // Convert environments to array if it's a Immutable List
       this.state.environments = this.state.environments.toArray();
@@ -75,7 +76,11 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     }
     // TODO this may cause user modified code lost in the editor buffer
     // TODO this causes editor buffer modification lost if user run test code
-    this.state.item = nextProps.functionByName(nextProps.params.name);
+    if (!this.state.editing) {
+      this.state.item = nextProps.functionByName(nextProps.params.name);
+    } else {
+      this.state.item.triggersHttp = nextProps.functionByName(nextProps.params.name).triggersHttp;
+    }
   }
 
 
@@ -83,14 +88,14 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     const obj = Object.assign({}, this.state.item);
     obj[event.target.name] = event.target.value;
 
-    this.setState({ item: obj });
+    this.setState({ item: obj, editing: true });
   }
 
   onCodeChange(newValue) {
     const obj = Object.assign({}, this.state.item);
     obj.code = newValue;
 
-    this.setState({ item: obj });
+    this.setState({ item: obj, editing: true });
   }
 
   onFunctionTest(event) {
@@ -184,7 +189,7 @@ FunctionEditPage.propTypes = {
   params: PropTypes.object.isRequired,
   testFunction: PropTypes.func.isRequired,
   cleanTestFunction: PropTypes.func.isRequired,
-  functionTest: PropTypes.func.isRequired,
+  functionTest: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
