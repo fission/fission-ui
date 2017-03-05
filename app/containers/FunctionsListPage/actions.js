@@ -2,6 +2,7 @@ import {
   LOAD_FUNCTIONS_REQUEST,
   LOAD_TRIGGERSHTTP_REQUEST,
   DELETE_FUNCTION_REQUEST,
+  LOAD_KUBEWATCHERS_REQUEST,
 } from 'containers/FunctionsPage/constants';
 
 
@@ -17,10 +18,16 @@ export function loadTriggersHttpAction() {
   };
 }
 
-export function deleteFunctionAction(func, deleteHttpTriggers) {
+export function loadKubeWatchersAction() {
+  return {
+    type: LOAD_KUBEWATCHERS_REQUEST,
+  };
+}
+
+export function deleteFunctionAction(func, deleteTriggers) {
   return {
     type: DELETE_FUNCTION_REQUEST,
     function: func,
-    deleteHT: deleteHttpTriggers,
+    deleteTr: deleteTriggers,
   };
 }

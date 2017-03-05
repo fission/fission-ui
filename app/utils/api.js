@@ -121,3 +121,19 @@ export function restRequest(url, method, header, query, payload) {
   return axios[method.toLowerCase()](`${routerPath}${url}?${query}`, payload)
     .catch((e) => e.response);
 }
+
+export function getKubeWatchers() {
+  return axios.get(`${basePath}watches`)
+    .then(checkStatus)
+    .then(parseJSON);
+}
+export function removeKubeWatcher(item) {
+  return axios.delete(`${basePath}watches/${item.metadata.name}`)
+    .then(checkStatus)
+    .then(parseJSON);
+}
+export function postKubeWatcher(item) {
+  return axios.post(`${basePath}watches`, item)
+    .then(checkStatus)
+    .then(parseJSON);
+}

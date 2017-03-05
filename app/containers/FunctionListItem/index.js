@@ -17,12 +17,25 @@ export class FunctionListItem extends React.Component { // eslint-disable-line r
         <td>{ item.name }</td>
         <td><Link to={`/environments/${item.environment}`}>{ item.environment }</Link></td>
         <td>
+          { item.triggersHttp.length > 0 && <em>Http Triggers</em>}
           <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
             {
               item.triggersHttp.map((trigger, index) => (
                 <li key={`triggerHttp-${index}`}>
                   <span className="label label-info">{trigger.method}</span>{ ' ' }
                   {trigger.urlpattern}{ ' ' }
+                </li>
+              ))
+            }
+          </ul>
+          { item.kubeWatchers.length > 0 && <em>Kube Watchers</em>}
+          <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+            {
+              item.kubeWatchers.map((watcher, index) => (
+                <li key={`kubeWatcher-${index}`}>
+                  <span className="label label-info">{watcher.namespace}</span>{ ' ' }
+                  {watcher.objtype}{ ' ' }
+                  <span className="label label-info">{watcher.labelselector}</span>{ ' ' }
                 </li>
               ))
             }

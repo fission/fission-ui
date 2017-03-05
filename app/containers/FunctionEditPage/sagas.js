@@ -1,7 +1,7 @@
 import { take, call, put, cancel, takeLatest } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import v4 from 'uuid';
-import { getFunction, removeTriggerHttp, putFunction, postTriggerHttp, postFunction, restRequest, removeFunction } from 'utils/api';
+import { getFunction, removeTriggerHttp, putFunction, postTriggerHttp, postFunction, restRequest, removeFunction, removeKubeWatcher, postKubeWatcher } from 'utils/api';
 import {
   GET_FUNCTION_REQUEST,
   GET_FUNCTION_SUCCESS,
@@ -18,6 +18,12 @@ import {
   TEST_FUNCTION_REQUEST,
   TEST_FUNCTION_SUCCESS,
   TEST_FUNCTION_ERROR,
+  CREATE_KUBEWATCHER_REQUEST,
+  CREATE_KUBEWATCHER_ERROR,
+  CREATE_KUBEWATCHER_SUCCESS,
+  DELETE_KUBEWATCHER_REQUEST,
+  DELETE_KUBEWATCHER_ERROR,
+  DELETE_KUBEWATCHER_SUCCESS,
 } from 'containers/FunctionsPage/constants';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -87,6 +93,26 @@ function* testFunction(action) {
     yield put({ type: TEST_FUNCTION_ERROR, error });
   }
 }
+function* createKubeWatcher(action) {
+  try {
+    const item = action.watcher;
+    const watcher = { metadata: { name: v4() }, namespace: item.namespace, objtype: item.objtype, labelselector: item.labelselector, function: { name: item.function } };
+    yield call(postKubeWatcher, watcher);
+
+    yield put({ type: CREATE_KUBEWATCHER_SUCCESS, data: watcher });
+  } catch (error) {
+    yield put({ type: CREATE_KUBEWATCHER_ERROR, error });
+  }
+}
+function* deleteKubeWatcher(action) {
+  try {
+    yield call(removeKubeWatcher, action.watcher);
+
+    yield put({ type: DELETE_KUBEWATCHER_SUCCESS, data: action.watcher });
+  } catch (error) {
+    yield put({ type: DELETE_KUBEWATCHER_ERROR, error });
+  }
+}
 
 
 export function* getFunctionSaga() {
@@ -125,7 +151,20 @@ export function* testFunctionSaga() {
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
 }
+export function* createKubeWatcherSaga() {
+  const watcher = yield takeLatest(CREATE_KUBEWATCHER_REQUEST, createKubeWatcher);
 
+  // Suspend execution until location changes
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
+export function* deleteKubeWatcherSaga() {
+  const watcher = yield takeLatest(DELETE_KUBEWATCHER_REQUEST, deleteKubeWatcher);
+
+  // Suspend execution until location changes
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
 
 // All sagas to be loaded
 export default [
@@ -134,4 +173,6 @@ export default [
   updateFunctionSaga,
   createTriggerHttpSaga,
   testFunctionSaga,
+  createKubeWatcherSaga,
+  deleteKubeWatcherSaga,
 ];

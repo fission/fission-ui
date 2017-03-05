@@ -23,7 +23,7 @@ function FunctionsList({ loading, error, items, onRemove }) {
         <tr>
           <th>Name</th>
           <th>Environment</th>
-          <th>Http endpoints</th>
+          <th>Triggers</th>
           <th>Actions</th>
         </tr>
       </thead>

@@ -5,6 +5,9 @@ import {
   UPDATE_FUNCTION_REQUEST,
   CREATE_TRIGGERHTTP_REQUEST,
   CREATE_FUNCTION_REQUEST,
+  CREATE_KUBEWATCHER_REQUEST,
+  DELETE_KUBEWATCHER_REQUEST,
+  LOAD_KUBEWATCHERS_REQUEST,
 } from 'containers/FunctionsPage/constants';
 
 
@@ -46,5 +49,25 @@ export function createFunctionAction(fn) {
   return {
     type: CREATE_FUNCTION_REQUEST,
     fn,
+  };
+}
+
+export function createKubeWatcherAction(watcher) {
+  return {
+    type: CREATE_KUBEWATCHER_REQUEST,
+    watcher,
+  };
+}
+
+export function deleteKubeWatcherAction(watcher) {
+  return {
+    type: DELETE_KUBEWATCHER_REQUEST,
+    watcher,
+  };
+}
+
+export function loadKubeWatchersAction() {
+  return {
+    type: LOAD_KUBEWATCHERS_REQUEST,
   };
 }

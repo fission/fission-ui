@@ -11,7 +11,7 @@ import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectFunctions, makeSelectError, makeSelectLoading } from 'containers/FunctionsPage/selectors';
 import FunctionsList from 'components/FunctionsList';
-import { loadFunctionAction, loadTriggersHttpAction, deleteFunctionAction } from './actions';
+import { loadFunctionAction, loadTriggersHttpAction, deleteFunctionAction, loadKubeWatchersAction } from './actions';
 import messages from './messages';
 
 export class FunctionsListPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -22,13 +22,14 @@ export class FunctionsListPage extends React.Component { // eslint-disable-line 
 
   componentDidMount() {
     this.props.loadFunctionsData(); // TODO need improvement, maybe fork in sagas.js
-    this.props.loadTriggesrHttpData();
+    this.props.loadTriggersHttpData();
+    this.props.loadKubeWatchersData();
   }
 
   onRemove(item) {
     // TODO change to a better confirm window
-    const deleteRelatedTriggers = item.triggersHttp.length > 0 ?
-      confirm(messages.functionDeleteRelatedHttpTriggers.defaultMessage) : false;
+    const deleteRelatedTriggers = item.triggersHttp.length > 0 || item.kubeWatchers.length > 0 ?
+      confirm(messages.functionDeleteRelatedTriggers.defaultMessage) : false;
     this.props.deleteFunction(item, deleteRelatedTriggers);
   }
 
@@ -63,7 +64,8 @@ FunctionsListPage.propTypes = {
     PropTypes.array,
   ]),
   loadFunctionsData: PropTypes.func,
-  loadTriggesrHttpData: PropTypes.func,
+  loadTriggersHttpData: PropTypes.func,
+  loadKubeWatchersData: PropTypes.func,
   deleteFunction: PropTypes.func,
 };
 
@@ -76,8 +78,9 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     loadFunctionsData: () => dispatch(loadFunctionAction()),
-    loadTriggesrHttpData: () => dispatch(loadTriggersHttpAction()),
-    deleteFunction: (func, deleteHttpTriggers) => dispatch(deleteFunctionAction(func, deleteHttpTriggers)),
+    loadTriggersHttpData: () => dispatch(loadTriggersHttpAction()),
+    loadKubeWatchersData: () => dispatch(loadKubeWatchersAction()),
+    deleteFunction: (func, deleteTriggers) => dispatch(deleteFunctionAction(func, deleteTriggers)),
   };
 }
 

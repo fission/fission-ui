@@ -33,12 +33,22 @@ import {
   TEST_FUNCTION_REQUEST,
   TEST_FUNCTION_ERROR,
   TEST_FUNCTION_SUCCESS,
+  LOAD_KUBEWATCHERS_REQUEST,
+  LOAD_KUBEWATCHERS_ERROR,
+  LOAD_KUBEWATCHERS_SUCCESS,
   CLEAN_TEST_FUNCTION_REQUEST,
+  CREATE_KUBEWATCHER_REQUEST,
+  CREATE_KUBEWATCHER_ERROR,
+  CREATE_KUBEWATCHER_SUCCESS,
+  DELETE_KUBEWATCHER_REQUEST,
+  DELETE_KUBEWATCHER_ERROR,
+  DELETE_KUBEWATCHER_SUCCESS,
 } from './constants';
 
-const initialState = fromJS({ functions: [], triggersHttp: [], functionLoading: false, triggerHttpLoading: false, functionTest: { loading: false, response: {} }, error: false });
+const initialState = fromJS({ functions: [], triggersHttp: [], kubeWatchers: [], functionLoading: false, triggerHttpLoading: false, kubeWatcherLoading: false, functionTest: { loading: false, response: {} }, error: false });
 
 function functionsReducer(state = initialState, action) {
+  // TODO simplify the switch logic
   switch (action.type) {
     case GET_FUNCTION_REQUEST:
     case UPDATE_FUNCTION_REQUEST:
@@ -129,6 +139,37 @@ function functionsReducer(state = initialState, action) {
         .setIn(['functionTest', 'loading'], false)
         .setIn(['functionTest', 'response'], fromJS({}))
         .set('error', false);
+    case LOAD_KUBEWATCHERS_REQUEST:
+      return state
+        .set('error', false)
+        .set('kubeWatcherLoading', true)
+        .set('kubeWatchers', fromJS([]));
+    case LOAD_KUBEWATCHERS_ERROR:
+    case CREATE_KUBEWATCHER_ERROR:
+    case DELETE_KUBEWATCHER_ERROR:
+      return state
+        .set('error', fromJS(action.error))
+        .set('kubeWatcherLoading', false);
+    case LOAD_KUBEWATCHERS_SUCCESS:
+      return state
+        .set('error', false)
+        .set('kubeWatcherLoading', false)
+        .set('kubeWatchers', fromJS(action.data));
+    case CREATE_KUBEWATCHER_REQUEST:
+    case DELETE_KUBEWATCHER_REQUEST:
+      return state
+        .set('error', false)
+        .set('kubeWatcherLoading');
+    case CREATE_KUBEWATCHER_SUCCESS:
+      return state
+        .set('error', false)
+        .set('kubeWatcherLoading', false)
+        .update('kubeWatchers', (watchers) => watchers.push(fromJS(action.data)));
+    case DELETE_KUBEWATCHER_SUCCESS:
+      return state
+        .set('error', false)
+        .set('kubeWatcherLoading', false)
+        .update('kubeWatchers', (watchers) => watchers.filter((e) => e.getIn(['metadata', 'name']) !== action.data.metadata.name));
     default:
       return state;
   }

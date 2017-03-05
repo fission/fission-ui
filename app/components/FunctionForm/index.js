@@ -35,7 +35,7 @@ class FunctionForm extends React.Component { // eslint-disable-line react/prefer
 
   render() {
     const { item, activeTab, environments } = this.state;
-    const { onChange, onHttpTriggerRemove, onHttpTriggerCreate, nameEditable, onCodeChange, onTabChange, onFunctionTest, functionTest } = this.props;
+    const { onChange, onHttpTriggerRemove, onHttpTriggerCreate, onKubeWatcherRemove, onKubeWatcherCreate, nameEditable, onCodeChange, onTabChange, onFunctionTest, functionTest } = this.props;
 
     return (
       <div>
@@ -47,7 +47,11 @@ class FunctionForm extends React.Component { // eslint-disable-line react/prefer
           <FunctionTabForm item={item} environments={environments} onChange={onChange} nameEditable={nameEditable} onCodeChange={onCodeChange} onFunctionTest={onFunctionTest} functionTest={functionTest} />
         </div>
         <div style={{ display: activeTab === 'trigger' ? 'block' : 'none' }}>
-          <TriggerTabForm triggers={{ triggersHttp: item.triggersHttp }} onChange={onChange} onRemove={onHttpTriggerRemove} onCreate={onHttpTriggerCreate} />
+          <TriggerTabForm
+            triggers={{ triggersHttp: item.triggersHttp, kubeWatchers: item.kubeWatchers }}
+            onHttpTriggerRemove={onHttpTriggerRemove} onHttpTriggerCreate={onHttpTriggerCreate}
+            onKubeWatcherRemove={onKubeWatcherRemove} onKubeWatcherCreate={onKubeWatcherCreate}
+          />
         </div>
       </div>
     );
@@ -63,6 +67,8 @@ FunctionForm.propTypes = {
   onChange: PropTypes.func,
   onHttpTriggerRemove: PropTypes.func,
   onHttpTriggerCreate: PropTypes.func,
+  onKubeWatcherRemove: PropTypes.func,
+  onKubeWatcherCreate: PropTypes.func,
   nameEditable: PropTypes.bool,
   onCodeChange: PropTypes.func,
   onTabChange: PropTypes.func,

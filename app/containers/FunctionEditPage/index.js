@@ -13,11 +13,11 @@ import v4 from 'uuid';
 import FunctionForm from 'components/FunctionForm';
 import LoadingIndicator from 'components/LoadingIndicator';
 import ErrorIndicator from 'components/ErrorIndicator';
-import { makeSelectLoading, makeSelectFunctionByName, makeSelectTriggersHttp, makeSelectError, makeSelectFunctionTest } from 'containers/FunctionsPage/selectors';
+import { makeSelectLoading, makeSelectFunctionByName, makeSelectTriggersHttp, makeSelectError, makeSelectFunctionTest, makeSelectKubeWatchers } from 'containers/FunctionsPage/selectors';
 import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
 import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
 import { testFunctionAction, cleanTestFunctionAction } from 'containers/FunctionCreatePage/actions';
-import { getFunctionAction, loadTriggersHttpAction, deleteTriggerHttpAction, updateFunctionAction, createTriggerHttpAction } from 'containers/FunctionEditPage/actions';
+import { getFunctionAction, loadTriggersHttpAction, deleteTriggerHttpAction, updateFunctionAction, createTriggerHttpAction, loadKubeWatchersAction, createKubeWatcherAction, deleteKubeWatcherAction } from 'containers/FunctionEditPage/actions';
 
 export class FunctionEditPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -29,19 +29,25 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
       error: props.error,
       environments: props.environments,
       httpTriggers: props.httpTriggers,
+      kubeWatchers: props.kubeWatchers,
       activeTab: 'function',
       editing: false,
     };
     if (typeof this.state.environments === 'object' && Array.isArray(this.state.environments) === false) { // Convert environments to array if it's a Immutable List
       this.state.environments = this.state.environments.toArray();
     }
-    if (typeof this.state.httpTriggers === 'object' && Array.isArray(this.state.httpTriggers) === false) { // Convert environments to array if it's a Immutable List
+    if (typeof this.state.httpTriggers === 'object' && Array.isArray(this.state.httpTriggers) === false) { // Convert httpTriggers to array if it's a Immutable List
       this.state.httpTriggers = this.state.httpTriggers.toArray();
+    }
+    if (typeof this.state.kubeWatchers === 'object' && Array.isArray(this.state.kubeWatchers) === false) { // Convert kubeWatchers to array if it's a Immutable List
+      this.state.kubeWatchers = this.state.kubeWatchers.toArray();
     }
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onHttpTriggerRemove = this.onHttpTriggerRemove.bind(this);
     this.onHttpTriggerCreate = this.onHttpTriggerCreate.bind(this);
+    this.onKubeWatcherRemove = this.onKubeWatcherRemove.bind(this);
+    this.onKubeWatcherCreate = this.onKubeWatcherCreate.bind(this);
     this.onCodeChange = this.onCodeChange.bind(this);
     this.onTabChange = this.onTabChange.bind(this);
     this.onFunctionTest = this.onFunctionTest.bind(this);
@@ -53,6 +59,9 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     }
     if (this.state.httpTriggers.length === 0) {
       this.props.loadTriggersHttpData();
+    }
+    if (this.state.kubeWatchers.length === 0) {
+      this.props.loadKubeWatchersData();
     }
     this.props.loadFunctionData(this.props.params.name);
     this.props.cleanTestFunction();
@@ -71,6 +80,9 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     if (nextProps.httpTriggers.length !== this.state.httpTriggers.length) {
       this.state.httpTriggers = nextProps.httpTriggers;
     }
+    if (nextProps.kubeWatchers.length !== this.state.kubeWatchers.length) {
+      this.state.kubeWatchers = nextProps.kubeWatchers;
+    }
     if (nextProps.environments.length !== this.state.environments.length) {
       this.state.environments = nextProps.environments;
     }
@@ -79,7 +91,9 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     if (!this.state.editing) {
       this.state.item = nextProps.functionByName(nextProps.params.name);
     } else {
-      this.state.item.triggersHttp = nextProps.functionByName(nextProps.params.name).triggersHttp;
+      const nextState = nextProps.functionByName(nextProps.params.name);
+      this.state.item.triggersHttp = nextState.triggersHttp;
+      this.state.item.kubeWatchers = nextState.kubeWatchers;
     }
   }
 
@@ -120,6 +134,17 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     });
   }
 
+  onKubeWatcherRemove(watcher) {
+    this.props.deleteKubeWatcher(watcher);
+  }
+
+  onKubeWatcherCreate(watcher) {
+    const { item } = this.state;
+    const obj = Object.assign({}, watcher);
+    obj.function = item.name;
+    this.props.createKubeWatcher(obj);
+  }
+
   onTabChange(newTabName) {
     this.setState({ activeTab: newTabName });
   }
@@ -149,6 +174,8 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
           environments={environments} onChange={this.onChange} item={item}
           onHttpTriggerRemove={this.onHttpTriggerRemove}
           onHttpTriggerCreate={this.onHttpTriggerCreate}
+          onKubeWatcherRemove={this.onKubeWatcherRemove}
+          onKubeWatcherCreate={this.onKubeWatcherCreate}
           nameEditable={Boolean(false)}
           onCodeChange={this.onCodeChange}
           activeTab={activeTab}
@@ -174,6 +201,10 @@ FunctionEditPage.propTypes = {
     PropTypes.object,
     PropTypes.array,
   ]),
+  kubeWatchers: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([
     PropTypes.object,
@@ -183,9 +214,12 @@ FunctionEditPage.propTypes = {
   loadEnvironmentData: PropTypes.func.isRequired,
   loadFunctionData: PropTypes.func.isRequired,
   loadTriggersHttpData: PropTypes.func.isRequired,
+  loadKubeWatchersData: PropTypes.func.isRequired,
   deleteTriggerHttp: PropTypes.func.isRequired,
   updateFunction: PropTypes.func.isRequired,
   createTriggerHttp: PropTypes.func.isRequired,
+  createKubeWatcher: PropTypes.func.isRequired,
+  deleteKubeWatcher: PropTypes.func.isRequired,
   params: PropTypes.object.isRequired,
   testFunction: PropTypes.func.isRequired,
   cleanTestFunction: PropTypes.func.isRequired,
@@ -196,6 +230,7 @@ const mapStateToProps = createStructuredSelector({
   functionByName: makeSelectFunctionByName(),
   environments: makeSelectEnvironments(),
   httpTriggers: makeSelectTriggersHttp(),
+  kubeWatchers: makeSelectKubeWatchers(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
   functionTest: makeSelectFunctionTest(),
@@ -205,12 +240,15 @@ function mapDispatchToProps(dispatch) {
   return {
     loadEnvironmentData: () => dispatch(loadEnvironmentAction()),
     loadTriggersHttpData: () => dispatch(loadTriggersHttpAction()),
+    loadKubeWatchersData: () => dispatch(loadKubeWatchersAction()),
     loadFunctionData: (name) => dispatch(getFunctionAction(name)),
     deleteTriggerHttp: (trigger) => dispatch(deleteTriggerHttpAction(trigger)),
     updateFunction: (fn) => dispatch(updateFunctionAction(fn)),
     createTriggerHttp: (trigger) => dispatch(createTriggerHttpAction(trigger)),
     testFunction: (fn) => dispatch(testFunctionAction(fn)),
     cleanTestFunction: () => dispatch(cleanTestFunctionAction()),
+    createKubeWatcher: (watcher) => dispatch(createKubeWatcherAction(watcher)),
+    deleteKubeWatcher: (watcher) => dispatch(deleteKubeWatcherAction(watcher)),
   };
 }
 

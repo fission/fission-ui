@@ -16,6 +16,7 @@ const makeSelectFunctionByName = () => createSelector(
         environment: functionFound.getIn(['environment', 'name']),
         code: decodeBase64(functionFound.get('code')),
         triggersHttp: substate.get('triggersHttp').filter((trigger) => trigger.getIn(['function', 'name']) === functionFound.getIn(['metadata', 'name'])).toJS(),
+        kubeWatchers: substate.get('kubeWatchers').filter((watcher) => watcher.getIn(['function', 'name']) === functionFound.getIn(['metadata', 'name'])).toJS(),
       });
     }
     return false;
@@ -25,7 +26,7 @@ const makeSelectFunctionByName = () => createSelector(
 const makeSelectLoading = () => createSelector(
   selectFunctionsPageDomain(),
   selectEnvironmentsPageDomain(),
-  (substate, substateEnv) => substate.get('triggerHttpLoading') || substate.get('functionLoading') || substateEnv.get('loading')
+  (substate, substateEnv) => substate.get('triggerHttpLoading') || substate.get('functionLoading') || substate.get('kubeWatcherLoading') || substateEnv.get('loading')
 );
 
 const makeSelectError = () => createSelector(
@@ -44,12 +45,18 @@ const makeSelectFunctions = () => createSelector(
     name: e.getIn(['metadata', 'name']),
     environment: e.getIn(['environment', 'name']),
     triggersHttp: (substate.get('triggersHttp').filter((trigger) => trigger.getIn(['function', 'name']) === e.getIn(['metadata', 'name']))).toJS(), // TODO improve, simplify object
+    kubeWatchers: (substate.get('kubeWatchers').filter((watcher) => watcher.getIn(['function', 'name']) === e.getIn(['metadata', 'name']))).toJS(),
   }))
 );
 
 const makeSelectTriggersHttp = () => createSelector(
   selectFunctionsPageDomain(),
   (substate) => substate.get('triggersHttp')
+);
+
+const makeSelectKubeWatchers = () => createSelector(
+  selectFunctionsPageDomain(),
+  (substate) => substate.get('kubeWatchers')
 );
 
 export {
@@ -59,4 +66,5 @@ export {
   makeSelectLoading,
   makeSelectFunctionByName,
   makeSelectFunctionTest,
+  makeSelectKubeWatchers,
 };
