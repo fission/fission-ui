@@ -35,7 +35,7 @@ class FunctionForm extends React.Component { // eslint-disable-line react/prefer
 
   render() {
     const { item, activeTab, environments } = this.state;
-    const { onChange, onHttpTriggerRemove, onHttpTriggerCreate, onKubeWatcherRemove, onKubeWatcherCreate, nameEditable, onCodeChange, onTabChange, onFunctionTest, functionTest } = this.props;
+    const { onChange, onHttpTriggerRemove, onHttpTriggerCreate, onKubeWatcherRemove, onKubeWatcherCreate, metadataEditable, onCodeChange, onTabChange, onFunctionTest, functionTest } = this.props;
 
     return (
       <div>
@@ -44,7 +44,7 @@ class FunctionForm extends React.Component { // eslint-disable-line react/prefer
           <li role="presentation" className={activeTab === 'trigger' ? 'active' : ''}><a onClick={() => onTabChange('trigger')}>Triggers</a></li>
         </ul>
         <div style={{ display: activeTab === 'function' ? 'block' : 'none' }}>
-          <FunctionTabForm item={item} environments={environments} onChange={onChange} nameEditable={nameEditable} onCodeChange={onCodeChange} onFunctionTest={onFunctionTest} functionTest={functionTest} />
+          <FunctionTabForm item={item} environments={environments} onChange={onChange} metadataEditable={metadataEditable} onCodeChange={onCodeChange} onFunctionTest={onFunctionTest} functionTest={functionTest} />
         </div>
         <div style={{ display: activeTab === 'trigger' ? 'block' : 'none' }}>
           <TriggerTabForm
@@ -69,7 +69,7 @@ FunctionForm.propTypes = {
   onHttpTriggerCreate: PropTypes.func,
   onKubeWatcherRemove: PropTypes.func,
   onKubeWatcherCreate: PropTypes.func,
-  nameEditable: PropTypes.bool,
+  metadataEditable: PropTypes.bool,
   onCodeChange: PropTypes.func,
   onTabChange: PropTypes.func,
   onFunctionTest: PropTypes.func,

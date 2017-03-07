@@ -27,7 +27,7 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
       functionTest: props.functionTest,
       error: props.error,
       currentTab: 'function',
-      item: { name: '', environment: '', triggersHttp: [], code: '', temporaryFunction: '' },
+      item: { name: '', environment: '', triggersHttp: [], kubeWatchers: [], code: '', temporaryFunction: '' },
       environments: props.environments,
     };
     if (typeof this.state.environments === 'object' && Array.isArray(this.state.environments) === false) { // Convert environments to array if it's a Immutable List
@@ -106,7 +106,7 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
           item={item}
           environments={environments}
           onChange={this.onChange}
-          nameEditable={Boolean(true)}
+          metadataEditable={Boolean(true)}
           onCodeChange={this.onCodeChange}
           onFunctionTest={this.onFunctionTest}
           functionTest={functionTest}

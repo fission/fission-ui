@@ -33,7 +33,7 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
   }
 
   render() {
-    const { onChange, environments, item, nameEditable, onCodeChange, onFunctionTest, functionTest } = this.props;
+    const { onChange, environments, item, metadataEditable, onCodeChange, onFunctionTest, functionTest } = this.props;
     const { mode } = this.state;
 
     return (
@@ -42,13 +42,13 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
           <div className="col-md-6">
             <div className="form-group">
               <label htmlFor="formFunctionName">Function name</label>
-              <input type="text" className="form-control" id="formFunctionName" name="name" value={item.name} onChange={onChange} disabled={!nameEditable} />
+              <input type="text" className="form-control" id="formFunctionName" name="name" value={item.name} onChange={onChange} disabled={!metadataEditable} />
             </div>
           </div>
           <div className="col-md-6">
             <div className="form-group">
               <label htmlFor="formFunctionName">Environment</label>
-              <select className="form-control" value={item.environment} name="environment" id="formFunctionName" onChange={onChange}>
+              <select className="form-control" value={item.environment} name="environment" id="formFunctionName" onChange={onChange} disabled={!metadataEditable}>
                 <option value="" key={'environmentSelect-0'} />
                 {
                   environments.map((environment, index) => (
@@ -97,7 +97,7 @@ FunctionTabForm.propTypes = {
   onChange: React.PropTypes.func.isRequired,
   onCodeChange: React.PropTypes.func.isRequired,
   onFunctionTest: React.PropTypes.func.isRequired,
-  nameEditable: React.PropTypes.bool,
+  metadataEditable: React.PropTypes.bool,
   functionTest: React.PropTypes.object,
 };
 

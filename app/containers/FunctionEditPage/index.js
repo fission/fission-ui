@@ -176,7 +176,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
           onHttpTriggerCreate={this.onHttpTriggerCreate}
           onKubeWatcherRemove={this.onKubeWatcherRemove}
           onKubeWatcherCreate={this.onKubeWatcherCreate}
-          nameEditable={Boolean(false)}
+          metadataEditable={Boolean(false)}
           onCodeChange={this.onCodeChange}
           activeTab={activeTab}
           onTabChange={this.onTabChange}
