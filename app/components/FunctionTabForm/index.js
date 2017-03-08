@@ -6,7 +6,6 @@
 
 import React from 'react';
 // import styled from 'styled-components';
-
 import AceEditor from 'react-ace';
 import 'brace/mode/java';
 import 'brace/mode/php';

@@ -6,6 +6,7 @@
 
 import React from 'react';
 import KeyValueBuilder from 'components/KeyValueBuilder';
+import RequestBodyBuilder from 'components/RequestBodyBuilder';
 
 class FunctionTestForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -15,13 +16,16 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
       testObj: {
         headers: {},
         params: {},
-        payload: {},
+        body: '',
         method: 'GET',
+        bodytype: 'plain_text',
       },
     };
     this.toggleHeader = this.toggleHeader.bind(this);
     this.onTest = this.onTest.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onSelectBodyType = this.onSelectBodyType.bind(this);
+    this.onBodyContentChange = this.onBodyContentChange.bind(this);
   }
 
   onChange(e) {
@@ -37,11 +41,34 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
     this.props.onFunctionTest(test);
   }
 
+  onSelectBodyType(e) {
+    e.preventDefault();
+    const { testObj } = this.state;
+    const type = e.target.value;
+    if (type in this.bodyType2ContentHeader) {
+      testObj.bodytype = type;
+      testObj.headers['Content-Type'] = this.bodyType2ContentHeader[type];
+      this.setState({ testObj });
+    }
+  }
+
+  onBodyContentChange(val) {
+    const { testObj } = this.state;
+    testObj.body = val;
+    this.setState({ testObj });
+  }
+
   toggleHeader() {
     this.setState({
       headerShow: !this.state.headerShow,
     });
   }
+
+  bodyType2ContentHeader = {
+    plain_text: 'text/plain',
+    json: 'application/json',
+    xml: 'application/xml',
+  };
 
   style = {
     backgroundColor: '#1f4662',
@@ -73,11 +100,6 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
     if (!data) {
       data = '';
     }
-    try {
-      data = JSON.parse(data);
-    } catch (e) {
-      data = '';
-    }
 
     return (
       <div>
@@ -95,6 +117,7 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
           <span>Headers: </span>
           <KeyValueBuilder onChange={this.onChange} name="headers" defaultValue={testObj.headers} />
           <span>Body: </span>
+          <RequestBodyBuilder bodytype={testObj.bodytype} content={testObj.body} onSelectType={this.onSelectBodyType} onContentChange={this.onBodyContentChange}/>
         </div>
         <strong>Response</strong>
         <div style={this.style}>

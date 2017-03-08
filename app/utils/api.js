@@ -116,13 +116,13 @@ export function postFunction(item) {
     .then(parseJSON);
 }
 
-export function restRequest(url, method, headers, params, payload) {
+export function restRequest(url, method, headers, params, body) {
   return axios({
     method: method.toLowerCase(),
     url: `${routerPath}${url}`,
     headers,
     params,
-    data: payload,
+    data: body,
   }).catch((e) => e.response);
 }
 
