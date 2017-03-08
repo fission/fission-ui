@@ -8,8 +8,8 @@ import React from 'react';
 // import styled from 'styled-components';
 
 class TriggerHttpCreateForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       urlpattern: '/',

@@ -112,11 +112,10 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     this.setState({ item: obj, editing: true });
   }
 
-  onFunctionTest(event) {
-    event.preventDefault();
+  onFunctionTest(test) {
     const obj = Object.assign({}, this.state.item);
     obj.name = `ui-${v4()}`;
-    obj.test = { header: {}, query: '', payload: {}, method: 'GET' };
+    obj.test = test;
 
     this.props.testFunction(obj);
   }

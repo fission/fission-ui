@@ -28,7 +28,7 @@ function* createFunction(action) {
 }
 function* testFunction(action) {
   const { fn } = action;
-  const { method, header, query, payload } = fn.test;
+  const { method, headers, params, payload } = fn.test;
   const url = `/ui-test/${fn.name}`;
   const httptrigger = {
     metadata: { name: v4() },
@@ -42,7 +42,7 @@ function* testFunction(action) {
     yield call(postTriggerHttp, httptrigger);
 
     yield delay(4 * 1000);
-    const data = yield call(restRequest, url, method, header, query, payload);
+    const data = yield call(restRequest, url, method, headers, params, payload);
 
     yield call(removeTriggerHttp, httptrigger);
     yield call(removeFunction, fn);

@@ -81,8 +81,9 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
               <option value="python">Python</option>
             </select>
             {
-              functionTest.loading ? <LoadingIndicator /> : <FunctionTestForm onFunctionTest={onFunctionTest} functionTest={functionTest} />
+              functionTest.loading ? <LoadingIndicator /> : false
             }
+            <FunctionTestForm onFunctionTest={onFunctionTest} functionTest={functionTest} visible={!functionTest.loading} />
 
           </div>
         </div>

@@ -116,10 +116,14 @@ export function postFunction(item) {
     .then(parseJSON);
 }
 
-export function restRequest(url, method, header, query, payload) {
-  // TODO support url pattern and header
-  return axios[method.toLowerCase()](`${routerPath}${url}?${query}`, payload)
-    .catch((e) => e.response);
+export function restRequest(url, method, headers, params, payload) {
+  return axios({
+    method: method.toLowerCase(),
+    url: `${routerPath}${url}`,
+    headers,
+    params,
+    data: payload,
+  }).catch((e) => e.response);
 }
 
 export function getKubeWatchers() {
