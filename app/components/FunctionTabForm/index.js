@@ -18,23 +18,28 @@ import FunctionTestForm from 'components/FunctionTestForm';
 class FunctionTabForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
-
+    const environment = props.item.environment.toLowerCase();
     this.state = {
-      mode: 'javascript',
+      mode: environment in this.supportedLanguages ? environment : 'javascript',
     };
 
     this.onModeChange = this.onModeChange.bind(this);
   }
 
-
   onModeChange(e) {
     this.setState({ mode: e.target.value });
   }
 
+  supportedLanguages = {
+    java: true,
+    php: true,
+    javascript: true,
+    python: true,
+  };
+
   render() {
     const { onChange, environments, item, metadataEditable, onCodeChange, onFunctionTest, functionTest } = this.props;
     const { mode } = this.state;
-
     return (
       <form>
         <div className="row">
@@ -73,7 +78,7 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
           </div>
           <div className="col-md-6">
             <label htmlFor="formFunctionName">Syntax</label>
-            <select className="form-control" onChange={this.onModeChange}>
+            <select className="form-control" defaultValue={mode} onChange={this.onModeChange}>
               <option value="javascript">Javascript</option>
               <option value="java">Java</option>
               <option value="php">Php</option>
@@ -82,7 +87,7 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
             {
               functionTest.loading ? <LoadingIndicator /> : false
             }
-            <FunctionTestForm onFunctionTest={onFunctionTest} functionTest={functionTest} visible={!functionTest.loading} />
+            <FunctionTestForm onFunctionTest={onFunctionTest} functionTest={functionTest} visible={!functionTest.loading} draftOnly={metadataEditable} />
 
           </div>
         </div>

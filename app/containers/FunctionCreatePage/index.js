@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
-import v4 from 'uuid';
 import FunctionTabForm from 'components/FunctionTabForm';
 import LoadingIndicator from 'components/LoadingIndicator';
 import ErrorIndicator from 'components/ErrorIndicator';
@@ -80,9 +79,7 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
 
   onFunctionTest(test) {
     const obj = Object.assign({}, this.state.item);
-    obj.name = `ui-${v4()}`;
     obj.test = test;
-
     this.props.testFunction(obj);
   }
 

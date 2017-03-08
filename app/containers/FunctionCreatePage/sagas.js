@@ -3,7 +3,7 @@ import { delay } from 'redux-saga';
 import v4 from 'uuid';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { browserHistory } from 'react-router';
-import { postFunction, postTriggerHttp, restRequest, removeTriggerHttp, removeFunction } from 'utils/api';
+import { postFunction, restRequest, removeFunction } from 'utils/api';
 import {
   CREATE_FUNCTION_REQUEST,
   CREATE_FUNCTION_SUCCESS,
@@ -28,24 +28,21 @@ function* createFunction(action) {
 }
 function* testFunction(action) {
   const { fn } = action;
-  const { method, headers, params, body } = fn.test;
-  const url = `/ui-test/${fn.name}`;
-  const httptrigger = {
-    metadata: { name: v4() },
-    method,
-    urlpattern: url,
-    function: { name: fn.name },
-  };
+  const { method, headers, params, body, draft } = fn.test;
+  if (draft) {
+    fn.name = v4();
+  }
+  const url = `/fission-function/${fn.name}`;
 
   try {
-    yield call(postFunction, fn);
-    yield call(postTriggerHttp, httptrigger);
-
-    yield delay(4 * 1000);
+    if (draft) {
+      yield call(postFunction, fn);
+      yield delay(4 * 1000);
+    }
     const data = yield call(restRequest, url, method, headers, params, body);
-
-    yield call(removeTriggerHttp, httptrigger);
-    yield call(removeFunction, fn);
+    if (draft) {
+      yield call(removeFunction, fn);
+    }
 
     yield put({ type: TEST_FUNCTION_SUCCESS, data });
   } catch (error) {

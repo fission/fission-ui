@@ -19,6 +19,7 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
         body: '',
         method: 'GET',
         bodytype: 'plain_text',
+        draft: true,
       },
     };
     this.toggleHeader = this.toggleHeader.bind(this);
@@ -26,6 +27,7 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
     this.onChange = this.onChange.bind(this);
     this.onSelectBodyType = this.onSelectBodyType.bind(this);
     this.onBodyContentChange = this.onBodyContentChange.bind(this);
+    this.onDraftChange = this.onDraftChange.bind(this);
   }
 
   onChange(e) {
@@ -55,6 +57,12 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
   onBodyContentChange(val) {
     const { testObj } = this.state;
     testObj.body = val;
+    this.setState({ testObj });
+  }
+
+  onDraftChange(e) {
+    const { testObj } = this.state;
+    testObj.draft = e.target.checked;
     this.setState({ testObj });
   }
 
@@ -103,6 +111,9 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
 
     return (
       <div>
+        <em>Draft?</em>
+        <input type="checkbox" checked={testObj.draft} onChange={this.onDraftChange} disabled={this.props.draftOnly} />
+        <br />
         <strong>Request</strong>
         <div>
           <span>Method: </span>
@@ -117,7 +128,7 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
           <span>Headers: </span>
           <KeyValueBuilder onChange={this.onChange} name="headers" defaultValue={testObj.headers} />
           <span>Body: </span>
-          <RequestBodyBuilder bodytype={testObj.bodytype} content={testObj.body} onSelectType={this.onSelectBodyType} onContentChange={this.onBodyContentChange}/>
+          <RequestBodyBuilder bodytype={testObj.bodytype} content={testObj.body} onSelectType={this.onSelectBodyType} onContentChange={this.onBodyContentChange} />
         </div>
         <strong>Response</strong>
         <div style={this.style}>
@@ -152,6 +163,7 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
 
 FunctionTestForm.propTypes = {
   visible: React.PropTypes.bool,
+  draftOnly: React.PropTypes.bool,
   functionTest: React.PropTypes.object,
   onFunctionTest: React.PropTypes.func.isRequired,
 };
