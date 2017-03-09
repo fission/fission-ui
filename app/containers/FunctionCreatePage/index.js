@@ -16,6 +16,7 @@ import { makeSelectLoading, makeSelectError, makeSelectFunctionTest } from 'cont
 import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
 import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
 import { createFunctionAction, testFunctionAction, cleanTestFunctionAction } from 'containers/FunctionCreatePage/actions';
+import { slug } from 'utils/util';
 
 export class FunctionCreatePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -60,7 +61,11 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
 
   onChange(event) {
     const obj = Object.assign({}, this.state.item);
-    obj[event.target.name] = event.target.value;
+    if (event.target.name === 'name') {
+      obj[event.target.name] = slug(event.target.value);
+    } else {
+      obj[event.target.name] = event.target.value;
+    }
 
     this.setState({ item: obj });
   }
