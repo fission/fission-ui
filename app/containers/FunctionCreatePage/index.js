@@ -79,13 +79,37 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
 
   onSave() {
     const { item } = this.state;
-    this.props.createFunction(item);
+    if (this.isFunctionRequiredInputValid(item)) {
+      this.props.createFunction(item);
+    }
   }
 
   onFunctionTest(test) {
     const obj = Object.assign({}, this.state.item);
-    obj.test = test;
-    this.props.testFunction(obj);
+
+    if (this.isFunctionRequiredInputValid(obj)) {
+      obj.test = test;
+      this.props.testFunction(obj);
+    }
+  }
+
+  isFunctionRequiredInputValid(item) {
+    let errorMessages = '';
+    if (item.name === '') {
+      errorMessages += 'You need to specify a name<br/>';
+    }
+    if (item.environment === '') {
+      errorMessages += 'You need to specify an environment<br/>';
+    }
+    if (item.code === '') {
+      errorMessages += 'You need to create code<br/>';
+    }
+
+    if (errorMessages.length > 0) {
+      this.setState({ error: errorMessages });
+      return false;
+    }
+    return true;
   }
 
   render() {

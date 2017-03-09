@@ -104,9 +104,11 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
     }
     const { testObj } = this.state;
     const { response } = this.props.functionTest;
-    let { data } = response;
-    if (!data) {
-      data = '';
+    const { data, status } = response;
+
+    let functionTestResponse = true;
+    if (!data && !status) {
+      functionTestResponse = false;
     }
 
     return (
@@ -130,31 +132,36 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
           <span>Body: </span>
           <RequestBodyBuilder bodytype={testObj.bodytype} content={testObj.body} onSelectType={this.onSelectBodyType} onContentChange={this.onBodyContentChange} />
         </div>
-        <strong>Response</strong>
-        <div style={this.style}>
-          <div>Status: {response.status}</div>
-          <div onClick={this.toggleHeader}>Headers</div>
-          {
-            (this.state.headerShow ?
-              (<div style={this.headerStyle}>
-                {
-                  Object.keys(response.headers ? response.headers : {}).map((key, index) =>
-                    (
-                      <div key={`header-${index}`}>
-                        <span className="label-default"> {key}:</span>
-                        <span> {response.headers[key]} </span>
-                      </div>
-                    )
-                  )
-                }
-              </div>)
-              : false)
-          }
-          <div>Data</div>
-          <pre style={this.preStyle}>
-            { JSON.stringify(data, null, 2) }
-          </pre>
-        </div>
+        { functionTestResponse &&
+          <div>
+            <strong>Response</strong>
+            <div style={this.style}>
+              <div>Status: {response.status}</div>
+              <div onClick={this.toggleHeader}>Headers</div>
+              {
+                (this.state.headerShow ?
+                  (<div style={this.headerStyle}>
+                    {
+                      Object.keys(response.headers ? response.headers : {}).map((key, index) =>
+                        (
+                          <div key={`header-${index}`}>
+                            <span className="label-default"> {key}:</span>
+                            <span> {response.headers[key]} </span>
+                          </div>
+                        )
+                      )
+                    }
+                  </div>)
+                  : false)
+              }
+              <div>Data</div>
+              <pre style={this.preStyle}>
+                { JSON.stringify(data, null, 2) }
+              </pre>
+            </div>
+          </div>
+        }
+
         <a className="btn btn-primary pull-right" onClick={this.onTest}>Test code</a>
       </div>
     );

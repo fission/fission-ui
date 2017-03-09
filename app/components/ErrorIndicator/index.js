@@ -9,8 +9,14 @@ import React, { PropTypes } from 'react';
 // import styled from 'styled-components';
 
 function ErrorIndicator({ error }) {
+  let errorMessage;
+  if (typeof error === 'string') {
+    errorMessage = error;
+  } else {
+    errorMessage = error.response.data;
+  }
   return (
-    <div className="alert alert-danger">Error: { error.response.data }</div>
+    <div className="alert alert-danger" dangerouslySetInnerHTML={{ __html: errorMessage }}></div>
   );
 }
 
