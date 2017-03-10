@@ -25,6 +25,7 @@ export class EnvironmentCreatePage extends React.Component { // eslint-disable-l
     };
     this.submitForm = this.submitForm.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onSelectSample = this.onSelectSample.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -43,12 +44,55 @@ export class EnvironmentCreatePage extends React.Component { // eslint-disable-l
     return this.setState({ environment });
   }
 
+  onSelectSample(event) {
+    if (!(event.target.value in this.environmentSamples)) {
+      return false;
+    }
+    return this.setState({
+      environment: this.environmentSamples[event.target.value],
+    });
+  }
+
   submitForm(event) {
     event.preventDefault();
-    this.state.environment.name = slug(this.state.environment.name);
-    this.props.createEnvironement(this.state.environment);
+    const item = this.state.environment;
+    if (this.isEnvironmentRequiredInputValid(item)) {
+      this.state.environment.name = slug(item.name);
+      this.props.createEnvironement(item);
+    }
     return false;
   }
+
+  isEnvironmentRequiredInputValid(item) {
+    let errorMessages = '';
+    if (item.name === '') {
+      errorMessages += 'You need to specify a name<br/>';
+    }
+    if (item.image === '') {
+      errorMessages += 'You need to specify a docker image<br/>';
+    }
+
+    if (errorMessages.length > 0) {
+      this.setState({ error: errorMessages });
+      return false;
+    }
+    return true;
+  }
+
+  environmentSamples = {
+    blank: {
+      name: '',
+      image: '',
+    },
+    node: {
+      name: 'node',
+      image: 'fission/node-env',
+    },
+    python: {
+      name: 'python',
+      image: 'fission/python-env',
+    },
+  };
 
   render() {
     const { loading, error, environment } = this.state;
@@ -63,7 +107,7 @@ export class EnvironmentCreatePage extends React.Component { // eslint-disable-l
         {error &&
           <ErrorIndicator error={error} />
         }
-        <EnvironmentForm nameEditable environment={environment} onChange={this.onChange} onSave={this.submitForm} />
+        <EnvironmentForm nameEditable={Boolean(true)} environment={environment} onChange={this.onChange} onSave={this.submitForm} onSelectSample={this.onSelectSample} />
       </div>
     );
   }

@@ -11,7 +11,7 @@ import { Link } from 'react-router';
 
 class EnvironmentForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { environment, onSave, onChange, nameEditable } = this.props;
+    const { environment, onSave, onChange, nameEditable, onSelectSample } = this.props;
 
     return (
       <form>
@@ -28,6 +28,14 @@ class EnvironmentForm extends React.Component { // eslint-disable-line react/pre
           <label htmlFor="formEnvironmentImage">Docker image</label>
           <input type="text" className="form-control" id="formEnvironmentImage" name="image" value={environment.image} onChange={onChange} />
         </div>
+        <div className="form-group">
+          <label htmlFor="formEnvironmentSample">Choose sample</label>
+          <select className="form-control" onChange={onSelectSample}>
+            <option value="blank" />
+            <option value="node">Node</option>
+            <option value="python">Python</option>
+          </select>
+        </div>
         <a className="btn btn-primary" onClick={onSave}>Save</a> { ' ' }
         <Link to="/environments" className="btn btn-default">Cancel</Link>
 
@@ -41,6 +49,7 @@ EnvironmentForm.propTypes = {
   onSave: React.PropTypes.func,
   onChange: React.PropTypes.func.isRequired,
   nameEditable: React.PropTypes.bool,
+  onSelectSample: React.PropTypes.func.isRequired,
 };
 
 export default EnvironmentForm;

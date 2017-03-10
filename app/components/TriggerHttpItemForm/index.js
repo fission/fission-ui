@@ -11,7 +11,6 @@ import React from 'react';
 class TriggerHttpItemForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     const { trigger, onRemove } = this.props;
-    console.log(trigger);
     return (
       <tr>
         <td>{trigger.method}</td>

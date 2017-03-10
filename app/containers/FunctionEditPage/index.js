@@ -22,6 +22,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
   constructor(props) {
     super(props);
 
+    const hash = this.props.location.hash.replace('#', '');
     this.state = {
       loading: props.loading,
       functionTest: props.functionTest,
@@ -29,7 +30,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
       environments: props.environments,
       httpTriggers: props.httpTriggers,
       kubeWatchers: props.kubeWatchers,
-      activeTab: 'function',
+      activeTab: hash === '' ? 'function' : hash,
       editing: false,
     };
     if (typeof this.state.environments === 'object' && Array.isArray(this.state.environments) === false) { // Convert environments to array if it's a Immutable List
@@ -88,9 +89,9 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     // TODO this may cause user modified code lost in the editor buffer
     // TODO this causes editor buffer modification lost if user run test code
     if (!this.state.editing) {
-      this.state.item = nextProps.functionByName(nextProps.params.name);
+      this.state.item = this.props.functionByName(nextProps.params.name);
     } else {
-      const nextState = nextProps.functionByName(nextProps.params.name);
+      const nextState = this.props.functionByName(nextProps.params.name);
       this.state.item.triggersHttp = nextState.triggersHttp;
       this.state.item.kubeWatchers = nextState.kubeWatchers;
     }
@@ -121,8 +122,9 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     this.props.deleteTriggerHttp(item);
   }
 
-  onHttpTriggerCreate(trigger) {
+  onHttpTriggerCreate(tr) {
     const { item } = this.state;
+    const trigger = Object.assign({}, tr);
     if (!trigger.urlpattern.startsWith('/')) {
       trigger.urlpattern = `/${trigger.urlpattern}`;
     }
@@ -209,6 +211,7 @@ FunctionEditPage.propTypes = {
     PropTypes.object,
     PropTypes.bool,
   ]),
+  location: PropTypes.object,
   functionByName: PropTypes.func.isRequired,
   loadEnvironmentData: PropTypes.func.isRequired,
   loadFunctionData: PropTypes.func.isRequired,
