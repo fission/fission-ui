@@ -8,9 +8,11 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectFunctions, makeSelectError, makeSelectLoading } from 'containers/FunctionsPage/selectors';
 import FunctionsList from 'components/FunctionsList';
+import commonMessages from 'messages';
 import { loadFunctionAction, loadTriggersHttpAction, deleteFunctionAction, loadKubeWatchersAction } from './actions';
 import messages from './messages';
 
@@ -28,8 +30,9 @@ export class FunctionsListPage extends React.Component { // eslint-disable-line 
 
   onRemove(item) {
     // TODO change to a better confirm window
+    const confirmMessage = this.props.intl.formatMessage(messages.functionDeleteRelatedTriggers);
     const deleteRelatedTriggers = item.triggersHttp.length > 0 || item.kubeWatchers.length > 0 ?
-      confirm(messages.functionDeleteRelatedTriggers.defaultMessage) : false;
+      confirm(confirmMessage) : false;
     this.props.deleteFunction(item, deleteRelatedTriggers);
   }
 
@@ -46,7 +49,7 @@ export class FunctionsListPage extends React.Component { // eslint-disable-line 
         <Helmet
           title="List functions"
         />
-        <Link to="/functions/create" className="pull-right btn btn-primary">Add</Link>
+        <Link to="/functions/create" className="pull-right btn btn-primary"><FormattedMessage {...commonMessages.add} /></Link>
         <FunctionsList {...functionsListProps} onRemove={this.onRemove} />
       </div>
     );
@@ -67,6 +70,7 @@ FunctionsListPage.propTypes = {
   loadTriggersHttpData: PropTypes.func,
   loadKubeWatchersData: PropTypes.func,
   deleteFunction: PropTypes.func,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -84,4 +88,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FunctionsListPage);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(FunctionsListPage));

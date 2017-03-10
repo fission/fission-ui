@@ -10,6 +10,7 @@ import KubeWatcherItemForm from 'components/KubeWatcherItemForm';
 import KubeWatcherCreateForm from 'components/KubeWatcherCreateForm';
 
 import { FormattedMessage } from 'react-intl';
+import commonMessages from 'messages';
 import messages from './messages';
 
 class KubeWatcherForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -21,10 +22,10 @@ class KubeWatcherForm extends React.Component { // eslint-disable-line react/pre
         <table className="table table-bordered">
           <thead>
             <tr>
-              <th>Namespace</th>
-              <th>Obj Type</th>
-              <th>Label Selectors</th>
-              <th>Actions</th>
+              <th><FormattedMessage {...commonMessages.namespace} /></th>
+              <th><FormattedMessage {...commonMessages.objtype} /></th>
+              <th><FormattedMessage {...commonMessages.labelselector} /></th>
+              <th><FormattedMessage {...commonMessages.action} /></th>
             </tr>
           </thead>
           <tbody>

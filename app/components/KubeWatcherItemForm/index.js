@@ -6,7 +6,8 @@
 
 import React from 'react';
 // import styled from 'styled-components';
-
+import { FormattedMessage } from 'react-intl';
+import commonMessages from 'messages';
 
 class KubeWatcherItemForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -16,7 +17,7 @@ class KubeWatcherItemForm extends React.Component { // eslint-disable-line react
         <td>{watcher.namespace}</td>
         <td>{watcher.objtype}</td>
         <td>{watcher.labelselector}</td>
-        <td><a className="btn btn-danger" onClick={onRemove}>Delete</a></td>
+        <td><a className="btn btn-danger" onClick={onRemove}><FormattedMessage {...commonMessages.delete} /></a></td>
       </tr>
     );
   }

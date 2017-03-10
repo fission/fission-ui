@@ -8,7 +8,8 @@ import React, { PropTypes } from 'react';
 import LoadingIndicator from 'components/LoadingIndicator';
 import FunctionListItem from 'containers/FunctionListItem';
 // import styled from 'styled-components';
-
+import { FormattedMessage } from 'react-intl';
+import commonMessages from 'messages';
 
 function FunctionsList({ loading, error, items, onRemove }) {
   if (loading) {
@@ -21,10 +22,10 @@ function FunctionsList({ loading, error, items, onRemove }) {
     <table className="table table-bordered">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Environment</th>
-          <th>Triggers</th>
-          <th>Actions</th>
+          <th><FormattedMessage {...commonMessages.name} /></th>
+          <th><FormattedMessage {...commonMessages.environment} /></th>
+          <th><FormattedMessage {...commonMessages.trigger} /></th>
+          <th><FormattedMessage {...commonMessages.action} /></th>
         </tr>
       </thead>
       <tbody>

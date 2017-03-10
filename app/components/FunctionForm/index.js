@@ -8,6 +8,8 @@ import React, { PropTypes } from 'react';
 // import styled from 'styled-components';
 import FunctionTabForm from 'components/FunctionTabForm';
 import TriggerTabForm from 'components/TriggerTabForm';
+import { FormattedMessage } from 'react-intl';
+import commonMessages from 'messages';
 
 class FunctionForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -40,8 +42,8 @@ class FunctionForm extends React.Component { // eslint-disable-line react/prefer
     return (
       <div>
         <ul className="nav nav-tabs">
-          <li role="presentation" className={activeTab === 'function' ? 'active' : ''}><a onClick={() => onTabChange('function')}>Function</a></li>
-          <li role="presentation" className={activeTab === 'trigger' ? 'active' : ''}><a onClick={() => onTabChange('trigger')}>Triggers</a></li>
+          <li role="presentation" className={activeTab === 'function' ? 'active' : ''}><a onClick={() => onTabChange('function')}><FormattedMessage {...commonMessages.function} /></a></li>
+          <li role="presentation" className={activeTab === 'trigger' ? 'active' : ''}><a onClick={() => onTabChange('trigger')}><FormattedMessage {...commonMessages.trigger} /></a></li>
         </ul>
         <div style={{ display: activeTab === 'function' ? 'block' : 'none' }}>
           <FunctionTabForm item={item} environments={environments} onChange={onChange} metadataEditable={metadataEditable} onCodeChange={onCodeChange} onFunctionTest={onFunctionTest} functionTest={functionTest} />

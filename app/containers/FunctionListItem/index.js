@@ -7,6 +7,7 @@
 import React, { PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
+import commonMessages from 'messages';
 import messages from './messages';
 
 export class FunctionListItem extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -17,7 +18,7 @@ export class FunctionListItem extends React.Component { // eslint-disable-line r
         <td>{ item.name }</td>
         <td><Link to={`/environments/${item.environment}`}>{ item.environment }</Link></td>
         <td>
-          { item.triggersHttp.length > 0 && <Link to={`/functions/${item.name}#trigger`}><em>Http Triggers</em></Link> }
+          { item.triggersHttp.length > 0 && <Link to={`/functions/${item.name}#trigger`}><em><FormattedMessage {...messages.httptriggers} /></em></Link> }
           <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
             {
               item.triggersHttp.map((trigger, index) => (
@@ -28,7 +29,7 @@ export class FunctionListItem extends React.Component { // eslint-disable-line r
               ))
             }
           </ul>
-          { item.kubeWatchers.length > 0 && <Link to={`/functions/${item.name}#trigger`}><em>Kube Watchers</em></Link> }
+          { item.kubeWatchers.length > 0 && <Link to={`/functions/${item.name}#trigger`}><em><FormattedMessage {...messages.kubewatchers} /></em></Link> }
           <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
             {
               item.kubeWatchers.map((watcher, index) => (
@@ -42,8 +43,8 @@ export class FunctionListItem extends React.Component { // eslint-disable-line r
           </ul>
         </td>
         <td>
-          <Link className="btn btn-primary" to={`/functions/${item.name}`}><FormattedMessage {...messages.edit} /></Link>{ ' ' }
-          <a onClick={onRemove} className="btn btn-danger"><FormattedMessage {...messages.delete} /></a>
+          <Link className="btn btn-primary" to={`/functions/${item.name}`}><FormattedMessage {...commonMessages.edit} /></Link>{ ' ' }
+          <a onClick={onRemove} className="btn btn-danger"><FormattedMessage {...commonMessages.delete} /></a>
         </td>
       </tr>
     );

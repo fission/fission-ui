@@ -6,6 +6,8 @@
 
 import React from 'react';
 // import styled from 'styled-components';
+import { FormattedMessage } from 'react-intl';
+import commonMessages from 'messages';
 
 class TriggerHttpCreateForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -34,7 +36,7 @@ class TriggerHttpCreateForm extends React.Component { // eslint-disable-line rea
     return (
       <form className="form-inline">
         <div className="form-group">
-          <label htmlFor="triggerHttpCreateMethod">Method</label>
+          <label htmlFor="triggerHttpCreateMethod"><FormattedMessage {...commonMessages.method} /></label>
           <select className="form-control" id="triggerHttpCreateMethod" name="method" onChange={this.onChange} >
             <option value="GET">GET</option>
             <option value="POST">POST</option>
@@ -44,10 +46,10 @@ class TriggerHttpCreateForm extends React.Component { // eslint-disable-line rea
         </div>
 
         <div className="form-group">
-          <label htmlFor="triggerHttpCreatePath">Path</label>
+          <label htmlFor="triggerHttpCreatePath"><FormattedMessage {...commonMessages.path} /></label>
           <input type="text" className="form-control" id="triggerHttpCreatePath" name="urlpattern" onChange={this.onChange} />
         </div>
-        <button className="btn btn-default" onClick={this.onTriggerCreate} >Add</button>
+        <button className="btn btn-default" onClick={this.onTriggerCreate} ><FormattedMessage {...commonMessages.add} /></button>
       </form>
     );
   }

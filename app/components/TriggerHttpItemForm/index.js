@@ -5,6 +5,8 @@
 */
 
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
+import commonMessages from 'messages';
 // import styled from 'styled-components';
 
 
@@ -15,7 +17,7 @@ class TriggerHttpItemForm extends React.Component { // eslint-disable-line react
       <tr>
         <td>{trigger.method}</td>
         <td>{trigger.urlpattern}</td>
-        <td><a className="btn btn-danger" onClick={onRemove}>Delete</a></td>
+        <td><a className="btn btn-danger" onClick={onRemove}><FormattedMessage {...commonMessages.delete} /></a></td>
       </tr>
     );
   }

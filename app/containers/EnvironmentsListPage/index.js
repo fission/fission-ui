@@ -6,11 +6,13 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
 import EnvironmentsList from 'components/EnvironmentsList';
 import { makeSelectEnvironments, makeSelectError, makeSelectLoading } from 'containers/EnvironmentsPage/selectors';
+import commonMessages from 'messages';
 import { loadEnvironmentAction, removeEnvironmentAction } from './actions';
 
 export class EnvironmentsListPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -39,7 +41,7 @@ export class EnvironmentsListPage extends React.Component { // eslint-disable-li
         <Helmet
           title="List environments"
         />
-        <Link to="/environments/create" className="pull-right btn btn-primary">Add</Link>
+        <Link to="/environments/create" className="pull-right btn btn-primary"><FormattedMessage {...commonMessages.add} /></Link>
         <EnvironmentsList {...environmentsListProps} onRemove={this.onRemove} />
       </div>
     );

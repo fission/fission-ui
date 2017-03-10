@@ -7,6 +7,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { FormattedMessage } from 'react-intl';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import FunctionTabForm from 'components/FunctionTabForm';
@@ -17,6 +18,7 @@ import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
 import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
 import { createFunctionAction, testFunctionAction, cleanTestFunctionAction } from 'containers/FunctionCreatePage/actions';
 import { slug } from 'utils/util';
+import commonMessages from 'messages';
 
 export class FunctionCreatePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -94,6 +96,7 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
   }
 
   isFunctionRequiredInputValid(item) {
+    // TODO error message i18n
     let errorMessages = '';
     if (item.name === '') {
       errorMessages += 'You need to specify a name<br/>';
@@ -138,8 +141,8 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
         />
 
         <div className="pull-right">
-          <a className="btn btn-primary" onClick={this.onSave}>Save & exit</a> { ' ' }
-          <Link to="/" className="btn btn-default">Cancel</Link>
+          <a className="btn btn-primary" onClick={this.onSave}><FormattedMessage {...commonMessages.saveAndExit} /></a> { ' ' }
+          <Link to="/" className="btn btn-default"><FormattedMessage {...commonMessages.cancel} /></Link>
         </div>
       </div>
     );

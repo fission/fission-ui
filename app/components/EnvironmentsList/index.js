@@ -8,6 +8,8 @@ import React, { PropTypes } from 'react';
 import LoadingIndicator from 'components/LoadingIndicator';
 import ErrorIndicator from 'components/ErrorIndicator';
 import EnvironmentsListItem from 'components/EnvironmentsListItem';
+import { FormattedMessage } from 'react-intl';
+import commonMessages from 'messages';
 
 // import styled from 'styled-components';
 
@@ -22,9 +24,9 @@ function EnvironmentsList({ loading, error, environments, onRemove }) {
     <table className="table table-bordered">
       <thead>
         <tr>
-          <th>Environment name</th>
-          <th>Docker image</th>
-          <th>Actions</th>
+          <th><FormattedMessage {...commonMessages.environmentName} /></th>
+          <th><FormattedMessage {...commonMessages.dockerImage} /></th>
+          <th><FormattedMessage {...commonMessages.action} /></th>
         </tr>
       </thead>
       <tbody>

@@ -15,6 +15,9 @@ import 'brace/theme/github';
 import LoadingIndicator from 'components/LoadingIndicator';
 import FunctionTestForm from 'components/FunctionTestForm';
 
+import { FormattedMessage } from 'react-intl';
+import commonMessages from 'messages';
+
 class FunctionTabForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
@@ -45,14 +48,14 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
         <div className="row">
           <div className="col-md-6">
             <div className="form-group">
-              <label htmlFor="formFunctionName">Function name</label>
+              <label htmlFor="formFunctionName"><FormattedMessage {...commonMessages.functionName} /></label>
               <input type="text" className="form-control" id="formFunctionName" name="name" value={item.name} onChange={onChange} disabled={!metadataEditable} />
             </div>
           </div>
           <div className="col-md-6">
             <div className="form-group">
-              <label htmlFor="formFunctionName">Environment</label>
-              <select className="form-control" value={item.environment} name="environment" id="formFunctionName" onChange={onChange} disabled={!metadataEditable}>
+              <label htmlFor="formEnvironment"><FormattedMessage {...commonMessages.environment} /></label>
+              <select className="form-control" value={item.environment} name="environment" id="formEnvironment" onChange={onChange} disabled={!metadataEditable}>
                 <option value="" key={'environmentSelect-0'} />
                 {
                   environments.map((environment, index) => (
@@ -77,8 +80,8 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
             />
           </div>
           <div className="col-md-6">
-            <label htmlFor="formFunctionName">Syntax</label>
-            <select className="form-control" defaultValue={mode} onChange={this.onModeChange}>
+            <label htmlFor="formSyntax"><FormattedMessage {...commonMessages.syntax} /></label>
+            <select className="form-control" id="forSyntax" defaultValue={mode} onChange={this.onModeChange}>
               <option value="javascript">Javascript</option>
               <option value="java">Java</option>
               <option value="php">Php</option>

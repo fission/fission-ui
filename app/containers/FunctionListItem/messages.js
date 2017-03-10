@@ -6,12 +6,12 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  edit: {
-    id: 'app.containers.FunctionListItem.edit',
-    defaultMessage: 'Edit',
+  httptriggers: {
+    id: 'app.containers.FunctionListItem.httptriggers',
+    defaultMessage: 'Http Triggers',
   },
-  delete: {
-    id: 'app.containers.FunctionListItem.delete',
-    defaultMessage: 'Delete',
+  kubewatchers: {
+    id: 'app.containers.FunctionListItem.kubewatchers',
+    defaultMessage: 'Kube Watchers',
   },
 });

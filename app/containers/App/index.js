@@ -15,6 +15,7 @@ import React from 'react';
 import NavLink from 'components/NavLink';
 import { Link } from 'react-router';
 import withProgressBar from 'components/ProgressBar';
+import LocaleToggle from 'containers/LocaleToggle';
 
 export function App(props) {
   return (
@@ -39,6 +40,7 @@ export function App(props) {
                 <i className="glyphicon glyphicon-tasks"></i> <span>Environment</span>
               </NavLink>
             </ul>
+            <LocaleToggle />
           </div>
         </div>
       </nav>

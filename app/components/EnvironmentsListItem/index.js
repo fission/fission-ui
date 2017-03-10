@@ -9,7 +9,7 @@ import React from 'react';
 
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
-import messages from './messages';
+import commonMessages from 'messages';
 
 function EnvironmentsListItem({ item, onRemove }) {
   return (
@@ -17,8 +17,8 @@ function EnvironmentsListItem({ item, onRemove }) {
       <td>{ item.name }</td>
       <td>{ item.image }</td>
       <td>
-        <Link to={`/environments/${item.name}`} className="btn btn-primary"><FormattedMessage {...messages.edit} /></Link>{ ' ' }
-        <a onClick={onRemove} className="btn btn-danger"><FormattedMessage {...messages.delete} /></a>
+        <Link to={`/environments/${item.name}`} className="btn btn-primary"><FormattedMessage {...commonMessages.edit} /></Link>{ ' ' }
+        <a onClick={onRemove} className="btn btn-danger"><FormattedMessage {...commonMessages.delete} /></a>
       </td>
     </tr>
   );

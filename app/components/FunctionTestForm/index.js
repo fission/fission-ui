@@ -7,6 +7,8 @@
 import React from 'react';
 import KeyValueBuilder from 'components/KeyValueBuilder';
 import RequestBodyBuilder from 'components/RequestBodyBuilder';
+import { FormattedMessage } from 'react-intl';
+import commonMessages from 'messages';
 
 class FunctionTestForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -113,7 +115,7 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
 
     return (
       <div>
-        <em>Draft?</em>
+        <em><FormattedMessage {...commonMessages.draft} />?</em>
         <input type="checkbox" checked={testObj.draft} onChange={this.onDraftChange} disabled={this.props.draftOnly} />
         <br />
         <strong>Request</strong>
@@ -162,7 +164,7 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
           </div>
         }
 
-        <a className="btn btn-primary pull-right" onClick={this.onTest}>Test code</a>
+        <a className="btn btn-primary pull-right" onClick={this.onTest}><FormattedMessage {...commonMessages.test} /></a>
       </div>
     );
   }

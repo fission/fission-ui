@@ -7,6 +7,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { FormattedMessage } from 'react-intl';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import FunctionForm from 'components/FunctionForm';
@@ -17,6 +18,7 @@ import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
 import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
 import { testFunctionAction, cleanTestFunctionAction } from 'containers/FunctionCreatePage/actions';
 import { getFunctionAction, loadTriggersHttpAction, deleteTriggerHttpAction, updateFunctionAction, createTriggerHttpAction, loadKubeWatchersAction, createKubeWatcherAction, deleteKubeWatcherAction } from 'containers/FunctionEditPage/actions';
+import commonMessages from 'messages';
 
 export class FunctionEditPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -89,9 +91,9 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     // TODO this may cause user modified code lost in the editor buffer
     // TODO this causes editor buffer modification lost if user run test code
     if (!this.state.editing) {
-      this.state.item = this.props.functionByName(nextProps.params.name);
+      this.state.item = nextProps.functionByName(nextProps.params.name);
     } else {
-      const nextState = this.props.functionByName(nextProps.params.name);
+      const nextState = nextProps.functionByName(nextProps.params.name);
       this.state.item.triggersHttp = nextState.triggersHttp;
       this.state.item.kubeWatchers = nextState.kubeWatchers;
     }
@@ -186,8 +188,8 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
         />
 
         <div className="pull-right">
-          <a className="btn btn-primary" onClick={this.onSave}>Save & exit</a> { ' ' }
-          <Link to="/" className="btn btn-default">Cancel</Link>
+          <a className="btn btn-primary" onClick={this.onSave}><FormattedMessage {...commonMessages.saveAndExit} /></a> { ' ' }
+          <Link to="/" className="btn btn-default"><FormattedMessage {...commonMessages.cancel} /></Link>
         </div>
       </div>
     );

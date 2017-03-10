@@ -6,6 +6,8 @@
 
 import React from 'react';
 // import styled from 'styled-components';
+import { FormattedMessage } from 'react-intl';
+import commonMessages from 'messages';
 
 class KubeWatcherCreateForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -36,20 +38,20 @@ class KubeWatcherCreateForm extends React.Component { // eslint-disable-line rea
     return (
       <form className="form-inline">
         <div className="form-group">
-          <label htmlFor="watcherCreateNamespace">Namespace</label>
+          <label htmlFor="watcherCreateNamespace"><FormattedMessage {...commonMessages.namespace} /></label>
           <input type="text" className="form-control" id="watcherCreateNamespace" defaultValue={namespace} name="namespace" onChange={this.onChange} />
         </div>
 
         <div className="form-group">
-          <label htmlFor="watcherCreateObjType">ObjType</label>
+          <label htmlFor="watcherCreateObjType"><FormattedMessage {...commonMessages.objtype} /></label>
           <input type="text" className="form-control" id="watcherCreateObjType" defaultValue={objtype} name="objtype" onChange={this.onChange} />
         </div>
 
         <div className="form-group">
-          <label htmlFor="watcherCreateLabelSelector">LabelSelector</label>
+          <label htmlFor="watcherCreateLabelSelector"><FormattedMessage {...commonMessages.labelselector} /></label>
           <input type="text" className="form-control" id="watcherCreateLabelSelector" defaultValue={labelselector} name="labelselector" onChange={this.onChange} />
         </div>
-        <button className="btn btn-default" onClick={this.onWatcherCreate} >Add</button>
+        <button className="btn btn-default" onClick={this.onWatcherCreate} ><FormattedMessage {...commonMessages.add} /></button>
       </form>
     );
   }

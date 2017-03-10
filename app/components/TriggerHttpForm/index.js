@@ -10,6 +10,7 @@ import TriggerHttpItemForm from 'components/TriggerHttpItemForm';
 import TriggerHttpCreateForm from 'components/TriggerHttpCreateForm';
 
 import { FormattedMessage } from 'react-intl';
+import commonMessages from 'messages';
 import messages from './messages';
 
 class TriggerHttpForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -21,9 +22,9 @@ class TriggerHttpForm extends React.Component { // eslint-disable-line react/pre
         <table className="table table-bordered">
           <thead>
             <tr>
-              <th>Method</th>
-              <th>Path</th>
-              <th>Actions</th>
+              <th><FormattedMessage {...commonMessages.method} /></th>
+              <th><FormattedMessage {...commonMessages.path} /></th>
+              <th><FormattedMessage {...commonMessages.action} /></th>
             </tr>
           </thead>
           <tbody>
