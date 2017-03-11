@@ -16,7 +16,7 @@ class RequestBodyBuilder extends React.Component { // eslint-disable-line react/
     const { bodytype, content, onSelectType, onContentChange } = this.props;
     return (
       <div>
-        <select className="form-control" name="bodytype" defaultValue={bodytype} onChange={onSelectType}>
+        <select className="form-control" name="bodytype" value={bodytype} onChange={onSelectType}>
           <option value="plain_text">Text</option>
           <option value="json">Json</option>
           <option value="xml">Xml</option>

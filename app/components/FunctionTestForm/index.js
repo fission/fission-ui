@@ -7,6 +7,7 @@
 import React from 'react';
 import KeyValueBuilder from 'components/KeyValueBuilder';
 import RequestBodyBuilder from 'components/RequestBodyBuilder';
+import FunctionTestHistoryItemForm from 'components/FunctionTestHistoryItemForm';
 import { FormattedMessage } from 'react-intl';
 import commonMessages from 'messages';
 
@@ -23,6 +24,7 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
         bodytype: 'plain_text',
         draft: true,
       },
+      history: this.readHistoryFromLocalStorage(),
     };
     this.toggleHeader = this.toggleHeader.bind(this);
     this.onTest = this.onTest.bind(this);
@@ -30,6 +32,9 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
     this.onSelectBodyType = this.onSelectBodyType.bind(this);
     this.onBodyContentChange = this.onBodyContentChange.bind(this);
     this.onDraftChange = this.onDraftChange.bind(this);
+    this.onSelectHistoryItem = this.onSelectHistoryItem.bind(this);
+    this.readHistoryFromLocalStorage = this.readHistoryFromLocalStorage.bind(this);
+    this.writeHistoryToLocalStorage = this.writeHistoryToLocalStorage.bind(this);
   }
 
   onChange(e) {
@@ -41,7 +46,12 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
 
   onTest(e) {
     e.preventDefault();
-    const test = Object.assign({}, this.state.testObj);
+    const test = this.deepClone(this.state.testObj);
+    const { history } = this.state;
+    history.push(this.deepClone(test));
+    this.setState({ history });
+    this.writeHistoryToLocalStorage(history);
+
     this.props.onFunctionTest(test);
   }
 
@@ -68,10 +78,30 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
     this.setState({ testObj });
   }
 
+  onSelectHistoryItem(item) {
+    this.setState({ testObj: this.deepClone(item) });
+  }
+
   toggleHeader() {
     this.setState({
       headerShow: !this.state.headerShow,
     });
+  }
+
+  deepClone(obj) {
+    // TODO maybe use immutable to all the state obj
+    return JSON.parse(JSON.stringify(obj));
+  }
+
+  readHistoryFromLocalStorage() {
+    const uid = this.props.functionUid;
+    const content = localStorage[`function-history-${uid}`] || '[]';
+    return JSON.parse(content);
+  }
+
+  writeHistoryToLocalStorage(history) {
+    const uid = this.props.functionUid;
+    localStorage[`function-history-${uid}`] = JSON.stringify(history);
   }
 
   bodyType2ContentHeader = {
@@ -104,7 +134,7 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
     if (!this.props.visible) {
       return false;
     }
-    const { testObj } = this.state;
+    const { testObj, history } = this.state;
     const { response } = this.props.functionTest;
     const { data, status } = response;
 
@@ -121,7 +151,7 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
         <strong>Request</strong>
         <div>
           <span>Method: </span>
-          <select className="form-control" id="FunctionTestMethod" name="method" defaultValue={testObj.method} onChange={this.onChange} >
+          <select className="form-control" id="FunctionTestMethod" name="method" value={testObj.method} onChange={this.onChange} >
             <option value="GET">GET</option>
             <option value="POST">POST</option>
             <option value="PUT">PUT</option>
@@ -133,6 +163,19 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
           <KeyValueBuilder onChange={this.onChange} name="headers" defaultValue={testObj.headers} />
           <span>Body: </span>
           <RequestBodyBuilder bodytype={testObj.bodytype} content={testObj.body} onSelectType={this.onSelectBodyType} onContentChange={this.onBodyContentChange} />
+        </div>
+        <div>
+          <span>History: </span>
+          {
+            history.map((item, index) =>
+              <FunctionTestHistoryItemForm
+                key={`function-history-${index}`}
+                item={item}
+                index={index}
+                onSelect={this.onSelectHistoryItem}
+              />
+            ).reverse()
+          }
         </div>
         { functionTestResponse &&
           <div>
@@ -173,6 +216,7 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
 FunctionTestForm.propTypes = {
   visible: React.PropTypes.bool,
   draftOnly: React.PropTypes.bool,
+  functionUid: React.PropTypes.string,
   functionTest: React.PropTypes.object,
   onFunctionTest: React.PropTypes.func.isRequired,
 };

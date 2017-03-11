@@ -13,6 +13,7 @@ const makeSelectFunctionByName = () => createSelector(
     if (functionFound) {
       return ({
         name: functionFound.getIn(['metadata', 'name']),
+        uid: functionFound.getIn(['metadata', 'uid']),
         environment: functionFound.getIn(['environment', 'name']),
         code: decodeBase64(functionFound.get('code')),
         triggersHttp: substate.get('triggersHttp').filter((trigger) => trigger.getIn(['function', 'name']) === functionFound.getIn(['metadata', 'name'])).toJS(),

@@ -90,7 +90,7 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
             {
               functionTest.loading ? <LoadingIndicator /> : false
             }
-            <FunctionTestForm onFunctionTest={onFunctionTest} functionTest={functionTest} visible={!functionTest.loading} draftOnly={metadataEditable} />
+            <FunctionTestForm functionUid={item.uid} onFunctionTest={onFunctionTest} functionTest={functionTest} visible={!functionTest.loading} draftOnly={metadataEditable} />
 
           </div>
         </div>
