@@ -6,6 +6,7 @@
 
 import React, { PropTypes } from 'react';
 import LoadingIndicator from 'components/LoadingIndicator';
+import ErrorIndicator from 'components/ErrorIndicator';
 import FunctionListItem from 'containers/FunctionListItem';
 // import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
@@ -16,7 +17,7 @@ function FunctionsList({ loading, error, items, onRemove }) {
     return <LoadingIndicator />;
   }
   if (error !== false) {
-    return <h3>{ error }</h3>;
+    return <ErrorIndicator error={error} />;
   }
   return (
     <table className="table table-bordered">
