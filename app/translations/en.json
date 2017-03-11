@@ -27,6 +27,7 @@
   "app.messages.chooseSample": "Choose Sample",
   "app.messages.test": "Test",
   "app.messages.draft": "Draft",
+  "app.messages.copyEndpoint": "Copy Endpoint",
 
   "app.containers.FunctionsListPage.header": "Function List",
   "app.containers.FunctionsPage.header": "Functions",

@@ -98,4 +98,8 @@ export default defineMessages({
     id: 'app.messages.draft',
     defaultMessage: 'Draft',
   },
+  copyEndpoint: {
+    id: 'app.messages.copyEndpoint',
+    defaultMessage: 'Copy Endpoint',
+  },
 });
