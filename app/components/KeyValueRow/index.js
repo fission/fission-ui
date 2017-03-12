@@ -21,10 +21,16 @@ class KeyValueRow extends React.Component {
   render() {
     const { index, thekey, thevalue } = this.props;
     return (
-      <div>
-        <input placeholder="key" value={thekey} name={0} onChange={this.onChange} />
-        <input placeholder="value" value={thevalue} name={1} onChange={this.onChange} />
-        <a className="btn btn-danger" onClick={() => this.props.onDelete(index)} >x</a>
+      <div className="row">
+        <div className="col-md-4">
+          <input placeholder="key" type="text" className="form-control input-sm" value={thekey} name={0} onChange={this.onChange} />
+        </div>
+        <div className="col-md-4">
+          <input placeholder="value" type="text" className="form-control input-sm" value={thevalue} name={1} onChange={this.onChange} />
+        </div>
+        <div className="col-md-4">
+          <a className="btn btn-danger" onClick={() => this.props.onDelete(index)} >x</a>
+        </div>
       </div>
     );
   }

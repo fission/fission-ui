@@ -28,6 +28,8 @@
   "app.messages.test": "测试",
   "app.messages.draft": "草稿模式",
   "app.messages.copyEndpoint": "拷贝链接",
+  "app.messages.language": "语言",
+  "app.messages.history": "清空历史",
 
   "app.containers.FunctionsListPage.header": "函数列表",
   "app.containers.FunctionsPage.header": "函数",

@@ -29,6 +29,7 @@ class RequestBodyBuilder extends React.Component { // eslint-disable-line react/
           editorProps={{ $blockScrolling: true }}
           onChange={onContentChange}
           height="150px"
+          width="100%"
         />
       </div>
     );

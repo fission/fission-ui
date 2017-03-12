@@ -40,13 +40,13 @@ export function App(props) {
                 <i className="glyphicon glyphicon-tasks"></i> <span>Environment</span>
               </NavLink>
             </ul>
-            <LocaleToggle />
           </div>
         </div>
       </nav>
       <div className="row">
         {React.Children.toArray(props.children)}
       </div>
+      <LocaleToggle />
     </div>
   );
 }

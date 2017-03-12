@@ -12,7 +12,7 @@ class FunctionTestHistoryItemForm extends React.Component { // eslint-disable-li
     const { method, headers, params, bodytype } = item;
     return (
       <div>
-        <a onClick={() => onSelect(item)}>
+        <a className="btn" onClick={() => onSelect(item)}>
           <span className="label-warning"># {index}</span> { ' ' }
           <span className="label-info">{method}</span> { ' ' }
           <span className="label-info">{Object.keys(headers).length} headers</span> { ' ' }

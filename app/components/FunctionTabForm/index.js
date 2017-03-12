@@ -51,8 +51,6 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
               <label htmlFor="formFunctionName"><FormattedMessage {...commonMessages.functionName} /></label>
               <input type="text" className="form-control" id="formFunctionName" name="name" value={item.name} onChange={onChange} disabled={!metadataEditable} />
             </div>
-          </div>
-          <div className="col-md-6">
             <div className="form-group">
               <label htmlFor="formEnvironment"><FormattedMessage {...commonMessages.environment} /></label>
               <select className="form-control" value={item.environment} name="environment" id="formEnvironment" onChange={onChange} disabled={!metadataEditable}>
@@ -64,12 +62,15 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
                 }
               </select>
             </div>
-          </div>
-        </div>
-
-
-        <div className="row">
-          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="formSyntax"><FormattedMessage {...commonMessages.syntax} /></label>
+              <select className="form-control" id="forSyntax" defaultValue={mode} onChange={this.onModeChange}>
+                <option value="javascript">Javascript</option>
+                <option value="java">Java</option>
+                <option value="php">Php</option>
+                <option value="python">Python</option>
+              </select>
+            </div>
             <AceEditor
               mode={mode}
               theme="github"
@@ -77,21 +78,14 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
               value={item.code}
               editorProps={{ $blockScrolling: true }}
               onChange={onCodeChange}
+              width="100%"
             />
           </div>
           <div className="col-md-6">
-            <label htmlFor="formSyntax"><FormattedMessage {...commonMessages.syntax} /></label>
-            <select className="form-control" id="forSyntax" defaultValue={mode} onChange={this.onModeChange}>
-              <option value="javascript">Javascript</option>
-              <option value="java">Java</option>
-              <option value="php">Php</option>
-              <option value="python">Python</option>
-            </select>
             {
               functionTest.loading ? <LoadingIndicator /> : false
             }
             <FunctionTestForm functionUid={item.uid} onFunctionTest={onFunctionTest} functionTest={functionTest} visible={!functionTest.loading} draftOnly={metadataEditable} />
-
           </div>
         </div>
       </form>

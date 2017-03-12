@@ -35,6 +35,7 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
     this.onSelectHistoryItem = this.onSelectHistoryItem.bind(this);
     this.readHistoryFromLocalStorage = this.readHistoryFromLocalStorage.bind(this);
     this.writeHistoryToLocalStorage = this.writeHistoryToLocalStorage.bind(this);
+    this.clearHistory = this.clearHistory.bind(this);
   }
 
   onChange(e) {
@@ -104,6 +105,11 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
     localStorage[`function-history-${uid}`] = JSON.stringify(history);
   }
 
+  clearHistory() {
+    this.writeHistoryToLocalStorage([]);
+    this.setState({ history: [] });
+  }
+
   bodyType2ContentHeader = {
     plain_text: 'text/plain',
     json: 'application/json',
@@ -145,41 +151,52 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
 
     return (
       <div>
-        <em><FormattedMessage {...commonMessages.draft} />?</em>
-        <input type="checkbox" checked={testObj.draft} onChange={this.onDraftChange} disabled={this.props.draftOnly} />
-        <br />
-        <strong>Request</strong>
-        <div>
-          <span>Method: </span>
-          <select className="form-control" id="FunctionTestMethod" name="method" value={testObj.method} onChange={this.onChange} >
+        <h3>Request</h3>
+        <div className="form-group">
+          <label htmlFor="formDraftMode"><FormattedMessage {...commonMessages.draft} />?</label>
+          <input id="formDraftMode" type="checkbox" checked={testObj.draft} onChange={this.onDraftChange} disabled={this.props.draftOnly} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="functionTestMethod">Method: </label>
+          <select className="form-control" id="functionTestMethod" name="method" value={testObj.method} onChange={this.onChange} >
             <option value="GET">GET</option>
             <option value="POST">POST</option>
             <option value="PUT">PUT</option>
             <option value="DELETE">DELETE</option>
           </select>
-          <span>Params: </span>
-          <KeyValueBuilder onChange={this.onChange} name="params" defaultValue={testObj.params} />
-          <span>Headers: </span>
-          <KeyValueBuilder onChange={this.onChange} name="headers" defaultValue={testObj.headers} />
-          <span>Body: </span>
-          <RequestBodyBuilder bodytype={testObj.bodytype} content={testObj.body} onSelectType={this.onSelectBodyType} onContentChange={this.onBodyContentChange} />
-        </div>
-        <div>
-          <span>History: </span>
-          {
-            history.map((item, index) =>
-              <FunctionTestHistoryItemForm
-                key={`function-history-${index}`}
-                item={item}
-                index={index}
-                onSelect={this.onSelectHistoryItem}
-              />
-            ).reverse()
-          }
+          <div className="form-group">
+            <label htmlFor="functionParams">Params: </label>
+            <KeyValueBuilder onChange={this.onChange} name="params" defaultValue={testObj.params} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="functionHeaders">Headers: </label>
+            <KeyValueBuilder onChange={this.onChange} name="headers" defaultValue={testObj.headers} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="functionBody">Body: </label>
+            <RequestBodyBuilder bodytype={testObj.bodytype} content={testObj.body} onSelectType={this.onSelectBodyType} onContentChange={this.onBodyContentChange} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="functionTestHistory">History: </label>
+            {
+              history.map((item, index) =>
+                <FunctionTestHistoryItemForm
+                  key={`function-history-${index}`}
+                  item={item}
+                  index={index}
+                  onSelect={this.onSelectHistoryItem}
+                />
+              ).reverse()
+            }
+          </div>
+          <div className="pull-left">
+            <a className="btn btn-primary" onClick={this.onTest}><FormattedMessage {...commonMessages.test} /></a> { ' ' }
+            <a className="btn btn-default" onClick={this.clearHistory}><FormattedMessage {...commonMessages.clearHistory} /></a>
+          </div>
         </div>
         { functionTestResponse &&
           <div>
-            <strong>Response</strong>
+            <h3>Response</h3>
             <div style={this.style}>
               <div>Status: {response.status}</div>
               <div onClick={this.toggleHeader}>Headers</div>
@@ -206,8 +223,6 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
             </div>
           </div>
         }
-
-        <a className="btn btn-primary pull-right" onClick={this.onTest}><FormattedMessage {...commonMessages.test} /></a>
       </div>
     );
   }

@@ -102,4 +102,12 @@ export default defineMessages({
     id: 'app.messages.copyEndpoint',
     defaultMessage: 'Copy Endpoint',
   },
+  language: {
+    id: 'app.messages.language',
+    defaultMessage: 'Language',
+  },
+  clearHistory: {
+    id: 'app.messages.clearHistory',
+    defaultMessage: 'Clear History',
+  },
 });
