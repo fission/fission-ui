@@ -16,9 +16,9 @@ export class FunctionListItem extends React.Component { // eslint-disable-line r
     return (
       <tr>
         <td>{ item.name }</td>
-        <td><Link to={`/environments/${item.environment}`}>{ item.environment }</Link></td>
+        <td><Link to={`/environments/edit/${item.environment}`}>{ item.environment }</Link></td>
         <td>
-          { item.triggersHttp.length > 0 && <Link to={`/functions/${item.name}#trigger`}><em><FormattedMessage {...messages.httptriggers} /></em></Link> }
+          { item.triggersHttp.length > 0 && <Link to={`/functions/edit/${item.name}#trigger`}><em><FormattedMessage {...messages.httptriggers} /></em></Link> }
           <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
             {
               item.triggersHttp.map((trigger, index) => (
@@ -29,7 +29,7 @@ export class FunctionListItem extends React.Component { // eslint-disable-line r
               ))
             }
           </ul>
-          { item.kubeWatchers.length > 0 && <Link to={`/functions/${item.name}#trigger`}><em><FormattedMessage {...messages.kubewatchers} /></em></Link> }
+          { item.kubeWatchers.length > 0 && <Link to={`/functions/edit/${item.name}#trigger`}><em><FormattedMessage {...messages.kubewatchers} /></em></Link> }
           <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
             {
               item.kubeWatchers.map((watcher, index) => (
@@ -43,7 +43,7 @@ export class FunctionListItem extends React.Component { // eslint-disable-line r
           </ul>
         </td>
         <td>
-          <Link className="btn btn-primary" to={`/functions/${item.name}`}><FormattedMessage {...commonMessages.edit} /></Link>{ ' ' }
+          <Link className="btn btn-primary" to={`/functions/edit/${item.name}`}><FormattedMessage {...commonMessages.edit} /></Link>{ ' ' }
           <a onClick={onRemove} className="btn btn-danger"><FormattedMessage {...commonMessages.delete} /></a>
         </td>
       </tr>

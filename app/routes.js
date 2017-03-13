@@ -80,7 +80,7 @@ export default function createRoutes(store) {
           },
         },
         {
-          path: '/functions/:name',
+          path: '/functions/edit/:name',
           name: 'function_edit',
           getComponent(nextState, cb) {
             const importModules = Promise.all([
@@ -162,7 +162,7 @@ export default function createRoutes(store) {
           },
         },
         {
-          path: '/environments/:name',
+          path: '/environments/edit/:name',
           name: 'environments_edit',
           getComponent(nextState, cb) {
             const importModules = Promise.all([
