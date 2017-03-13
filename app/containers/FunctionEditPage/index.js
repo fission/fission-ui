@@ -93,12 +93,14 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     }
     // TODO this may cause user modified code lost in the editor buffer
     // TODO this causes editor buffer modification lost if user run test code
-    if (!this.state.editing) {
-      this.state.item = nextProps.functionByName(nextProps.params.name);
-    } else {
-      const nextState = nextProps.functionByName(nextProps.params.name);
-      this.state.item.triggersHttp = nextState.triggersHttp;
-      this.state.item.kubeWatchers = nextState.kubeWatchers;
+    const nextState = nextProps.functionByName(nextProps.params.name);
+    if (nextState !== false) {
+      if (!this.state.editing) {
+        this.state.item = nextState;
+      } else {
+        this.state.item.triggersHttp = nextState.triggersHttp;
+        this.state.item.kubeWatchers = nextState.kubeWatchers;
+      }
     }
   }
 

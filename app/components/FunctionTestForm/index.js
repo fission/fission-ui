@@ -96,12 +96,14 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
 
   readHistoryFromLocalStorage() {
     const uid = this.props.functionUid;
+    if (uid === undefined) return [];
     const content = localStorage[`function-history-${uid}`] || '[]';
     return JSON.parse(content);
   }
 
   writeHistoryToLocalStorage(history) {
     const uid = this.props.functionUid;
+    if (uid === undefined) return;
     localStorage[`function-history-${uid}`] = JSON.stringify(history);
   }
 
@@ -194,6 +196,7 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
             <a className="btn btn-default" onClick={this.clearHistory}><FormattedMessage {...commonMessages.clearHistory} /></a>
           </div>
         </div>
+        <br />
         { functionTestResponse &&
           <div>
             <h3>Response</h3>

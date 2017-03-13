@@ -76,7 +76,6 @@ FunctionForm.propTypes = {
   onTabChange: PropTypes.func,
   onFunctionTest: PropTypes.func,
   activeTab: PropTypes.string,
-  params: PropTypes.object,
   functionTest: PropTypes.object,
 };
 
