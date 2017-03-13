@@ -6,22 +6,18 @@
 
 import React, { PropTypes } from 'react';
 
-// import styled from 'styled-components';
-
-function ErrorIndicator({ error }) {
-  let errorMessage;
-  if (typeof error === 'string') {
-    errorMessage = error;
-  } else {
-    errorMessage = error.response.data;
-  }
+function ErrorIndicator({ errors }) {
   return (
-    <div className="alert alert-danger" dangerouslySetInnerHTML={{ __html: errorMessage }}></div>
+    <div className="alert alert-danger" >
+      <ul>
+        {errors.map((e, i) => <li key={`error-item${i}`}>{e}</li>)}
+      </ul>
+    </div>
   );
 }
 
 ErrorIndicator.propTypes = {
-  error: PropTypes.any,
+  errors: PropTypes.array,
 };
 
 export default ErrorIndicator;

@@ -18,7 +18,7 @@ function EnvironmentsList({ loading, error, environments, onRemove }) {
     return <LoadingIndicator />;
   }
   if (error !== false) {
-    return <ErrorIndicator error={error} />;
+    return <ErrorIndicator errors={[error.response.data]} />;
   }
   return (
     <table className="table table-bordered">

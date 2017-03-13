@@ -73,7 +73,7 @@ export class EnvironmentEditPage extends React.Component { // eslint-disable-lin
           title="Edit environment"
         />
         {error &&
-          <ErrorIndicator error={error} />
+          <ErrorIndicator errors={[error.response.data]} />
         }
         {loading === false && environment &&
           <EnvironmentForm nameEditable={Boolean(false)} environment={environment} onChange={this.onChange} onSave={this.submitForm} />

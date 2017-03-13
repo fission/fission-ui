@@ -29,7 +29,8 @@
   "app.messages.draft": "Brouillon",
   "app.messages.copyEndpoint": "Copier l'adresse",
   "app.messages.language": "Language",
-  "app.messages.history": "Vider l'historique",
+  "app.messages.history": "l'historique",
+  "app.messages.clearHistory": "Vider l'historique",
 
   "app.containers.FunctionsListPage.header": "Liste des functions",
   "app.containers.FunctionsPage.header": "Fonctions",

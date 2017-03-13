@@ -25,10 +25,13 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     super(props);
 
     const hash = this.props.location.hash.replace('#', '');
+    // must use once for es lint errors
+    props.functionByName();
     this.state = {
       loading: props.loading,
       functionTest: props.functionTest,
       error: props.error,
+      inputErrors: [],
       environments: props.environments,
       httpTriggers: props.httpTriggers,
       kubeWatchers: props.kubeWatchers,
@@ -170,7 +173,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
         />
 
         {error &&
-          <ErrorIndicator error={error} />
+          <ErrorIndicator errors={[error.response.data]} />
         }
 
         <FunctionForm

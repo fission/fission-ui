@@ -21,6 +21,7 @@ export class EnvironmentCreatePage extends React.Component { // eslint-disable-l
     this.state = {
       loading: props.loading,
       error: props.error,
+      inputErrors: [],
       environment: { name: '', image: '' },
     };
     this.submitForm = this.submitForm.bind(this);
@@ -64,19 +65,16 @@ export class EnvironmentCreatePage extends React.Component { // eslint-disable-l
   }
 
   isEnvironmentRequiredInputValid(item) {
-    let errorMessages = '';
+    const inputErrors = [];
     if (item.name === '') {
-      errorMessages += 'You need to specify a name<br/>';
+      inputErrors.push('You need to specify a name');
     }
     if (item.image === '') {
-      errorMessages += 'You need to specify a docker image<br/>';
+      inputErrors.push('You need to specify a docker image');
     }
 
-    if (errorMessages.length > 0) {
-      this.setState({ error: errorMessages });
-      return false;
-    }
-    return true;
+    this.setState({ inputErrors });
+    return inputErrors.length === 0;
   }
 
   environmentSamples = {
@@ -95,7 +93,7 @@ export class EnvironmentCreatePage extends React.Component { // eslint-disable-l
   };
 
   render() {
-    const { loading, error, environment } = this.state;
+    const { loading, error, inputErrors, environment } = this.state;
     if (loading) {
       return <LoadingIndicator />;
     }
@@ -105,7 +103,10 @@ export class EnvironmentCreatePage extends React.Component { // eslint-disable-l
           title="Environment creation"
         />
         {error &&
-          <ErrorIndicator error={error} />
+          <ErrorIndicator errors={[error.response.data]} />
+        }
+        {inputErrors.length > 0 &&
+          <ErrorIndicator errors={inputErrors} />
         }
         <EnvironmentForm nameEditable={Boolean(true)} environment={environment} onChange={this.onChange} onSave={this.submitForm} onSelectSample={this.onSelectSample} />
       </div>

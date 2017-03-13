@@ -28,6 +28,7 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
       loading: props.loading,
       functionTest: props.functionTest,
       error: props.error,
+      inputErrors: [],
       currentTab: 'function',
       item: { name: '', environment: '', triggersHttp: [], kubeWatchers: [], code: '', temporaryFunction: '' },
       environments: props.environments,
@@ -52,6 +53,9 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
   componentWillReceiveProps(nextProps) {
     if (nextProps.loading !== this.state.loading) {
       this.state.loading = nextProps.loading;
+    }
+    if (nextProps.error !== this.state.error) {
+      this.state.error = nextProps.error;
     }
     if (nextProps.functionTest !== this.state.functionTest) {
       this.state.functionTest = nextProps.functionTest;
@@ -97,26 +101,23 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
 
   isFunctionRequiredInputValid(item) {
     // TODO error message i18n
-    let errorMessages = '';
+    const inputErrors = [];
     if (item.name === '') {
-      errorMessages += 'You need to specify a name<br/>';
+      inputErrors.push('You need to specify a name');
     }
     if (item.environment === '') {
-      errorMessages += 'You need to specify an environment<br/>';
+      inputErrors.push('You need to specify an environment');
     }
     if (item.code === '') {
-      errorMessages += 'You need to create code<br/>';
+      inputErrors.push('You need to create code');
     }
 
-    if (errorMessages.length > 0) {
-      this.setState({ error: errorMessages });
-      return false;
-    }
-    return true;
+    this.setState({ inputErrors });
+    return inputErrors.length === 0;
   }
 
   render() {
-    const { item, environments, loading, error, functionTest } = this.state;
+    const { item, environments, loading, error, inputErrors, functionTest } = this.state;
     if (loading) {
       return <LoadingIndicator />;
     }
@@ -127,7 +128,10 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
         />
 
         {error &&
-          <ErrorIndicator error={error} />
+          <ErrorIndicator errors={[error.response.data]} />
+        }
+        {inputErrors.length > 0 &&
+          <ErrorIndicator errors={inputErrors} />
         }
 
         <FunctionTabForm

@@ -29,7 +29,8 @@
   "app.messages.draft": "Draft",
   "app.messages.copyEndpoint": "Copy Endpoint",
   "app.messages.language": "Language",
-  "app.messages.history": "Clear History",
+  "app.messages.history": "History",
+  "app.messages.clearHistory": "Clear History",
 
   "app.containers.FunctionsListPage.header": "Function List",
   "app.containers.FunctionsPage.header": "Functions",
