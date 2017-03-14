@@ -171,7 +171,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     return (
       <div>
         <Helmet
-          title="Create function"
+          title="Edit function"
         />
 
         {error &&

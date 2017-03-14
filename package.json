@@ -1,17 +1,17 @@
 {
-  "name": "react-boilerplate",
-  "version": "3.4.0",
-  "description": "A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices",
+  "name": "fission-ui",
+  "version": "0.1.0",
+  "description": "An UI providing a simple management and development environment for serverless functions powered by fission",
   "repository": {
     "type": "git",
-    "url": "git://github.com/react-boilerplate/react-boilerplate.git"
+    "url": "git://github.com/fission/fission-ui.git"
   },
   "engines": {
     "npm": ">=3",
     "node": ">=5"
   },
-  "author": "Max Stoiber",
-  "license": "MIT",
+  "author": "Fission Authors",
+  "license": "Apache 2.0",
   "scripts": {
     "analyze:clean": "rimraf stats.json",
     "preanalyze": "npm run analyze:clean",
