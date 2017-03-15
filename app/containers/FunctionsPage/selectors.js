@@ -47,17 +47,17 @@ const makeSelectFunctions = () => createSelector(
     environment: e.getIn(['environment', 'name']),
     triggersHttp: (substate.get('triggersHttp').filter((trigger) => trigger.getIn(['function', 'name']) === e.getIn(['metadata', 'name']))).toJS(), // TODO improve, simplify object
     kubeWatchers: (substate.get('kubeWatchers').filter((watcher) => watcher.getIn(['function', 'name']) === e.getIn(['metadata', 'name']))).toJS(),
-  }))
+  })).toJS()
 );
 
 const makeSelectTriggersHttp = () => createSelector(
   selectFunctionsPageDomain(),
-  (substate) => substate.get('triggersHttp')
+  (substate) => substate.get('triggersHttp').toJS()
 );
 
 const makeSelectKubeWatchers = () => createSelector(
   selectFunctionsPageDomain(),
-  (substate) => substate.get('kubeWatchers')
+  (substate) => substate.get('kubeWatchers').toJS()
 );
 
 export {

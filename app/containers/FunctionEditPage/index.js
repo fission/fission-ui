@@ -38,15 +38,6 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
       activeTab: hash === '' ? 'function' : hash,
       editing: false,
     };
-    if (typeof this.state.environments === 'object' && Array.isArray(this.state.environments) === false) { // Convert environments to array if it's a Immutable List
-      this.state.environments = this.state.environments.toArray();
-    }
-    if (typeof this.state.httpTriggers === 'object' && Array.isArray(this.state.httpTriggers) === false) { // Convert httpTriggers to array if it's a Immutable List
-      this.state.httpTriggers = this.state.httpTriggers.toArray();
-    }
-    if (typeof this.state.kubeWatchers === 'object' && Array.isArray(this.state.kubeWatchers) === false) { // Convert kubeWatchers to array if it's a Immutable List
-      this.state.kubeWatchers = this.state.kubeWatchers.toArray();
-    }
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onHttpTriggerRemove = this.onHttpTriggerRemove.bind(this);
