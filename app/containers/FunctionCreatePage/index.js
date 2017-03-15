@@ -142,7 +142,7 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
         />
 
         <div className="pull-right">
-          <a className="btn btn-primary" onClick={this.onSave}><FormattedMessage {...commonMessages.saveAndExit} /></a> { ' ' }
+          <a className="btn btn-primary" onClick={this.onSave}><FormattedMessage {...commonMessages.deploy} /></a> { ' ' }
           <Link to="/" className="btn btn-default"><FormattedMessage {...commonMessages.cancel} /></Link>
         </div>
       </div>

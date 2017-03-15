@@ -14,9 +14,9 @@ export default defineMessages({
     id: 'app.messages.delete',
     defaultMessage: 'Delete',
   },
-  saveAndExit: {
-    id: 'app.messages.saveAndExit',
-    defaultMessage: 'Save & Exit',
+  deploy: {
+    id: 'app.messages.deploy',
+    defaultMessage: 'Deploy',
   },
   save: {
     id: 'app.messages.save',

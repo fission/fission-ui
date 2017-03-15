@@ -4,7 +4,7 @@
   "boilerplate.containers.LocaleToggle.en": "en",
   "boilerplate.containers.LocaleToggle.zh": "zh",
 
-  "app.messages.saveAndExit": "Enregistrer & quitter",
+  "app.messages.deploy": "déployer",
   "app.messages.save": "Enregistrer",
   "app.messages.cancel": "Annuler",
   "app.messages.edit": "Modifier",

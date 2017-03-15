@@ -4,7 +4,7 @@
   "boilerplate.containers.LocaleToggle.en": "英文",
   "boilerplate.containers.LocaleToggle.zh": "中文",
 
-  "app.messages.saveAndExit": "保存并返回",
+  "app.messages.deploy": "部署",
   "app.messages.save": "保存",
   "app.messages.cancel": "取消",
   "app.messages.edit": "编辑",
