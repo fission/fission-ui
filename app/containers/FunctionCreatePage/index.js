@@ -7,7 +7,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import FunctionTabForm from 'components/FunctionTabForm';
@@ -33,9 +33,6 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
       item: { name: '', environment: '', triggersHttp: [], kubeWatchers: [], code: '', temporaryFunction: '' },
       environments: props.environments,
     };
-    if (typeof this.state.environments === 'object' && Array.isArray(this.state.environments) === false) { // Convert environments to array if it's a Immutable List
-      this.state.environments = this.state.environments.toArray();
-    }
 
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
@@ -100,16 +97,16 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
   }
 
   isFunctionRequiredInputValid(item) {
-    // TODO error message i18n
     const inputErrors = [];
+    const { intl } = this.props;
     if (item.name === '') {
-      inputErrors.push('You need to specify a name');
+      inputErrors.push(intl.formatMessage(commonMessages.inputErrorNeedName));
     }
     if (item.environment === '') {
-      inputErrors.push('You need to specify an environment');
+      inputErrors.push(intl.formatMessage(commonMessages.inputErrorNeedEnvironment));
     }
     if (item.code === '') {
-      inputErrors.push('You need to create code');
+      inputErrors.push(intl.formatMessage(commonMessages.inputErrorNeedCode));
     }
 
     this.setState({ inputErrors });
@@ -168,6 +165,7 @@ FunctionCreatePage.propTypes = {
   testFunction: PropTypes.func.isRequired,
   cleanTestFunction: PropTypes.func.isRequired,
   functionTest: PropTypes.object,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -186,4 +184,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FunctionCreatePage);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(FunctionCreatePage));

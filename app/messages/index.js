@@ -110,4 +110,20 @@ export default defineMessages({
     id: 'app.messages.clearHistory',
     defaultMessage: 'Clear History',
   },
+  inputErrorNeedName: {
+    id: 'app.messages.inputError.needName',
+    defaultMessage: 'You need to specify a name',
+  },
+  inputErrorNeedCode: {
+    id: 'app.messages.inputError.needCode',
+    defaultMessage: 'You need to create code',
+  },
+  inputErrorNeedEnvironment: {
+    id: 'app.messages.inputError.needEnvironment',
+    defaultMessage: 'You need to specify an environment',
+  },
+  inputErrorNeedDockerImage: {
+    id: 'app.messages.inputError.needDockerImage',
+    defaultMessage: 'You need to specify a docker image',
+  },
 });

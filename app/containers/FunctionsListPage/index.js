@@ -12,6 +12,7 @@ import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectFunctions, makeSelectError, makeSelectLoading } from 'containers/FunctionsPage/selectors';
 import FunctionsList from 'components/FunctionsList';
+import { confirm } from 'utils/confirm';
 import commonMessages from 'messages';
 import { loadFunctionAction, loadTriggersHttpAction, deleteFunctionAction, loadKubeWatchersAction } from './actions';
 import messages from './messages';
@@ -29,11 +30,16 @@ export class FunctionsListPage extends React.Component { // eslint-disable-line 
   }
 
   onRemove(item) {
-    // TODO change to a better confirm window
     const confirmMessage = this.props.intl.formatMessage(messages.functionDeleteRelatedTriggers);
-    const deleteRelatedTriggers = item.triggersHttp.length > 0 || item.kubeWatchers.length > 0 ?
-      confirm(confirmMessage) : false;
-    this.props.deleteFunction(item, deleteRelatedTriggers);
+    const { deleteFunction } = this.props;
+    if (item.triggersHttp.length === 0 && item.kubeWatchers.length === 0) {
+      deleteFunction(item, true);
+    }
+    confirm(confirmMessage).then(() => {
+      deleteFunction(item, true);
+    }, () => {
+      deleteFunction(item, false);
+    });
   }
 
   render() {

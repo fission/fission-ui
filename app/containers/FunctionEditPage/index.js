@@ -82,8 +82,6 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     if (nextProps.environments.length !== this.state.environments.length) {
       this.state.environments = nextProps.environments;
     }
-    // TODO this may cause user modified code lost in the editor buffer
-    // TODO this causes editor buffer modification lost if user run test code
     const nextState = nextProps.functionByName(nextProps.params.name);
     if (nextState !== false) {
       if (!this.state.editing) {

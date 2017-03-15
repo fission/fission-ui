@@ -8,11 +8,13 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
+import { injectIntl, intlShape } from 'react-intl';
 import EnvironmentForm from 'components/EnvironmentForm';
 import LoadingIndicator from 'components/LoadingIndicator';
 import ErrorIndicator from 'components/ErrorIndicator';
 import { slug } from 'utils/util';
 import { makeSelectError, makeSelectLoading } from 'containers/EnvironmentsPage/selectors';
+import commonMessages from 'messages';
 import { createEnvironmentAction } from './actions';
 
 export class EnvironmentCreatePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -66,11 +68,12 @@ export class EnvironmentCreatePage extends React.Component { // eslint-disable-l
 
   isEnvironmentRequiredInputValid(item) {
     const inputErrors = [];
+    const { intl } = this.props;
     if (item.name === '') {
-      inputErrors.push('You need to specify a name');
+      inputErrors.push(intl.formatMessage(commonMessages.inputErrorNeedName));
     }
     if (item.image === '') {
-      inputErrors.push('You need to specify a docker image');
+      inputErrors.push(intl.formatMessage(commonMessages.inputErrorNeedDockerImage));
     }
 
     this.setState({ inputErrors });
@@ -121,6 +124,7 @@ EnvironmentCreatePage.propTypes = {
     PropTypes.object,
     PropTypes.bool,
   ]),
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -134,4 +138,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EnvironmentCreatePage);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EnvironmentCreatePage));

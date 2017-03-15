@@ -31,6 +31,10 @@
   "app.messages.language": "语言",
   "app.messages.history": "历史",
   "app.messages.clearHistory": "清空历史",
+  "app.messages.inputError.needName": "请输入名称",
+  "app.messages.inputError.needCode": "请输入代码",
+  "app.messages.inputError.needEnvironment": "请指明环境",
+  "app.messages.inputError.needDockerImage": "请指明Docker镜像",
 
   "app.containers.FunctionsListPage.header": "函数列表",
   "app.containers.FunctionsPage.header": "函数",

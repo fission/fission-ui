@@ -31,6 +31,10 @@
   "app.messages.language": "Language",
   "app.messages.history": "History",
   "app.messages.clearHistory": "Clear History",
+  "app.messages.inputError.needName": "You need to specify a name",
+  "app.messages.inputError.needCode": "You need to create code",
+  "app.messages.inputError.needEnvironment": "You need to specify an environment",
+  "app.messages.inputError.needDockerImage": "You need to specify an docker image",
 
   "app.containers.FunctionsListPage.header": "Function List",
   "app.containers.FunctionsPage.header": "Functions",
