@@ -34,6 +34,7 @@ export class FunctionsListPage extends React.Component { // eslint-disable-line 
     const { deleteFunction } = this.props;
     if (item.triggersHttp.length === 0 && item.kubeWatchers.length === 0) {
       deleteFunction(item, true);
+      return;
     }
     confirm(confirmMessage).then(() => {
       deleteFunction(item, true);
@@ -55,6 +56,7 @@ export class FunctionsListPage extends React.Component { // eslint-disable-line 
         <Helmet
           title="List functions"
         />
+        <Link to="/functions/batch_upload" className="pull-right btn btn-info"><FormattedMessage {...commonMessages.batchUpload} /></Link>
         <Link to="/functions/create" className="pull-right btn btn-primary"><FormattedMessage {...commonMessages.add} /></Link>
         <FunctionsList {...functionsListProps} onRemove={this.onRemove} />
       </div>

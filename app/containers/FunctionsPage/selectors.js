@@ -60,6 +60,11 @@ const makeSelectKubeWatchers = () => createSelector(
   (substate) => substate.get('kubeWatchers').toJS()
 );
 
+const makeSelectUploadFunctions = () => createSelector(
+  selectFunctionsPageDomain(),
+  (substate) => substate.get('uploadFunctions').toJS()
+);
+
 export {
   makeSelectFunctions,
   makeSelectTriggersHttp,
@@ -68,4 +73,5 @@ export {
   makeSelectFunctionByName,
   makeSelectFunctionTest,
   makeSelectKubeWatchers,
+  makeSelectUploadFunctions,
 };

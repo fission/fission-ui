@@ -43,9 +43,23 @@ import {
   DELETE_KUBEWATCHER_REQUEST,
   DELETE_KUBEWATCHER_ERROR,
   DELETE_KUBEWATCHER_SUCCESS,
+  SET_UPLOAD_FUNCTIONS,
+  UPLOAD_FUNCTIONS_IN_BATCH_REQUEST,
+  UPLOAD_SINGLE_FUNCTION_IN_BATCH_PROGRESS,
+  UPLOAD_SINGLE_FUNCTION_IN_BATCH_ERROR,
 } from './constants';
 
-const initialState = fromJS({ functions: [], triggersHttp: [], kubeWatchers: [], functionLoading: false, triggerHttpLoading: false, kubeWatcherLoading: false, functionTest: { loading: false, response: {} }, error: false });
+const initialState = fromJS({
+  functions: [],
+  triggersHttp: [],
+  kubeWatchers: [],
+  functionLoading: false,
+  triggerHttpLoading: false,
+  kubeWatcherLoading: false,
+  functionTest: { loading: false, response: {} },
+  error: false,
+  uploadFunctions: [],
+});
 
 function functionsReducer(state = initialState, action) {
   // TODO simplify the switch logic
@@ -170,6 +184,15 @@ function functionsReducer(state = initialState, action) {
         .set('error', false)
         .set('kubeWatcherLoading', false)
         .update('kubeWatchers', (watchers) => watchers.filter((e) => e.getIn(['metadata', 'name']) !== action.data.metadata.name));
+    case SET_UPLOAD_FUNCTIONS:
+      return state
+        .set('uploadFunctions', fromJS(action.data));
+    case UPLOAD_FUNCTIONS_IN_BATCH_REQUEST:
+      return state;
+    case UPLOAD_SINGLE_FUNCTION_IN_BATCH_PROGRESS:
+    case UPLOAD_SINGLE_FUNCTION_IN_BATCH_ERROR:
+      return state
+        .update('uploadFunctions', (fns) => fns.map((f) => f.get('name') === action.data.name ? fromJS(action.data) : f));
     default:
       return state;
   }

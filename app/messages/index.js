@@ -126,4 +126,56 @@ export default defineMessages({
     id: 'app.messages.inputError.needDockerImage',
     defaultMessage: 'You need to specify a docker image',
   },
+  batchUpload: {
+    id: 'app.messages.batchUpload',
+    defaultMessage: 'Batch Upload',
+  },
+  dropFilesHere: {
+    id: 'app.messages.dropFilesHere',
+    defaultMessage: 'Drop files here',
+  },
+  update: {
+    id: 'app.messages.update',
+    defaultMessage: 'Update',
+  },
+  create: {
+    id: 'app.messages.create',
+    defaultMessage: 'Create',
+  },
+  fileExt: {
+    id: 'app.messages.fileExt',
+    defineMessages: 'File Extensions',
+  },
+  upload: {
+    id: 'app.messages.upload',
+    defineMessages: 'Upload',
+  },
+  status: {
+    id: 'app.messages.status',
+    defineMessages: 'Status',
+  },
+  deleteUploaded: {
+    id: 'app.messages.deleteUploaded',
+    defineMessages: 'Delete uploaded',
+  },
+  chooseFunctionFiles: {
+    id: 'app.messages.chooseFunctionFiles',
+    defineMessages: 'Choose function files',
+  },
+  uploaded: {
+    id: 'app.messages.uploaded',
+    defineMessages: 'Uploaded',
+  },
+  pending: {
+    id: 'app.messages.pending',
+    defineMessages: 'Pending',
+  },
+  processing: {
+    id: 'app.messages.processing',
+    defineMessages: 'Processing',
+  },
+  failed: {
+    id: 'app.messages.failed',
+    defineMessages: 'Failed',
+  },
 });

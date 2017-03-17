@@ -80,6 +80,29 @@ export default function createRoutes(store) {
           },
         },
         {
+          path: '/functions/batch_upload',
+          name: 'function_batch_upload',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              System.import('containers/FunctionUploadPage/sagas'),
+              System.import('containers/EnvironmentsListPage/sagas'),
+
+              System.import('containers/FunctionUploadPage'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([sagas, sagasEnvironments, component]) => {
+              injectSagas(sagas.default);
+              injectSagas(sagasEnvironments.default);
+
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
           path: '/functions/edit/:name',
           name: 'function_edit',
           getComponent(nextState, cb) {
