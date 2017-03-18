@@ -1,4 +1,4 @@
-# Fission UI
+# Fission UI [![Build Status](https://travis-ci.org/yqf3139/fission-ui.svg?branch=master)](https://travis-ci.org/yqf3139/fission-ui)
 
 Fission-ui is a web-based UI for [fission](https://github.com/fission/fission).
 It allows users to observe and manage fission, 
