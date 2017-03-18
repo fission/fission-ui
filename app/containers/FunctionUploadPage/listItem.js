@@ -9,7 +9,7 @@ import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
 import commonMessages from 'messages';
 
-export class FunctionUploadListItem extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export class ListItem extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     const { item, onRemove } = this.props;
     return (
@@ -38,9 +38,9 @@ export class FunctionUploadListItem extends React.Component { // eslint-disable-
   }
 }
 
-FunctionUploadListItem.propTypes = {
+ListItem.propTypes = {
   item: PropTypes.object,
   onRemove: PropTypes.func,
 };
 
-export default FunctionUploadListItem;
+export default ListItem;

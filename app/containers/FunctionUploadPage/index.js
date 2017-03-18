@@ -15,10 +15,10 @@ import { makeSelectUploadFunctions } from 'containers/FunctionsPage/selectors';
 import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
 import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
 import { setUploadFunctionsAction, uploadFunctionsInBatchAction } from 'containers/FunctionUploadPage/actions';
-import FunctionUploadListItem from 'containers/FunctionUploadListItem';
 import DropFileZone from 'components/DropFileZone';
 import FileExt2EnvForm from 'components/FileExt2EnvForm';
 import commonMessages from 'messages';
+import ListItem from './listItem';
 
 export class FunctionUploadPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -202,7 +202,7 @@ export class FunctionUploadPage extends React.Component { // eslint-disable-line
             <tbody>
               {
                 functions.map((item, index) => (
-                  <FunctionUploadListItem item={item} key={`function-${index}`} onRemove={() => onRemove(item)} />
+                  <ListItem item={item} key={`function-${index}`} onRemove={() => onRemove(item)} />
                 ))
               }
             </tbody>
