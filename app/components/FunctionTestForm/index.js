@@ -6,10 +6,10 @@
 
 import React from 'react';
 import KeyValueBuilder from 'components/KeyValueBuilder';
-import RequestBodyBuilder from 'components/RequestBodyBuilder';
-import FunctionTestHistoryItemForm from 'components/FunctionTestHistoryItemForm';
 import { FormattedMessage } from 'react-intl';
 import commonMessages from 'messages';
+import RequestBodyBuilder from './requestBodyBuilder';
+import HistoryItem from './historyItem';
 
 class FunctionTestForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -182,7 +182,7 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
             <label htmlFor="functionTestHistory">History: </label>
             {
               history.map((item, index) =>
-                <FunctionTestHistoryItemForm
+                <HistoryItem
                   key={`function-history-${index}`}
                   item={item}
                   index={index}

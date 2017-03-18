@@ -6,7 +6,7 @@
 
 import React from 'react';
 
-class FunctionTestHistoryItemForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class historyItem extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     const { index, item, onSelect } = this.props;
     const { method, headers, params, bodytype } = item;
@@ -25,10 +25,10 @@ class FunctionTestHistoryItemForm extends React.Component { // eslint-disable-li
   }
 }
 
-FunctionTestHistoryItemForm.propTypes = {
+historyItem.propTypes = {
   index: React.PropTypes.number,
   item: React.PropTypes.object,
   onSelect: React.PropTypes.func.isRequired,
 };
 
-export default FunctionTestHistoryItemForm;
+export default historyItem;

@@ -9,7 +9,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import commonMessages from 'messages';
 
-class KubeWatcherItemForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class Item extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     const { watcher, onRemove } = this.props;
     return (
@@ -23,9 +23,9 @@ class KubeWatcherItemForm extends React.Component { // eslint-disable-line react
   }
 }
 
-KubeWatcherItemForm.propTypes = {
+Item.propTypes = {
   watcher: React.PropTypes.object,
   onRemove: React.PropTypes.func,
 };
 
-export default KubeWatcherItemForm;
+export default Item;

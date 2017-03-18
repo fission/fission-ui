@@ -7,9 +7,9 @@
 import React, { PropTypes } from 'react';
 import LoadingIndicator from 'components/LoadingIndicator';
 import ErrorIndicator from 'components/ErrorIndicator';
-import EnvironmentsListItem from 'components/EnvironmentsListItem';
 import { FormattedMessage } from 'react-intl';
 import commonMessages from 'messages';
+import Item from './item';
 
 // import styled from 'styled-components';
 
@@ -32,7 +32,7 @@ function EnvironmentsList({ loading, error, environments, onRemove }) {
       <tbody>
         {
           environments.map((item, index) => (
-            <EnvironmentsListItem item={item} key={`environment-${index}`} onRemove={() => { onRemove(item); }} />
+            <Item item={item} key={`environment-${index}`} onRemove={() => { onRemove(item); }} />
           ))
         }
       </tbody>

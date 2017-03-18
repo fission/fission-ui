@@ -11,7 +11,7 @@ import commonMessages from 'messages';
 // import styled from 'styled-components';
 
 
-class TriggerHttpItemForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class Item extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
   makeCopy(endpoint) {
     return () => {
@@ -36,9 +36,9 @@ class TriggerHttpItemForm extends React.Component { // eslint-disable-line react
   }
 }
 
-TriggerHttpItemForm.propTypes = {
+Item.propTypes = {
   trigger: React.PropTypes.object,
   onRemove: React.PropTypes.func,
 };
 
-export default TriggerHttpItemForm;
+export default Item;

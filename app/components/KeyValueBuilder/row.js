@@ -6,7 +6,7 @@
 
 import React from 'react';
 
-class KeyValueRow extends React.Component {
+class Row extends React.Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
@@ -36,7 +36,7 @@ class KeyValueRow extends React.Component {
   }
 }
 
-KeyValueRow.propTypes = {
+Row.propTypes = {
   index: React.PropTypes.number.isRequired,
   thekey: React.PropTypes.string.isRequired,
   thevalue: React.PropTypes.string.isRequired,
@@ -44,4 +44,4 @@ KeyValueRow.propTypes = {
   onDelete: React.PropTypes.func.isRequired,
 };
 
-export default KeyValueRow;
+export default Row;

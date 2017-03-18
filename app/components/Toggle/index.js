@@ -6,7 +6,7 @@
 
 import React from 'react';
 
-import ToggleOption from '../ToggleOption';
+import Option from './option';
 
 function Toggle(props) {
   let content = (<option>--</option>);
@@ -14,7 +14,7 @@ function Toggle(props) {
   // If we have items, render them
   if (props.values) {
     content = props.values.map((value) => (
-      <ToggleOption key={value} value={value} message={props.messages[value]} />
+      <Option key={value} value={value} message={props.messages[value]} />
     ));
   }
 

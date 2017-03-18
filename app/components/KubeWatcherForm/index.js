@@ -6,12 +6,12 @@
 
 import React from 'react';
 // import styled from 'styled-components';
-import KubeWatcherItemForm from 'components/KubeWatcherItemForm';
 import KubeWatcherCreateForm from 'components/KubeWatcherCreateForm';
 
 import { FormattedMessage } from 'react-intl';
 import commonMessages from 'messages';
 import messages from './messages';
+import Item from './item';
 
 class KubeWatcherForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -31,7 +31,7 @@ class KubeWatcherForm extends React.Component { // eslint-disable-line react/pre
           <tbody>
             {
               watchers.map((item, index) => (
-                <KubeWatcherItemForm watcher={item} key={`watchers-${index}`} onRemove={() => { onRemove(item); }} />
+                <Item watcher={item} key={`watchers-${index}`} onRemove={() => { onRemove(item); }} />
               ))
             }
           </tbody>

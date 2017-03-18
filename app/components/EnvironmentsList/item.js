@@ -11,7 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
 import commonMessages from 'messages';
 
-function EnvironmentsListItem({ item, onRemove }) {
+function Item({ item, onRemove }) {
   return (
     <tr>
       <td>{ item.name }</td>
@@ -24,9 +24,9 @@ function EnvironmentsListItem({ item, onRemove }) {
   );
 }
 
-EnvironmentsListItem.propTypes = {
+Item.propTypes = {
   item: React.PropTypes.object,
   onRemove: React.PropTypes.func,
 };
 
-export default EnvironmentsListItem;
+export default Item;

@@ -5,7 +5,7 @@
 */
 
 import React from 'react';
-import KeyValueRow from 'components/KeyValueRow';
+import Row from './row';
 
 class KeyValueBuilder extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -60,7 +60,7 @@ class KeyValueBuilder extends React.Component { // eslint-disable-line react/pre
     const { pairs } = this.state;
     return (
       <div>
-        {pairs.map((pair, index) => <KeyValueRow key={`pair-${index}`} index={index} thekey={pair[0]} thevalue={pair[1]} onChange={this.onChange} onDelete={this.onDelete} />)}
+        {pairs.map((pair, index) => <Row key={`pair-${index}`} index={index} thekey={pair[0]} thevalue={pair[1]} onChange={this.onChange} onDelete={this.onDelete} />)}
         <a className="btn btn-default" onClick={this.createNewRow}>+</a>
       </div>
     );

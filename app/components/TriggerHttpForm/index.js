@@ -6,12 +6,11 @@
 
 import React from 'react';
 // import styled from 'styled-components';
-import TriggerHttpItemForm from 'components/TriggerHttpItemForm';
 import TriggerHttpCreateForm from 'components/TriggerHttpCreateForm';
-
 import { FormattedMessage } from 'react-intl';
 import commonMessages from 'messages';
 import messages from './messages';
+import Item from './item';
 
 class TriggerHttpForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -30,7 +29,7 @@ class TriggerHttpForm extends React.Component { // eslint-disable-line react/pre
           <tbody>
             {
               triggers.map((item, index) => (
-                <TriggerHttpItemForm trigger={item} key={`triggers-${index}`} onRemove={() => { onRemove(item); }} />
+                <Item trigger={item} key={`triggers-${index}`} onRemove={() => { onRemove(item); }} />
               ))
             }
           </tbody>
