@@ -1,8 +1,9 @@
 {
   "app.components.NotFoundPage.header": "抱歉，没有这个页面",
 
-  "boilerplate.containers.LocaleToggle.en": "英文",
+  "boilerplate.containers.LocaleToggle.en": "en",
   "boilerplate.containers.LocaleToggle.zh": "中文",
+  "boilerplate.containers.LocaleToggle.fr": "fr",
 
   "app.messages.deploy": "部署",
   "app.messages.save": "保存",

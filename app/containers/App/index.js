@@ -12,37 +12,40 @@
  */
 
 import React from 'react';
-import NavLink from 'components/NavLink';
-import { Link } from 'react-router';
+import { browserHistory } from 'react-router';
 import withProgressBar from 'components/ProgressBar';
 import LocaleToggle from 'containers/LocaleToggle';
+import { FormattedMessage } from 'react-intl';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import commonMessages from 'messages';
 
 export function App(props) {
+  const onLink = (e) => {
+    browserHistory.push(e);
+  };
+
   return (
     <div className="container">
-      <nav className="navbar navbar-default">
-        <div className="container-fluid">
-          <div className="navbar-header">
-            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span className="sr-only">Toggle navigation</span>
-              <span className="icon-bar"></span>
-              <span className="icon-bar"></span>
-              <span className="icon-bar"></span>
-            </button>
-            <Link className="navbar-brand" to="/">Fission UI</Link>
-          </div>
-          <div id="navbar" className="navbar-collapse collapse">
-            <ul className="nav navbar-nav">
-              <NavLink to="/">
-                <i className="glyphicon glyphicon-flash"></i> <span>Functions</span>
-              </NavLink>
-              <NavLink to="/environments">
-                <i className="glyphicon glyphicon-tasks"></i> <span>Environment</span>
-              </NavLink>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <Navbar collapseOnSelect>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <a href="/">Fission UI</a>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse>
+          <Nav>
+            <NavItem eventKey={'/'} onSelect={onLink}>
+              <i className="glyphicon glyphicon-flash" />
+              <span><FormattedMessage {...commonMessages.function} /></span>
+            </NavItem>
+            <NavItem eventKey={'/environments'} onSelect={onLink}>
+              <i className="glyphicon glyphicon-tasks" />
+              <span><FormattedMessage {...commonMessages.environment} /></span>
+            </NavItem>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
       <div className="row">
         {React.Children.toArray(props.children)}
       </div>
