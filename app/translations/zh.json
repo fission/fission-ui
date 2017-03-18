@@ -49,6 +49,7 @@
   "app.messages.processing": "处理中",
   "app.messages.pending": "等待中",
   "app.messages.failed": "失败",
+  "app.messages.filter": "过滤器",
 
   "app.containers.FunctionsListPage.header": "函数列表",
   "app.containers.FunctionsPage.header": "函数",

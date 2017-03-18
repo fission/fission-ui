@@ -12,7 +12,7 @@ import FunctionListItem from 'containers/FunctionListItem';
 import { FormattedMessage } from 'react-intl';
 import commonMessages from 'messages';
 
-function FunctionsList({ loading, error, items, onRemove }) {
+function FunctionsList({ loading, error, items, onRemove, onChangeSortField }) {
   if (loading) {
     return <LoadingIndicator />;
   }
@@ -23,8 +23,8 @@ function FunctionsList({ loading, error, items, onRemove }) {
     <table className="table table-bordered">
       <thead>
         <tr>
-          <th><FormattedMessage {...commonMessages.name} /></th>
-          <th><FormattedMessage {...commonMessages.environment} /></th>
+          <th><a onClick={() => onChangeSortField('name')}><FormattedMessage {...commonMessages.name} /></a></th>
+          <th><a onClick={() => onChangeSortField('environment')}><FormattedMessage {...commonMessages.environment} /></a></th>
           <th><FormattedMessage {...commonMessages.trigger} /></th>
           <th><FormattedMessage {...commonMessages.action} /></th>
         </tr>
@@ -48,6 +48,7 @@ FunctionsList.propTypes = {
     PropTypes.array,
   ]),
   onRemove: PropTypes.func,
+  onChangeSortField: PropTypes.func,
 };
 
 export default FunctionsList;

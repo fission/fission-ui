@@ -178,4 +178,8 @@ export default defineMessages({
     id: 'app.messages.failed',
     defineMessages: 'Failed',
   },
+  filter: {
+    id: 'app.messages.filter',
+    defineMessages: 'Filter',
+  },
 });

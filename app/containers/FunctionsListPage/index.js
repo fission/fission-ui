@@ -20,7 +20,20 @@ import messages from './messages';
 export class FunctionsListPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
+    this.state = {
+      filter: '',
+      sorting: {
+        field: '',
+        ascend: true,
+      },
+    };
+
+    this.makeSorterField = (field, ascend) =>
+      ascend ? (a, b) => a[field] > b[field] : (a, b) => a[field] < b[field];
+
     this.onRemove = this.onRemove.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onChangeSortField = this.onChangeSortField.bind(this);
   }
 
   componentDidMount() {
@@ -43,8 +56,40 @@ export class FunctionsListPage extends React.Component { // eslint-disable-line 
     });
   }
 
+  onChange(e) {
+    const obj = {};
+    obj[e.target.name] = e.target.value;
+    this.setState(obj);
+  }
+
+  onChangeSortField(name) {
+    const { sorting } = this.state;
+    sorting.ascend = sorting.field !== name ? true : !sorting.ascend;
+    sorting.field = name;
+    this.setState({ sorting });
+  }
+
   render() {
-    const { loading, error, items } = this.props;
+    const { loading, error } = this.props;
+    let { items } = this.props;
+    const { filter, sorting } = this.state;
+
+    items = filter === '' ? items : items.filter((item) => {
+      if (item.name.includes(filter) || item.environment.includes(filter)) {
+        return true;
+      }
+      let stay = false;
+      item.triggersHttp.forEach((t) => {
+        stay = stay || t.method.includes(filter) || t.urlpattern.includes(filter);
+      });
+      item.kubeWatchers.forEach((w) => {
+        stay = stay || w.namespace.includes(filter) || w.objtype.includes(filter) || w.labelselector.includes(filter);
+      });
+      return stay;
+    });
+
+    items = sorting.field === '' ? items : items.sort(this.makeSorterField(sorting.field, sorting.ascend));
+
     const functionsListProps = {
       loading,
       error,
@@ -56,9 +101,13 @@ export class FunctionsListPage extends React.Component { // eslint-disable-line 
         <Helmet
           title="List functions"
         />
-        <Link to="/functions/batch_upload" className="pull-right btn btn-info"><FormattedMessage {...commonMessages.batchUpload} /></Link>
-        <Link to="/functions/create" className="pull-right btn btn-primary"><FormattedMessage {...commonMessages.add} /></Link>
-        <FunctionsList {...functionsListProps} onRemove={this.onRemove} />
+        <div className="form-group form-inline">
+          <label htmlFor="functionListFilter"><FormattedMessage {...commonMessages.filter} /></label>
+          <input type="text" className="form-control" name="filter" onChange={this.onChange} value={filter} />
+          <Link to="/functions/batch_upload" className="pull-right btn btn-info"><FormattedMessage {...commonMessages.batchUpload} /></Link>
+          <Link to="/functions/create" className="pull-right btn btn-primary"><FormattedMessage {...commonMessages.add} /></Link>
+        </div>
+        <FunctionsList {...functionsListProps} onRemove={this.onRemove} onChangeSortField={this.onChangeSortField} />
       </div>
     );
   }

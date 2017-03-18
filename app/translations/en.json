@@ -49,6 +49,7 @@
   "app.messages.processing": "Processing",
   "app.messages.pending": "Pending",
   "app.messages.failed": "Failed",
+  "app.messages.filter": "Filter",
 
   "app.containers.FunctionsListPage.header": "Function List",
   "app.containers.FunctionsPage.header": "Functions",
