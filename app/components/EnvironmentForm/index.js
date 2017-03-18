@@ -12,7 +12,7 @@ import commonMessages from 'messages';
 
 class EnvironmentForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { environment, onSave, onChange, nameEditable, onSelectSample } = this.props;
+    const { environment, onSave, onChange, nameEditable, onSelectSample, sampleEnabled } = this.props;
 
     return (
       <form>
@@ -29,14 +29,16 @@ class EnvironmentForm extends React.Component { // eslint-disable-line react/pre
           <label htmlFor="formEnvironmentImage"><FormattedMessage {...commonMessages.dockerImage} /></label>
           <input type="text" className="form-control" id="formEnvironmentImage" name="image" value={environment.image} onChange={onChange} />
         </div>
-        <div className="form-group">
-          <label htmlFor="formEnvironmentSample"><FormattedMessage {...commonMessages.chooseSample} /></label>
-          <select className="form-control" onChange={onSelectSample} disabled={!nameEditable}>
-            <option value="blank" />
-            <option value="node">Node</option>
-            <option value="python">Python</option>
-          </select>
-        </div>
+        { sampleEnabled &&
+          <div className="form-group">
+            <label htmlFor="formEnvironmentSample"><FormattedMessage {...commonMessages.chooseSample} /></label>
+            <select className="form-control" onChange={onSelectSample} disabled={!nameEditable}>
+              <option value="blank" />
+              <option value="node">Node</option>
+              <option value="python">Python</option>
+            </select>
+          </div>
+        }
         <a className="btn btn-primary" onClick={onSave}><FormattedMessage {...commonMessages.save} /></a> { ' ' }
         <Link to="/environments" className="btn btn-default"><FormattedMessage {...commonMessages.cancel} /></Link>
 
@@ -50,6 +52,7 @@ EnvironmentForm.propTypes = {
   onSave: React.PropTypes.func,
   onChange: React.PropTypes.func.isRequired,
   nameEditable: React.PropTypes.bool,
+  sampleEnabled: React.PropTypes.bool,
   onSelectSample: React.PropTypes.func,
 };
 

@@ -111,7 +111,7 @@ export class EnvironmentCreatePage extends React.Component { // eslint-disable-l
         {inputErrors.length > 0 &&
           <ErrorIndicator errors={inputErrors} />
         }
-        <EnvironmentForm nameEditable={Boolean(true)} environment={environment} onChange={this.onChange} onSave={this.submitForm} onSelectSample={this.onSelectSample} />
+        <EnvironmentForm nameEditable={Boolean(true)} sampleEnabled={Boolean(true)} environment={environment} onChange={this.onChange} onSave={this.submitForm} onSelectSample={this.onSelectSample} />
       </div>
     );
   }
