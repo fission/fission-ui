@@ -1,7 +1,7 @@
 # Fission UI
 
 Fission-ui is a web-based UI for [fission](https://github.com/fission/fission).
-It allows users to observe manage fission, 
+It allows users to observe and manage fission, 
 providing a simple online development environment for serverless functions powered by fission.
 
 ## Features
@@ -40,6 +40,16 @@ function by default.
 By clicking on the `Add` button of the function list, you need to provide the name, env and code.
 The function is not created until you click on `Deploy` button and no error occurs.
 After that, you will be redirected to the edit page of the function.
+
+### Upload functions in batch
+By clicking on the `Batch Upload` button, you can create/update multiple functions from local files.
+
+- You need to create a mapping from file extension to fission environment.
+This helps fission-ui to extract name, environment and code from selected local files
+- Choose or drag & drop the function files you want to upload
+- Select the upload mode to create or update. If you attempt to create an existed function, fission will return
+an error
+- Click on `Upload` and the functions will be uploaded one by one.
 
 ### Edit a function
 The name and environment of a created function cannot be modified. So only the code of a function can be updated.

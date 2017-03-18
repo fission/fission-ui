@@ -28,7 +28,7 @@ export class FunctionUploadListItem extends React.Component { // eslint-disable-
         </td>
         <td>
           {
-            item.status === 'success' &&
+            item.status === 'uploaded' &&
             <Link className="btn btn-primary" to={`/functions/edit/${item.name}`}><FormattedMessage {...commonMessages.edit} /></Link>
           }
           <a onClick={onRemove} className="btn btn-danger"><FormattedMessage {...commonMessages.delete} /></a>

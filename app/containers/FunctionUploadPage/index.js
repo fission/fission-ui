@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import ReactTooltip from 'react-tooltip';
 import { makeSelectUploadFunctions } from 'containers/FunctionsPage/selectors';
 import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
@@ -17,6 +17,7 @@ import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
 import { setUploadFunctionsAction, uploadFunctionsInBatchAction } from 'containers/FunctionUploadPage/actions';
 import FunctionUploadListItem from 'containers/FunctionUploadListItem';
 import DropFileZone from 'components/DropFileZone';
+import FileExt2EnvForm from 'components/FileExt2EnvForm';
 import commonMessages from 'messages';
 
 export class FunctionUploadPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -145,17 +146,19 @@ export class FunctionUploadPage extends React.Component { // eslint-disable-line
 
   validateFunctions(functions) {
     let valid = true;
+    const { intl } = this.props;
     functions.forEach((fn) => {
       const f = fn;
-      f.errors = [];
+      const inputErrors = [];
+      f.errors = inputErrors;
       if (f.name === '') {
-        f.errors.push('Name is empty');
+        inputErrors.push(intl.formatMessage(commonMessages.inputErrorNeedName));
       }
       if (f.environment === '') {
-        f.errors.push('Environment is empty');
+        inputErrors.push(intl.formatMessage(commonMessages.inputErrorNeedEnvironment));
       }
       if (f.code === '') {
-        f.errors.push('Code is empty');
+        inputErrors.push(intl.formatMessage(commonMessages.inputErrorNeedCode));
       }
       valid = valid && (f.errors.length === 0);
     });
@@ -219,50 +222,15 @@ export class FunctionUploadPage extends React.Component { // eslint-disable-line
             </select>
           </div>
         </div>
+        <FileExt2EnvForm
+          onRemoveFileExtMapping={onRemoveFileExtMapping}
+          onDraftMappingCreate={onDraftMappingCreate}
+          onDraftMappingChange={onDraftMappingChange}
+          environments={environments}
+          fileExt2Env={fileExt2Env}
+          draftMapping={draftMapping}
+        />
         <Link to="/" className="btn btn-default pull-right"><FormattedMessage {...commonMessages.cancel} /></Link>
-        <div>
-          <h3><FormattedMessage {...commonMessages.fileExt} /></h3>
-          <table className="table table-bordered">
-            <thead>
-              <tr>
-                <th><FormattedMessage {...commonMessages.fileExt} /></th>
-                <th><FormattedMessage {...commonMessages.environment} /></th>
-                <th><FormattedMessage {...commonMessages.action} /></th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                Object.keys(fileExt2Env).map((k, idx) =>
-                  <tr key={`fileext2env-${idx}`}>
-                    <th>{k}</th>
-                    <th>{fileExt2Env[k]}</th>
-                    <th>
-                      <a onClick={() => onRemoveFileExtMapping(k)} className="btn btn-danger"><FormattedMessage {...commonMessages.delete} /></a>
-                    </th>
-                  </tr>
-                )
-              }
-            </tbody>
-          </table>
-          <form className="form-inline">
-            <div className="form-group">
-              <label htmlFor="extensionInput"><FormattedMessage {...commonMessages.fileExt} /></label>
-              <input className="form-control" name="extension" value={draftMapping.extension} onChange={onDraftMappingChange} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="environmentInput"><FormattedMessage {...commonMessages.environment} /></label>
-              <select className="form-control" name="environment" value={draftMapping.environment} onChange={onDraftMappingChange} >
-                <option key={'environment-0'} />
-                {
-                  environments.map((e, idx) =>
-                    <option key={`environment-${idx + 1}`} value={e.name} >{e.name}</option>
-                  )
-                }
-              </select>
-            </div>
-            <a onClick={onDraftMappingCreate} className="btn btn-primary"><FormattedMessage {...commonMessages.add} /></a>
-          </form>
-        </div>
       </div>
     );
   }
@@ -276,6 +244,7 @@ FunctionUploadPage.propTypes = {
   loadEnvironmentData: PropTypes.func.isRequired,
   uploadFunctions: PropTypes.func.isRequired,
   setUploadFunctions: PropTypes.func.isRequired,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -291,4 +260,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FunctionUploadPage);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(FunctionUploadPage));
