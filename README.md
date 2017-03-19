@@ -1,4 +1,4 @@
-# Fission UI [![Build Status](https://travis-ci.org/yqf3139/fission-ui.svg?branch=master)](https://travis-ci.org/yqf3139/fission-ui)
+# Fission UI [![Build Status](https://travis-ci.org/fission/fission-ui.svg?branch=master)](https://travis-ci.org/fission/fission-ui)
 
 Fission-ui is a web-based UI for [fission](https://github.com/fission/fission).
 It allows users to observe and manage fission, 
@@ -94,6 +94,7 @@ Fission-ui will update as fission evolves.
 - Control function runtime resources
 - Fission environment v2
 - Testing function through mocked all kinds of events
+- Better interface
 
 ## Development
 
@@ -111,3 +112,6 @@ Fission-ui is under rapid development like fission, so feel free to get the code
 ## License
 
 The work done has been licensed under Apache License 2.0.
+
+## Status
+Fission UI is in early alpha. It's not suitable for production use just yet.
