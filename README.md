@@ -103,7 +103,7 @@ It is a single page application and uses react, redux, react-saga.
 Fission-ui is under rapid development like fission, so feel free to get the code and play with it.
 
 1. Clone this repo using `git clone https://github.com/fission/fission-ui`
-1. Run `npm run setup` or `npm install` to install dependencies
+1. Run `yarn install` or `npm install` to install dependencies
 1. `export FISSION_ROUTER=$SERVER_IP:31313` and `export FISSION_CONTROLLER=$SERVER_IP:31314`
 1. Run `npm run start` to see the app at `http://localhost:3000`
 1. Run `npm run build` to build the application into the build folder
