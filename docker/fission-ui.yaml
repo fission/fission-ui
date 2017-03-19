@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: yqf3139/fission-ui:0.1.0
+        image: fission/fission-ui:0.1.0
 
 ---
 apiVersion: v1
