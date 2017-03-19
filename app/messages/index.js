@@ -186,8 +186,16 @@ export default defineMessages({
     id: 'app.messages.filter',
     defineMessages: 'Filter',
   },
+  response: {
+    id: 'app.messages.response',
+    defaultMessage: 'Response',
+  },
   noFunctionFiles: {
     id: 'app.messages.noFunctionFiles',
-    defineMessages: 'You need to select at least one file',
+    defaultMessage: 'You need to select at least one file',
+  },
+  history: {
+    id: 'app.messages.history',
+    defineMessages: 'History',
   },
 });

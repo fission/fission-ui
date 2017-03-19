@@ -29,7 +29,7 @@
   "app.messages.draft": "Brouillon",
   "app.messages.copyEndpoint": "Copier l'adresse",
   "app.messages.language": "Langue",
-  "app.messages.history": "l'historique",
+  "app.messages.history": "Historique",
   "app.messages.clearHistory": "Vider l'historique",
   "app.messages.inputError.needName": "Vous devez indiquer un nom",
   "app.messages.inputError.needCode": "Vous devez écrire le code de la fonction",
@@ -50,6 +50,7 @@
   "app.messages.pending": "En attente",
   "app.messages.failed": "Echec",
   "app.messages.filter": "Filtrer",
+  "app.messages.response": "Réponse",
   "app.messages.noFunctionFiles": "Vous devez sélectionner au moins un fichier",
 
   "app.containers.FunctionsListPage.header": "Liste des fonctions",

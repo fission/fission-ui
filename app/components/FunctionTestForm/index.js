@@ -157,8 +157,8 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
       <div>
         <h3>Request</h3>
         <div className="form-group">
-          <label htmlFor="formDraftMode"><FormattedMessage {...commonMessages.draft} />?</label>
-          <input id="formDraftMode" type="checkbox" checked={testObj.draft} onChange={this.onDraftChange} disabled={this.props.draftOnly} />
+          <label htmlFor="formDraftMode"><FormattedMessage {...commonMessages.draft} /> ?</label>
+          { ' ' }<input id="formDraftMode" type="checkbox" checked={testObj.draft} onChange={this.onDraftChange} disabled={this.props.draftOnly} />
         </div>
         <div className="form-group">
           <label htmlFor="functionTestMethod">Method: </label>
@@ -181,7 +181,7 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
             <RequestBodyBuilder bodytype={testObj.bodytype} content={testObj.body} onSelectType={this.onSelectBodyType} onContentChange={this.onBodyContentChange} />
           </div>
           <div className="form-group">
-            <label htmlFor="functionTestHistory">History: </label>
+            <label htmlFor="functionTestHistory"><FormattedMessage {...commonMessages.history} />: </label>
             {
               history.map((item, index) =>
                 <HistoryItem
@@ -201,7 +201,7 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
         <br />
         { functionTestResponse &&
           <div>
-            <h3>Response</h3>
+            <h3><FormattedMessage {...commonMessages.response} /></h3>
             <div style={this.style}>
               <div>Status: {response.status}</div>
               <div onClick={this.toggleHeader}>Headers</div>

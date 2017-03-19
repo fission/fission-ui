@@ -51,6 +51,7 @@
   "app.messages.pending": "等待中",
   "app.messages.failed": "失败",
   "app.messages.filter": "过滤器",
+  "app.messages.response": "Response",
   "app.messages.noFunctionFiles": "You need to select at least one file",
 
   "app.containers.FunctionsListPage.header": "函数列表",
