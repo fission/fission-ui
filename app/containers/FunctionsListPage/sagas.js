@@ -36,26 +36,25 @@ function* loadTriggerHttp() {
   }
 }
 function* deleteFunction(action) {
-  if (action.deleteTr) {
-    const triggers = action.function.triggersHttp;
-    for (let i = 0; i < triggers.length; i += 1) {
-      const trigger = triggers[i];
-      try {
-        yield call(removeTriggerHttp, trigger);
-      } catch (error) {
-        yield put({ type: DELETE_TRIGGERHTTP_ERROR, error });
-      }
-    }
-    const watchers = action.function.kubeWatchers;
-    for (let i = 0; i < watchers.length; i += 1) {
-      const watcher = watchers[i];
-      try {
-        yield call(removeKubeWatcher, watcher);
-      } catch (error) {
-        yield put({ type: DELETE_KUBEWATCHER_ERROR, error });
-      }
+  const triggers = action.function.triggersHttp;
+  for (let i = 0; i < triggers.length; i += 1) {
+    const trigger = triggers[i];
+    try {
+      yield call(removeTriggerHttp, trigger);
+    } catch (error) {
+      yield put({ type: DELETE_TRIGGERHTTP_ERROR, error });
     }
   }
+  const watchers = action.function.kubeWatchers;
+  for (let i = 0; i < watchers.length; i += 1) {
+    const watcher = watchers[i];
+    try {
+      yield call(removeKubeWatcher, watcher);
+    } catch (error) {
+      yield put({ type: DELETE_KUBEWATCHER_ERROR, error });
+    }
+  }
+
   try {
     yield call(removeFunction, action.function);
     yield put({ type: DELETE_FUNCTION_SUCCESS, function: action.function });

@@ -8,14 +8,12 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectFunctions, makeSelectError, makeSelectLoading } from 'containers/FunctionsPage/selectors';
 import FunctionsList from 'components/FunctionsList';
-import { confirm } from 'utils/confirm';
 import commonMessages from 'messages';
 import { loadFunctionAction, loadTriggersHttpAction, deleteFunctionAction, loadKubeWatchersAction } from './actions';
-import messages from './messages';
 
 export class FunctionsListPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -43,17 +41,8 @@ export class FunctionsListPage extends React.Component { // eslint-disable-line 
   }
 
   onRemove(item) {
-    const confirmMessage = this.props.intl.formatMessage(messages.functionDeleteRelatedTriggers);
     const { deleteFunction } = this.props;
-    if (item.triggersHttp.length === 0 && item.kubeWatchers.length === 0) {
-      deleteFunction(item, true);
-      return;
-    }
-    confirm(confirmMessage).then(() => {
-      deleteFunction(item, true);
-    }, () => {
-      deleteFunction(item, false);
-    });
+    deleteFunction(item);
   }
 
   onChange(e) {
@@ -127,7 +116,6 @@ FunctionsListPage.propTypes = {
   loadTriggersHttpData: PropTypes.func,
   loadKubeWatchersData: PropTypes.func,
   deleteFunction: PropTypes.func,
-  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -141,8 +129,8 @@ function mapDispatchToProps(dispatch) {
     loadFunctionsData: () => dispatch(loadFunctionAction()),
     loadTriggersHttpData: () => dispatch(loadTriggersHttpAction()),
     loadKubeWatchersData: () => dispatch(loadKubeWatchersAction()),
-    deleteFunction: (func, deleteTriggers) => dispatch(deleteFunctionAction(func, deleteTriggers)),
+    deleteFunction: (func) => dispatch(deleteFunctionAction(func)),
   };
 }
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(FunctionsListPage));
+export default connect(mapStateToProps, mapDispatchToProps)(FunctionsListPage);

@@ -24,10 +24,9 @@ export function loadKubeWatchersAction() {
   };
 }
 
-export function deleteFunctionAction(func, deleteTriggers) {
+export function deleteFunctionAction(func) {
   return {
     type: DELETE_FUNCTION_REQUEST,
     function: func,
-    deleteTr: deleteTriggers,
   };
 }
