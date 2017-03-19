@@ -36,6 +36,7 @@
   "app.messages.inputError.needCode": "请输入代码",
   "app.messages.inputError.needEnvironment": "请指明环境",
   "app.messages.inputError.needDockerImage": "请指明Docker镜像",
+  "app.messages.inputError.inputErrorNeedExtension": "You need to specify an extension (php, js...)",
   "app.messages.batchUpload": "批量上传",
   "app.messages.dropFilesHere": "将文件拖拽至此",
   "app.messages.update": "更新",
@@ -50,6 +51,7 @@
   "app.messages.pending": "等待中",
   "app.messages.failed": "失败",
   "app.messages.filter": "过滤器",
+  "app.messages.noFunctionFiles": "You need to select at least one file",
 
   "app.containers.FunctionsListPage.header": "函数列表",
   "app.containers.FunctionsPage.header": "函数",

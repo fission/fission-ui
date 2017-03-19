@@ -48,12 +48,14 @@ class FunctionTestForm extends React.Component { // eslint-disable-line react/pr
   onTest(e) {
     e.preventDefault();
     const test = this.deepClone(this.state.testObj);
-    const { history } = this.state;
-    history.push(this.deepClone(test));
-    this.setState({ history });
-    this.writeHistoryToLocalStorage(history);
 
-    this.props.onFunctionTest(test);
+    const functionTestRunnable = this.props.onFunctionTest(test);
+    if (functionTestRunnable) {
+      const { history } = this.state;
+      history.push(this.deepClone(test));
+      this.setState({ history });
+      this.writeHistoryToLocalStorage(history);
+    }
   }
 
   onSelectBodyType(e) {

@@ -112,6 +112,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     const obj = Object.assign({}, this.state.item);
     obj.test = test;
     this.props.testFunction(obj);
+    return true;
   }
 
   onHttpTriggerRemove(item) {

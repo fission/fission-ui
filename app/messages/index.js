@@ -126,6 +126,10 @@ export default defineMessages({
     id: 'app.messages.inputError.needDockerImage',
     defaultMessage: 'You need to specify a docker image',
   },
+  inputErrorNeedExtension: {
+    id: 'app.messages.inputError.inputErrorNeedExtension',
+    defaultMessage: 'You need to specify an extension (php, js...)',
+  },
   batchUpload: {
     id: 'app.messages.batchUpload',
     defaultMessage: 'Batch Upload',
@@ -181,5 +185,9 @@ export default defineMessages({
   filter: {
     id: 'app.messages.filter',
     defineMessages: 'Filter',
+  },
+  noFunctionFiles: {
+    id: 'app.messages.noFunctionFiles',
+    defineMessages: 'You need to select at least one file',
   },
 });

@@ -14,6 +14,7 @@ import ReactTooltip from 'react-tooltip';
 import { makeSelectUploadFunctions } from 'containers/FunctionsPage/selectors';
 import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
 import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
+import ErrorIndicator from 'components/ErrorIndicator';
 import { setUploadFunctionsAction, uploadFunctionsInBatchAction } from 'containers/FunctionUploadPage/actions';
 import DropFileZone from 'components/DropFileZone';
 import FileExt2EnvForm from 'components/FileExt2EnvForm';
@@ -28,6 +29,7 @@ export class FunctionUploadPage extends React.Component { // eslint-disable-line
       functions: props.functions,
       environments: props.environments,
       mode: 'create',
+      inputErrors: [],
       fileExt2Env: this.readFileExtMappingFromLocalStorage(),
       draftMapping: { extension: '', environment: '' },
     };
@@ -41,6 +43,7 @@ export class FunctionUploadPage extends React.Component { // eslint-disable-line
     this.onDraftMappingChange = this.onDraftMappingChange.bind(this);
     this.onDraftMappingCreate = this.onDraftMappingCreate.bind(this);
     this.onReadFiles = this.onReadFiles.bind(this);
+    this.validateDraftMappingData = this.validateDraftMappingData.bind(this);
   }
 
   componentDidMount() {
@@ -62,7 +65,14 @@ export class FunctionUploadPage extends React.Component { // eslint-disable-line
 
   onUpload() {
     const { functions, mode } = this.state;
-
+    if (functions.length === 0) {
+      const inputErrors = [];
+      const { intl } = this.props;
+      inputErrors.push(intl.formatMessage(commonMessages.noFunctionFiles));
+      window.scrollTo(0, 0);
+      this.setState({ inputErrors });
+      return;
+    }
     // TODO update function env not modifiable, this can be done in fission
     if (this.validateFunctions(functions)) {
       this.props.uploadFunctions(functions, mode === 'create');
@@ -138,10 +148,26 @@ export class FunctionUploadPage extends React.Component { // eslint-disable-line
 
   onDraftMappingCreate() {
     const { draftMapping, fileExt2Env } = this.state;
-    fileExt2Env[draftMapping.extension] = draftMapping.environment;
-    draftMapping.extension = draftMapping.environment = '';
-    this.setState({ draftMapping, fileExt2Env });
-    this.writeFileExtMappingToLocalStorage(fileExt2Env);
+    if (this.validateDraftMappingData(draftMapping)) {
+      fileExt2Env[draftMapping.extension] = draftMapping.environment;
+      draftMapping.extension = draftMapping.environment = '';
+      this.setState({ draftMapping, fileExt2Env });
+      this.writeFileExtMappingToLocalStorage(fileExt2Env);
+    }
+  }
+
+  validateDraftMappingData(data) {
+    const inputErrors = [];
+    const { intl } = this.props;
+    if (data.extension === '') {
+      inputErrors.push(intl.formatMessage(commonMessages.inputErrorNeedExtension));
+    }
+    if (data.environment === '') {
+      inputErrors.push(intl.formatMessage(commonMessages.inputErrorNeedEnvironment));
+    }
+    window.scrollTo(0, 0);
+    this.setState({ inputErrors });
+    return inputErrors.length === 0;
   }
 
   validateFunctions(functions) {
@@ -180,7 +206,7 @@ export class FunctionUploadPage extends React.Component { // eslint-disable-line
 
   render() {
     const { environments } = this.props;
-    const { functions, mode, fileExt2Env, draftMapping } = this.state;
+    const { functions, mode, fileExt2Env, draftMapping, inputErrors } = this.state;
     const { onRemove, onChooseFiles, onRemoveUploadedFunctions, onUpload, onSelectMode,
       onRemoveFileExtMapping, onDraftMappingChange, onDraftMappingCreate, onReadFiles } = this;
     return (
@@ -190,6 +216,9 @@ export class FunctionUploadPage extends React.Component { // eslint-disable-line
         />
         <div>
           <h3><FormattedMessage {...commonMessages.upload} /></h3>
+          {inputErrors.length > 0 &&
+            <ErrorIndicator errors={inputErrors} />
+          }
           <table className="table table-bordered">
             <thead>
               <tr>

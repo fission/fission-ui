@@ -36,6 +36,7 @@
   "app.messages.inputError.needCode": "You need to create code",
   "app.messages.inputError.needEnvironment": "You need to specify an environment",
   "app.messages.inputError.needDockerImage": "You need to specify an docker image",
+  "app.messages.inputError.inputErrorNeedExtension": "You need to specify an extension (php, js...)",
   "app.messages.batchUpload": "Batch Upload",
   "app.messages.dropFilesHere": "Drop files here",
   "app.messages.update": "Update",
@@ -50,6 +51,7 @@
   "app.messages.pending": "Pending",
   "app.messages.failed": "Failed",
   "app.messages.filter": "Filter",
+  "app.messages.noFunctionFiles": "You need to select at least one file",
 
   "app.containers.FunctionsListPage.header": "Function List",
   "app.containers.FunctionsPage.header": "Functions",

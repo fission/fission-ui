@@ -93,7 +93,9 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
     if (this.isFunctionRequiredInputValid(obj)) {
       obj.test = test;
       this.props.testFunction(obj);
+      return true;
     }
+    return false;
   }
 
   isFunctionRequiredInputValid(item) {
@@ -108,7 +110,7 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
     if (item.code === '') {
       inputErrors.push(intl.formatMessage(commonMessages.inputErrorNeedCode));
     }
-
+    window.scrollTo(0, 0);
     this.setState({ inputErrors });
     return inputErrors.length === 0;
   }
