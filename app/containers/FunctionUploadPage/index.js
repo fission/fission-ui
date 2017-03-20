@@ -77,6 +77,7 @@ export class FunctionUploadPage extends React.Component { // eslint-disable-line
     if (this.validateFunctions(functions)) {
       this.props.uploadFunctions(functions, mode === 'create');
     } else {
+      // if not valid, set functions to the redux store
       this.props.setUploadFunctions(functions);
     }
   }
@@ -121,8 +122,8 @@ export class FunctionUploadPage extends React.Component { // eslint-disable-line
     fns.forEach((fn) => {
       const f = fn;
       const reader = new FileReader();
-      reader.onload = () => {
-        f.code = this.result;
+      reader.onload = (e) => {
+        f.code = e.target.result;
         counter[0] += 1;
         if (counter[0] === length) {
           that.props.setUploadFunctions(fns);

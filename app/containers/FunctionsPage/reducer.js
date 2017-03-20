@@ -199,7 +199,7 @@ function functionsReducer(state = initialState, action) {
 }
 
 function getFunctionSuccessHandler(state, action) {
-  const functionAlreadyExist = state.get('functions').filter((e) => e.getIn(['metadata', 'name']) === action.data.name);
+  const functionAlreadyExist = state.get('functions').filter((e) => e.getIn(['metadata', 'name']) === action.metadata.data.name);
   if (functionAlreadyExist.size === 1) {
     return state
       .update('functions', (fns) => fns.map((fn) => fn.getIn(['metadata', 'name']) === action.data.metadata.name ? fromJS(action.data) : fn))
