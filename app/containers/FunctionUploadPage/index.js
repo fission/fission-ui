@@ -124,12 +124,14 @@ export class FunctionUploadPage extends React.Component { // eslint-disable-line
       const reader = new FileReader();
       reader.onload = (e) => {
         f.code = e.target.result;
+        // remove the header: data:application/x-go;base64,
+        f.code = f.code.slice(f.code.indexOf(',') + 1);
         counter[0] += 1;
         if (counter[0] === length) {
           that.props.setUploadFunctions(fns);
         }
       };
-      reader.readAsText(f.file);
+      reader.readAsDataURL(f.file);
       delete f.file;
     });
   }

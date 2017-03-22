@@ -3,8 +3,6 @@
  */
 import axios from 'axios';
 
-import { encodeBase64 } from './util';
-
 const basePath = '/proxy/controller/v1/';
 const routerPath = '/proxy/router';
 
@@ -37,7 +35,7 @@ function checkStatus(response) {
 }
 
 function buildFunction(item) {
-  return { metadata: { name: item.name }, environment: { name: item.environment }, code: encodeBase64(item.code) };
+  return { metadata: { name: item.name }, environment: { name: item.environment }, code: item.code };
 }
 
 export function getEnvironments() {

@@ -17,7 +17,7 @@ import { makeSelectLoading, makeSelectError, makeSelectFunctionTest } from 'cont
 import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
 import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
 import { createFunctionAction, testFunctionAction, cleanTestFunctionAction } from 'containers/FunctionCreatePage/actions';
-import { slug } from 'utils/util';
+import { slug, encodeBase64 } from 'utils/util';
 import commonMessages from 'messages';
 
 export class FunctionCreatePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -83,16 +83,19 @@ export class FunctionCreatePage extends React.Component { // eslint-disable-line
   onSave() {
     const { item } = this.state;
     if (this.isFunctionRequiredInputValid(item)) {
-      this.props.createFunction(item);
+      const fn = Object.assign({}, item);
+      fn.code = encodeBase64(fn.code);
+      this.props.createFunction(fn);
     }
   }
 
   onFunctionTest(test) {
-    const obj = Object.assign({}, this.state.item);
+    const fn = Object.assign({}, this.state.item);
 
-    if (this.isFunctionRequiredInputValid(obj)) {
-      obj.test = test;
-      this.props.testFunction(obj);
+    if (this.isFunctionRequiredInputValid(fn)) {
+      fn.test = test;
+      fn.code = encodeBase64(fn.code);
+      this.props.testFunction(fn);
       return true;
     }
     return false;

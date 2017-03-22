@@ -19,6 +19,7 @@ import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
 import { testFunctionAction, cleanTestFunctionAction } from 'containers/FunctionCreatePage/actions';
 import { getFunctionAction, loadTriggersHttpAction, deleteTriggerHttpAction, updateFunctionAction, createTriggerHttpAction, loadKubeWatchersAction, createKubeWatcherAction, deleteKubeWatcherAction } from 'containers/FunctionEditPage/actions';
 import commonMessages from 'messages';
+import { encodeBase64 } from 'utils/util';
 
 export class FunctionEditPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -109,9 +110,10 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
   }
 
   onFunctionTest(test) {
-    const obj = Object.assign({}, this.state.item);
-    obj.test = test;
-    this.props.testFunction(obj);
+    const fn = Object.assign({}, this.state.item);
+    fn.code = encodeBase64(fn.code);
+    fn.test = test;
+    this.props.testFunction(fn);
     return true;
   }
 
@@ -150,7 +152,9 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
   onSave(event) {
     event.preventDefault();
     const { item } = this.state;
-    this.props.updateFunction(item);
+    const fn = Object.assign({}, item);
+    fn.code = encodeBase64(fn.code);
+    this.props.updateFunction(fn);
   }
 
   render() {
