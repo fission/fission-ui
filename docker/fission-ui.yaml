@@ -12,7 +12,10 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: fission/fission-ui:0.1.0
+        image: fission/fission-ui:benchmark-vis
+      - name: kubectl-proxy
+        image: lachlanevenson/k8s-kubectl
+        args: ["proxy", "--port", "8001", "--address", "127.0.0.1"]
 
 ---
 apiVersion: v1

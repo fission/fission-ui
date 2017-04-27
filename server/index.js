@@ -21,9 +21,16 @@ if (process.env.FISSION_ROUTER !== undefined) {
   routerBackend = process.env.FISSION_ROUTER;
 }
 
+let k8sBackend = '127.0.0.1:28001';
+if (process.env.FISSION_K8S !== undefined) {
+  k8sBackend = process.env.FISSION_K8S;
+}
+
 // Setup proxy for fission APIs
 app.use('/proxy/controller', proxy({ target: `http://${controllerBackend}`, pathRewrite: { '^/proxy/controller': '' } }));
 app.use('/proxy/router', proxy({ target: `http://${routerBackend}`, pathRewrite: { '^/proxy/router': '' } }));
+app.use('/proxy/tpr/benchmark', proxy({ target: `http://${k8sBackend}`,
+  pathRewrite: { '^/proxy/tpr/benchmark': '/apis/benchmark.fission.io/v1/namespaces/fission-benchmark' } }));
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {

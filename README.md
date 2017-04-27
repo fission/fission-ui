@@ -105,6 +105,7 @@ Fission-ui is under rapid development like fission, so feel free to get the code
 1. Clone this repo using `git clone https://github.com/fission/fission-ui`
 1. Run `yarn install` or `npm install` to install dependencies
 1. `export FISSION_ROUTER=$SERVER_IP:31313` and `export FISSION_CONTROLLER=$SERVER_IP:31314`
+1. For using k8s TPR endpoint, `export FISSION_k8S=$K8S_PROXY_IP:28001`
 1. Run `npm run start` to see the app at `http://localhost:3000`
 1. Run `npm run build` to build the application into the build folder
 1. Run `cd docker && ./push.sh $DOCKER_HUB_NAME $TAG` to build docker image and push to docker hub
