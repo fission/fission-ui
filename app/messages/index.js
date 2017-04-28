@@ -198,4 +198,28 @@ export default defineMessages({
     id: 'app.messages.history',
     defineMessages: 'History',
   },
+  benchmark: {
+    id: 'app.messages.benchmark',
+    defineMessages: 'Benchmarks',
+  },
+  instance: {
+    id: 'app.messages.instance',
+    defaultMessage: 'Instances',
+  },
+  report: {
+    id: 'app.messages.report',
+    defaultMessage: 'Reports',
+  },
+  run: {
+    id: 'app.messages.run',
+    defaultMessage: 'Run',
+  },
+  stop: {
+    id: 'app.messages.stop',
+    defaultMessage: 'Stop',
+  },
+  refresh: {
+    id: 'app.messages.refresh',
+    defaultMessage: 'Refresh',
+  },
 });

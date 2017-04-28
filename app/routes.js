@@ -206,6 +206,105 @@ export default function createRoutes(store) {
         },
       ],
     }, {
+      path: '/benchmarks',
+      name: 'benchmarks',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/BenchmarksPage/reducer'), // One reducer for all subroutes
+          System.import('containers/BenchmarksPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('benchmarks', reducer.default);
+
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+      indexRoute: {
+        getComponent(nextState, cb) {
+          const importModules = Promise.all([
+            System.import('containers/BenchmarkConfigsListPage/sagas'),
+            System.import('containers/BenchmarkConfigsListPage'),
+          ]);
+
+          const renderRoute = loadModule(cb);
+
+          importModules.then(([sagas, component]) => {
+            injectSagas(sagas.default);
+
+            renderRoute(component);
+          });
+
+          importModules.catch(errorLoading);
+        },
+      },
+      childRoutes: [
+        {
+          path: '/benchmarks/configs/:configName',
+          name: 'benchmarks_config',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              System.import('containers/BenchmarkConfigPage/sagas'),
+              System.import('containers/BenchmarkConfigPage'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([sagas, component]) => {
+              injectSagas(sagas.default);
+
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
+          path: '/benchmarks/configs/:configName/instances',
+          name: 'benchmarks_instance_list',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              System.import('containers/BenchmarkInstancesListPage/sagas'),
+              System.import('containers/BenchmarkInstancesListPage'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([sagas, component]) => {
+              injectSagas(sagas.default);
+
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
+          path: '/benchmarks/configs/:configName/instances/:instanceName',
+          name: 'benchmarks_instance',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              System.import('containers/BenchmarkInstancePage/sagas'),
+              System.import('containers/BenchmarkInstancePage'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([sagas, component]) => {
+              injectSagas(sagas.default);
+
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+      ],
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

@@ -43,6 +43,10 @@ export function App(props) {
               <i className="glyphicon glyphicon-tasks" />
               <span><FormattedMessage {...commonMessages.environment} /></span>
             </NavItem>
+            <NavItem eventKey={'/benchmarks'} onSelect={onLink}>
+              <i className="glyphicon glyphicon-stats" />
+              <span><FormattedMessage {...commonMessages.benchmark} /></span>
+            </NavItem>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

@@ -53,6 +53,7 @@
   "app.messages.filter": "Filter",
   "app.messages.response": "Response",
   "app.messages.noFunctionFiles": "You need to select at least one file",
+  "app.messages.benchmark": "Benchmarks",
 
   "app.containers.FunctionsListPage.header": "Function List",
   "app.containers.FunctionsPage.header": "Functions",
