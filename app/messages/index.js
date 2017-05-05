@@ -222,4 +222,104 @@ export default defineMessages({
     id: 'app.messages.refresh',
     defaultMessage: 'Refresh',
   },
+  interval: {
+    id: 'app.messages.interval',
+    defaultMessage: 'Interval',
+  },
+  second: {
+    id: 'app.messages.second',
+    defaultMessage: 'Seconds',
+  },
+  copyReport: {
+    id: 'app.messages.copyReport',
+    defaultMessage: 'Copy Report',
+  },
+  overview: {
+    id: 'app.messages.overview',
+    defaultMessage: 'Overview',
+  },
+  progress: {
+    id: 'app.messages.progress',
+    defaultMessage: 'Progress',
+  },
+  start: {
+    id: 'app.messages.start',
+    defaultMessage: 'Start',
+  },
+  end: {
+    id: 'app.messages.end',
+    defaultMessage: 'End',
+  },
+  time: {
+    id: 'app.messages.time',
+    defaultMessage: 'Time',
+  },
+  error: {
+    id: 'app.messages.error',
+    defaultMessage: 'Errors',
+  },
+  workload: {
+    id: 'app.messages.workload',
+    defaultMessage: 'Workload',
+  },
+  main: {
+    id: 'app.messages.main',
+    defaultMessage: 'Main',
+  },
+  control: {
+    id: 'app.messages.control',
+    defaultMessage: 'Control',
+  },
+  summary: {
+    id: 'app.messages.summary',
+    defaultMessage: 'Summary',
+  },
+  endpoint: {
+    id: 'app.messages.endpoint',
+    defaultMessage: 'Endpoint',
+  },
+  description: {
+    id: 'app.messages.description',
+    defaultMessage: 'Description',
+  },
+  total: {
+    id: 'app.messages.total',
+    defaultMessage: 'Total',
+  },
+  slowest: {
+    id: 'app.messages.slowest',
+    defaultMessage: 'Slowest',
+  },
+  fastest: {
+    id: 'app.messages.fastest',
+    defaultMessage: 'Fastest',
+  },
+  average: {
+    id: 'app.messages.average',
+    defaultMessage: 'Average',
+  },
+  rps: {
+    id: 'app.messages.rps',
+    defaultMessage: 'Avg Req/s',
+  },
+  code: {
+    id: 'app.messages.code',
+    defaultMessage: 'Code',
+  },
+  distribution: {
+    id: 'app.messages.distribution',
+    defaultMessage: 'Distribution',
+  },
+  histogram: {
+    id: 'app.messages.histogram',
+    defaultMessage: 'Histogram',
+  },
+  comparision: {
+    id: 'app.messages.comparision',
+    defaultMessage: 'Comparision',
+  },
+  latency: {
+    id: 'app.messages.latency',
+    defaultMessage: 'Latency',
+  },
 });

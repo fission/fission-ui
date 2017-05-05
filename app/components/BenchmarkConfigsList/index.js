@@ -16,7 +16,7 @@ function BenchmarkConfigsList({ loading, error, items, onRemove }) {
     return <LoadingIndicator />;
   }
   if (error !== false) {
-    return <ErrorIndicator errors={[error.response.data]} />;
+    return <ErrorIndicator errors={[error.response.data.message]} />;
   }
   return (
     <table className="table table-bordered">
