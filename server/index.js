@@ -10,6 +10,7 @@ const ngrok = (isDev && process.env.ENABLE_TUNNEL) || argv.tunnel ? require('ngr
 const resolve = require('path').resolve;
 const proxy = require('http-proxy-middleware');
 const app = express();
+const appInfluxdb = express();
 
 let controllerBackend = '192.168.99.100:31313';
 if (process.env.FISSION_CONTROLLER !== undefined) {
@@ -26,14 +27,24 @@ if (process.env.FISSION_K8S !== undefined) {
   k8sBackend = process.env.FISSION_K8S;
 }
 
+let influxdbBackend = '192.168.99.100:31315';
+if (process.env.FISSION_LOGDB !== undefined) {
+  influxdbBackend = process.env.FISSION_LOGDB;
+}
+
 // Setup proxy for fission APIs
 app.use('/proxy/controller', proxy({ target: `http://${controllerBackend}`, pathRewrite: { '^/proxy/controller': '' } }));
 app.use('/proxy/router', proxy({ target: `http://${routerBackend}`, pathRewrite: { '^/proxy/router': '' } }));
 app.use('/proxy/tpr/benchmark', proxy({ target: `http://${k8sBackend}`,
   pathRewrite: { '^/proxy/tpr/benchmark': '/apis/benchmark.fission.io/v1/namespaces/fission-benchmark' } }));
+appInfluxdb.use('', proxy({ target: `http://${influxdbBackend}` }));
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {
+  outputPath: resolve(process.cwd(), 'build'),
+  publicPath: '/',
+});
+setup(appInfluxdb, {
   outputPath: resolve(process.cwd(), 'build'),
   publicPath: '/',
 });
@@ -64,4 +75,12 @@ app.listen(port, host, (err) => {
   } else {
     logger.appStarted(port, prettyHost);
   }
+});
+
+appInfluxdb.listen(31315, host, (err) => {
+  if (err) {
+    return logger.error(err.message);
+  }
+
+  logger.appStarted(31315, prettyHost);
 });

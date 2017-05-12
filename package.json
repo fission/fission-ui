@@ -217,6 +217,7 @@
     "fontfaceobserver": "2.0.7",
     "http-proxy-middleware": "^0.17.3",
     "immutable": "3.8.1",
+    "influx": "^5.0.0-alpha.4",
     "intl": "1.2.5",
     "invariant": "2.2.2",
     "ip": "1.1.4",

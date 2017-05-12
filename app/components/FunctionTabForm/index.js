@@ -14,6 +14,7 @@ import 'brace/mode/python';
 import 'brace/theme/github';
 import LoadingIndicator from 'components/LoadingIndicator';
 import FunctionTestForm from 'components/FunctionTestForm';
+import FunctionLogForm from 'components/FunctionLogForm';
 
 import { FormattedMessage } from 'react-intl';
 import commonMessages from 'messages';
@@ -80,6 +81,7 @@ class FunctionTabForm extends React.Component { // eslint-disable-line react/pre
               onChange={onCodeChange}
               width="100%"
             />
+            <FunctionLogForm item={item} />
           </div>
           <div className="col-md-6">
             {
