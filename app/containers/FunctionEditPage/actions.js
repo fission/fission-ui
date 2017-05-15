@@ -8,6 +8,9 @@ import {
   CREATE_KUBEWATCHER_REQUEST,
   DELETE_KUBEWATCHER_REQUEST,
   LOAD_KUBEWATCHERS_REQUEST,
+  LOAD_TRIGGERSTIMER_REQUEST,
+  DELETE_TRIGGERTIMER_REQUEST,
+  CREATE_TRIGGERTIMER_REQUEST,
 } from 'containers/FunctionsPage/constants';
 
 
@@ -69,5 +72,25 @@ export function deleteKubeWatcherAction(watcher) {
 export function loadKubeWatchersAction() {
   return {
     type: LOAD_KUBEWATCHERS_REQUEST,
+  };
+}
+
+export function createTriggerTimerAction(trigger) {
+  return {
+    type: CREATE_TRIGGERTIMER_REQUEST,
+    trigger,
+  };
+}
+
+export function deleteTriggerTimerAction(trigger) {
+  return {
+    type: DELETE_TRIGGERTIMER_REQUEST,
+    trigger,
+  };
+}
+
+export function loadTriggersTimerAction() {
+  return {
+    type: LOAD_TRIGGERSTIMER_REQUEST,
   };
 }

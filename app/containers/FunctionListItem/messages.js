@@ -14,4 +14,8 @@ export default defineMessages({
     id: 'app.containers.FunctionListItem.kubewatchers',
     defaultMessage: 'Kube Watchers',
   },
+  timertriggers: {
+    id: 'app.containers.FunctionListItem.timertriggers',
+    defaultMessage: 'Timer Triggers',
+  },
 });

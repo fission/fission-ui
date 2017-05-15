@@ -18,29 +18,9 @@ export class FunctionListItem extends React.Component { // eslint-disable-line r
         <td>{ item.name }</td>
         <td><Link to={`/environments/edit/${item.environment}`}>{ item.environment }</Link></td>
         <td>
-          { item.triggersHttp.length > 0 && <Link to={`/functions/edit/${item.name}#trigger`}><em><FormattedMessage {...messages.httptriggers} /></em></Link> }
-          <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-            {
-              item.triggersHttp.map((trigger, index) => (
-                <li key={`triggerHttp-${index}`}>
-                  <span className="label label-info">{trigger.method}</span>{ ' ' }
-                  {trigger.urlpattern}{ ' ' }
-                </li>
-              ))
-            }
-          </ul>
-          { item.kubeWatchers.length > 0 && <Link to={`/functions/edit/${item.name}#trigger`}><em><FormattedMessage {...messages.kubewatchers} /></em></Link> }
-          <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-            {
-              item.kubeWatchers.map((watcher, index) => (
-                <li key={`kubeWatcher-${index}`}>
-                  <span className="label label-info">{watcher.namespace}</span>{ ' ' }
-                  {watcher.objtype}{ ' ' }
-                  <span className="label label-info">{watcher.labelselector}</span>{ ' ' }
-                </li>
-              ))
-            }
-          </ul>
+          { item.triggersHttp.length > 0 && renderTriggersHttp(item) }
+          { item.triggersTimer.length > 0 && renderTriggersTimer(item) }
+          { item.kubeWatchers.length > 0 && renderKubeWatchers(item) }
         </td>
         <td>
           <Link className="btn btn-primary" to={`/functions/edit/${item.name}`}><FormattedMessage {...commonMessages.edit} /></Link>{ ' ' }
@@ -49,6 +29,60 @@ export class FunctionListItem extends React.Component { // eslint-disable-line r
       </tr>
     );
   }
+}
+
+function renderTriggersHttp(item) {
+  return (
+    <div>
+      <Link to={`/functions/edit/${item.name}#trigger`}><em><FormattedMessage {...messages.httptriggers} /></em></Link>
+      <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+        {
+        item.triggersHttp.map((trigger, index) => (
+          <li key={`triggerHttp-${index}`}>
+            <span className="label label-info">{trigger.method}</span>{ ' ' }
+            {trigger.urlpattern}{ ' ' }
+          </li>
+        ))
+      }
+      </ul>
+    </div>
+  );
+}
+
+function renderTriggersTimer(item) {
+  return (
+    <div>
+      <Link to={`/functions/edit/${item.name}#trigger`}><em><FormattedMessage {...messages.timertriggers} /></em></Link>
+      <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+        {
+          item.triggersTimer.map((timer, index) => (
+            <li key={`triggerTimer-${index}`}>
+              <span className="label label-info">{timer.cron}</span>{ ' ' }
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  );
+}
+
+function renderKubeWatchers(item) {
+  return (
+    <div>
+      <Link to={`/functions/edit/${item.name}#trigger`}><em><FormattedMessage {...messages.kubewatchers} /></em></Link>
+      <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+        {
+          item.kubeWatchers.map((watcher, index) => (
+            <li key={`kubeWatcher-${index}`}>
+              <span className="label label-info">{watcher.namespace}</span>{ ' ' }
+              {watcher.objtype}{ ' ' }
+              <span className="label label-info">{watcher.labelselector}</span>{ ' ' }
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  );
 }
 
 FunctionListItem.propTypes = {

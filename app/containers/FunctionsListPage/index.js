@@ -13,7 +13,7 @@ import { createStructuredSelector } from 'reselect';
 import { makeSelectFunctions, makeSelectError, makeSelectLoading } from 'containers/FunctionsPage/selectors';
 import FunctionsList from 'components/FunctionsList';
 import commonMessages from 'messages';
-import { loadFunctionAction, loadTriggersHttpAction, deleteFunctionAction, loadKubeWatchersAction } from './actions';
+import { loadFunctionAction, loadTriggersHttpAction, loadTriggersTimerAction, deleteFunctionAction, loadKubeWatchersAction } from './actions';
 
 export class FunctionsListPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -37,6 +37,7 @@ export class FunctionsListPage extends React.Component { // eslint-disable-line 
   componentDidMount() {
     this.props.loadFunctionsData(); // TODO need improvement, maybe fork in sagas.js
     this.props.loadTriggersHttpData();
+    this.props.loadTriggersTimerData();
     this.props.loadKubeWatchersData();
   }
 
@@ -73,6 +74,9 @@ export class FunctionsListPage extends React.Component { // eslint-disable-line 
       });
       item.kubeWatchers.forEach((w) => {
         stay = stay || w.namespace.includes(filter) || w.objtype.includes(filter) || w.labelselector.includes(filter);
+      });
+      item.triggersTimer.forEach((t) => {
+        stay = stay || t.cron.includes(filter) || t.desc.includes(filter);
       });
       return stay;
     });
@@ -114,6 +118,7 @@ FunctionsListPage.propTypes = {
   ]),
   loadFunctionsData: PropTypes.func,
   loadTriggersHttpData: PropTypes.func,
+  loadTriggersTimerData: PropTypes.func,
   loadKubeWatchersData: PropTypes.func,
   deleteFunction: PropTypes.func,
 };
@@ -128,6 +133,7 @@ function mapDispatchToProps(dispatch) {
   return {
     loadFunctionsData: () => dispatch(loadFunctionAction()),
     loadTriggersHttpData: () => dispatch(loadTriggersHttpAction()),
+    loadTriggersTimerData: () => dispatch(loadTriggersTimerAction()),
     loadKubeWatchersData: () => dispatch(loadKubeWatchersAction()),
     deleteFunction: (func) => dispatch(deleteFunctionAction(func)),
   };

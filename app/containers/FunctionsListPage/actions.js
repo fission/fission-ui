@@ -1,6 +1,7 @@
 import {
   LOAD_FUNCTIONS_REQUEST,
   LOAD_TRIGGERSHTTP_REQUEST,
+  LOAD_TRIGGERSTIMER_REQUEST,
   DELETE_FUNCTION_REQUEST,
   LOAD_KUBEWATCHERS_REQUEST,
 } from 'containers/FunctionsPage/constants';
@@ -15,6 +16,12 @@ export function loadFunctionAction() {
 export function loadTriggersHttpAction() {
   return {
     type: LOAD_TRIGGERSHTTP_REQUEST,
+  };
+}
+
+export function loadTriggersTimerAction() {
+  return {
+    type: LOAD_TRIGGERSTIMER_REQUEST,
   };
 }
 

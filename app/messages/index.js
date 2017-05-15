@@ -322,4 +322,8 @@ export default defineMessages({
     id: 'app.messages.latency',
     defaultMessage: 'Latency',
   },
+  cron: {
+    id: 'app.messages.cron',
+    defaultMessage: 'Cron',
+  },
 });

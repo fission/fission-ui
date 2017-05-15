@@ -7,7 +7,9 @@
 import React, { PropTypes } from 'react';
 // import styled from 'styled-components';
 import FunctionTabForm from 'components/FunctionTabForm';
-import TriggerTabForm from 'components/TriggerTabForm';
+import TriggerHttpForm from 'components/TriggerHttpForm';
+import TriggerTimerForm from 'components/TriggerTimerForm';
+import KubeWatcherForm from 'components/KubeWatcherForm';
 import { FormattedMessage } from 'react-intl';
 import commonMessages from 'messages';
 
@@ -34,10 +36,14 @@ class FunctionForm extends React.Component { // eslint-disable-line react/prefer
     }
   }
 
-
   render() {
     const { item, activeTab, environments } = this.state;
-    const { onChange, onHttpTriggerRemove, onHttpTriggerCreate, onKubeWatcherRemove, onKubeWatcherCreate, metadataEditable, onCodeChange, onTabChange, onFunctionTest, functionTest } = this.props;
+    const {
+      onChange, metadataEditable, onCodeChange, onTabChange, onFunctionTest, functionTest,
+      onHttpTriggerRemove, onHttpTriggerCreate,
+      onKubeWatcherRemove, onKubeWatcherCreate,
+      onTimerTriggerRemove, onTimerTriggerCreate,
+    } = this.props;
 
     return (
       <div>
@@ -49,11 +55,9 @@ class FunctionForm extends React.Component { // eslint-disable-line react/prefer
           <FunctionTabForm item={item} environments={environments} onChange={onChange} metadataEditable={metadataEditable} onCodeChange={onCodeChange} onFunctionTest={onFunctionTest} functionTest={functionTest} />
         </div>
         <div style={{ display: activeTab === 'trigger' ? 'block' : 'none' }}>
-          <TriggerTabForm
-            triggers={{ triggersHttp: item.triggersHttp, kubeWatchers: item.kubeWatchers }}
-            onHttpTriggerRemove={onHttpTriggerRemove} onHttpTriggerCreate={onHttpTriggerCreate}
-            onKubeWatcherRemove={onKubeWatcherRemove} onKubeWatcherCreate={onKubeWatcherCreate}
-          />
+          <TriggerHttpForm triggers={item.triggersHttp} onRemove={onHttpTriggerRemove} onCreate={onHttpTriggerCreate} />
+          <KubeWatcherForm watchers={item.kubeWatchers} onRemove={onKubeWatcherRemove} onCreate={onKubeWatcherCreate} />
+          <TriggerTimerForm triggers={item.triggersTimer} onRemove={onTimerTriggerRemove} onCreate={onTimerTriggerCreate} />
         </div>
       </div>
     );
@@ -69,6 +73,8 @@ FunctionForm.propTypes = {
   onChange: PropTypes.func,
   onHttpTriggerRemove: PropTypes.func,
   onHttpTriggerCreate: PropTypes.func,
+  onTimerTriggerRemove: PropTypes.func,
+  onTimerTriggerCreate: PropTypes.func,
   onKubeWatcherRemove: PropTypes.func,
   onKubeWatcherCreate: PropTypes.func,
   metadataEditable: PropTypes.bool,

@@ -1,7 +1,12 @@
 import { take, call, put, cancel, takeLatest } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import v4 from 'uuid';
-import { getFunction, removeTriggerHttp, putFunction, postTriggerHttp, postFunction, restRequest, removeFunction, removeKubeWatcher, postKubeWatcher } from 'utils/api';
+import {
+  getFunction, putFunction, postFunction, restRequest, removeFunction,
+  removeTriggerHttp, postTriggerHttp,
+  removeTriggerTimer, postTriggerTimer,
+  removeKubeWatcher, postKubeWatcher,
+} from 'utils/api';
 import {
   GET_FUNCTION_REQUEST,
   GET_FUNCTION_SUCCESS,
@@ -24,6 +29,12 @@ import {
   DELETE_KUBEWATCHER_REQUEST,
   DELETE_KUBEWATCHER_ERROR,
   DELETE_KUBEWATCHER_SUCCESS,
+  CREATE_TRIGGERTIMER_REQUEST,
+  CREATE_TRIGGERTIMER_ERROR,
+  CREATE_TRIGGERTIMER_SUCCESS,
+  DELETE_TRIGGERTIMER_REQUEST,
+  DELETE_TRIGGERTIMER_ERROR,
+  DELETE_TRIGGERTIMER_SUCCESS,
 } from 'containers/FunctionsPage/constants';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -110,7 +121,25 @@ function* deleteKubeWatcher(action) {
     yield put({ type: DELETE_KUBEWATCHER_ERROR, error });
   }
 }
+function* createTriggerTimer(action) {
+  try {
+    const item = action.trigger;
+    const trigger = { metadata: { name: v4() }, cron: item.cron, desc: item.desc, function: { name: item.function } };
+    yield call(postTriggerTimer, trigger);
 
+    yield put({ type: CREATE_TRIGGERTIMER_SUCCESS, data: trigger });
+  } catch (error) {
+    yield put({ type: CREATE_TRIGGERTIMER_ERROR, error });
+  }
+}
+function* deleteTriggerTimer(action) {
+  try {
+    yield call(removeTriggerTimer, action.trigger);
+    yield put({ type: DELETE_TRIGGERTIMER_SUCCESS, data: action.trigger });
+  } catch (error) {
+    yield put({ type: DELETE_TRIGGERTIMER_ERROR, error });
+  }
+}
 
 export function* getFunctionSaga() {
   // See example in containers/HomePage/sagas.js
@@ -162,14 +191,30 @@ export function* deleteKubeWatcherSaga() {
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
 }
+export function* createTriggerTimerSaga() {
+  const watcher = yield takeLatest(CREATE_TRIGGERTIMER_REQUEST, createTriggerTimer);
+
+  // Suspend execution until location changes
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
+export function* removeTriggerTimerSaga() {
+  const watcher = yield takeLatest(DELETE_TRIGGERTIMER_REQUEST, deleteTriggerTimer);
+
+  // Suspend execution until location changes
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
 
 // All sagas to be loaded
 export default [
   getFunctionSaga,
-  removeTriggerHttpSaga,
   updateFunctionSaga,
   createTriggerHttpSaga,
+  removeTriggerHttpSaga,
   testFunctionSaga,
   createKubeWatcherSaga,
   deleteKubeWatcherSaga,
+  createTriggerTimerSaga,
+  removeTriggerTimerSaga,
 ];

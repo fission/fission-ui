@@ -1,6 +1,7 @@
 // import { take, call, put, select } from 'redux-saga/effects';
 import { takeLatest, call, put, take, cancel } from 'redux-saga/effects';
-import { getFunctions, getTriggersHttp, removeFunction, removeTriggerHttp, getKubeWatchers, removeKubeWatcher } from 'utils/api';
+import { getFunctions, getTriggersHttp, getKubeWatchers, getTriggersTimer,
+removeFunction, removeTriggerHttp, removeKubeWatcher, removeTriggerTimer } from 'utils/api';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import {
   LOAD_FUNCTIONS_REQUEST,
@@ -17,6 +18,10 @@ import {
   LOAD_KUBEWATCHERS_SUCCESS,
   LOAD_KUBEWATCHERS_ERROR,
   DELETE_KUBEWATCHER_ERROR,
+  LOAD_TRIGGERSTIMER_REQUEST,
+  LOAD_TRIGGERSTIMER_SUCCESS,
+  LOAD_TRIGGERSTIMER_ERROR,
+  DELETE_TRIGGERTIMER_ERROR,
 } from 'containers/FunctionsPage/constants';
 
 function* loadFunctions() {
@@ -27,12 +32,20 @@ function* loadFunctions() {
     yield put({ type: LOAD_FUNCTIONS_ERROR, error });
   }
 }
-function* loadTriggerHttp() {
+function* loadTriggersHttp() {
   try {
     const data = yield call(getTriggersHttp);
     yield put({ type: LOAD_TRIGGERSHTTP_SUCCESS, data });
   } catch (error) {
     yield put({ type: LOAD_TRIGGERSHTTP_ERROR, error });
+  }
+}
+function* loadTriggersTimer() {
+  try {
+    const data = yield call(getTriggersTimer);
+    yield put({ type: LOAD_TRIGGERSTIMER_SUCCESS, data });
+  } catch (error) {
+    yield put({ type: LOAD_TRIGGERSTIMER_ERROR, error });
   }
 }
 function* deleteFunction(action) {
@@ -52,6 +65,15 @@ function* deleteFunction(action) {
       yield call(removeKubeWatcher, watcher);
     } catch (error) {
       yield put({ type: DELETE_KUBEWATCHER_ERROR, error });
+    }
+  }
+  const timers = action.function.triggersTimer;
+  for (let i = 0; i < timers.length; i += 1) {
+    const timer = timers[i];
+    try {
+      yield call(removeTriggerTimer, timer);
+    } catch (error) {
+      yield put({ type: DELETE_TRIGGERTIMER_ERROR, error });
     }
   }
 
@@ -79,7 +101,7 @@ export function* getAllFunctionsSaga() {
   yield cancel(watcher);
 }
 export function* getAllTriggersHttpSaga() {
-  const watcher = yield takeLatest(LOAD_TRIGGERSHTTP_REQUEST, loadTriggerHttp);
+  const watcher = yield takeLatest(LOAD_TRIGGERSHTTP_REQUEST, loadTriggersHttp);
 
   // Suspend execution until location changes
   yield take(LOCATION_CHANGE);
@@ -99,6 +121,13 @@ export function* getAllKubeWatchersSaga() {
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
 }
+export function* getAllTriggersTimerSaga() {
+  const watcher = yield takeLatest(LOAD_TRIGGERSTIMER_REQUEST, loadTriggersTimer);
+
+  // Suspend execution until location changes
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
 
 // All sagas to be loaded
 export default [
@@ -106,4 +135,5 @@ export default [
   getAllTriggersHttpSaga,
   removeFunctionSaga,
   getAllKubeWatchersSaga,
+  getAllTriggersTimerSaga,
 ];

@@ -47,15 +47,26 @@ import {
   UPLOAD_FUNCTIONS_IN_BATCH_REQUEST,
   UPLOAD_SINGLE_FUNCTION_IN_BATCH_PROGRESS,
   UPLOAD_SINGLE_FUNCTION_IN_BATCH_ERROR,
+  LOAD_TRIGGERSTIMER_REQUEST,
+  LOAD_TRIGGERSTIMER_ERROR,
+  LOAD_TRIGGERSTIMER_SUCCESS,
+  CREATE_TRIGGERTIMER_REQUEST,
+  CREATE_TRIGGERTIMER_ERROR,
+  CREATE_TRIGGERTIMER_SUCCESS,
+  DELETE_TRIGGERTIMER_REQUEST,
+  DELETE_TRIGGERTIMER_ERROR,
+  DELETE_TRIGGERTIMER_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
   functions: [],
   triggersHttp: [],
+  triggersTimer: [],
   kubeWatchers: [],
   functionLoading: false,
   triggerHttpLoading: false,
   kubeWatcherLoading: false,
+  triggerTimerLoading: false,
   functionTest: { loading: false, response: {} },
   error: false,
   uploadFunctions: [],
@@ -193,6 +204,34 @@ function functionsReducer(state = initialState, action) {
     case UPLOAD_SINGLE_FUNCTION_IN_BATCH_ERROR:
       return state
         .update('uploadFunctions', (fns) => fns.map((f) => f.get('name') === action.data.name ? fromJS(action.data) : f));
+
+    case LOAD_TRIGGERSTIMER_REQUEST:
+    case CREATE_TRIGGERTIMER_REQUEST:
+    case DELETE_TRIGGERTIMER_REQUEST:
+      return state
+        .set('triggerTimerLoading', true)
+        .set('error', false);
+    case LOAD_TRIGGERSTIMER_ERROR:
+    case CREATE_TRIGGERTIMER_ERROR:
+    case DELETE_TRIGGERTIMER_ERROR:
+      return state
+        .set('error', fromJS(action.error))
+        .set('triggerTimerLoading', false);
+    case LOAD_TRIGGERSTIMER_SUCCESS:
+      return state
+        .set('error', false)
+        .set('triggerTimerLoading', false)
+        .set('triggersTimer', fromJS(action.data));
+    case CREATE_TRIGGERTIMER_SUCCESS:
+      return state
+        .set('error', false)
+        .set('triggerTimerLoading', false)
+        .update('triggersTimer', (timers) => timers.push(fromJS(action.data)));
+    case DELETE_TRIGGERTIMER_SUCCESS:
+      return state
+        .set('error', false)
+        .set('triggerTimerLoading', false)
+        .update('triggersTimer', (timers) => timers.filter((e) => e.getIn(['metadata', 'name']) !== action.data.metadata.name));
     default:
       return state;
   }

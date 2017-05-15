@@ -139,3 +139,19 @@ export function postKubeWatcher(item) {
     .then(checkStatus)
     .then(parseJSON);
 }
+
+export function getTriggersTimer() {
+  return axios.get(`${basePath}triggers/time`)
+    .then(checkStatus)
+    .then(parseJSON);
+}
+export function removeTriggerTimer(item) {
+  return axios.delete(`${basePath}triggers/time/${item.metadata.name}`)
+    .then(checkStatus)
+    .then(parseJSON);
+}
+export function postTriggerTimer(item) {
+  return axios.post(`${basePath}triggers/time`, item)
+    .then(checkStatus)
+    .then(parseJSON);
+}

@@ -71,6 +71,7 @@ const mockState = fromJS({
     ],
     triggersHttp: mockTriggersHttp,
     kubeWatchers: mockKubeWatchers,
+    triggersTimer: [],
     functionLoading: false,
     triggerHttpLoading: false,
     kubeWatcherLoading: false,
@@ -90,12 +91,14 @@ describe('makeSelectFunctions', () => {
         kubeWatchers: [],
         name: 'temp',
         triggersHttp: [],
+        triggersTimer: [],
       },
       {
         environment: 'node',
         kubeWatchers: [{ fieldselector: '', function: { name: 'testing' }, labelselector: '', metadata: { name: 'cd7b0c3b-c8c2-41cc-89b2-9b5949c52236', uid: '6f923d94-c9de-42c2-ac2c-e02ca2518b80' }, namespace: 'default', objtype: 'pod', target: '/fission-function/testing' }],
         name: 'testing',
         triggersHttp: [{ function: { name: 'testing' }, metadata: { name: 'cf3918bf-75fe-47e1-9eea-8de5238773dc', uid: '9df6170e-2e7e-481d-85c6-7d6dc3b63383' }, method: 'GET', urlpattern: '/path/to/testing' }],
+        triggersTimer: [],
       },
     ];
     expect(makeSelectFunctions()(mockState))
@@ -133,6 +136,7 @@ describe('makeSelectFunctionByName', () => {
         kubeWatchers: [],
         name: 'temp',
         triggersHttp: [],
+        triggersTimer: [],
         uid: '0e1b66b3-03f3-4dd4-be48-4147b3d98ef0',
       });
   });
