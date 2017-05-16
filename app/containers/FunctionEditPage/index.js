@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { FormattedMessage } from 'react-intl';
 import Helmet from 'react-helmet';
+import { Modal } from 'react-bootstrap';
 import { createStructuredSelector } from 'reselect';
 import FunctionForm from 'components/FunctionForm';
 import LoadingIndicator from 'components/LoadingIndicator';
@@ -17,7 +18,7 @@ import { makeSelectLoading, makeSelectFunctionByName, makeSelectTriggersHttp, ma
 import { makeSelectEnvironments } from 'containers/EnvironmentsPage/selectors';
 import { loadEnvironmentAction } from 'containers/EnvironmentsListPage/actions';
 import { testFunctionAction, cleanTestFunctionAction } from 'containers/FunctionCreatePage/actions';
-import { getFunctionAction, loadTriggersHttpAction, deleteTriggerHttpAction, updateFunctionAction,
+import { getFunctionAction, loadTriggersHttpAction, deleteTriggerHttpAction, updateFunctionAction, createFunctionAction,
   createTriggerHttpAction, loadKubeWatchersAction, createKubeWatcherAction, deleteKubeWatcherAction,
   createTriggerTimerAction, loadTriggersTimerAction, deleteTriggerTimerAction,
 } from 'containers/FunctionEditPage/actions';
@@ -35,8 +36,10 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
       inputErrors: [],
       activeTab: hash === '' ? 'function' : hash,
       editing: false,
+      showDuplicateModal: false,
+      duplicatedFuncName: '',
     };
-    this.onChange = this.onChange.bind(this);
+    this.onFunctionChange = this.onFunctionChange.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onHttpTriggerRemove = this.onHttpTriggerRemove.bind(this);
     this.onHttpTriggerCreate = this.onHttpTriggerCreate.bind(this);
@@ -47,6 +50,10 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     this.onCodeChange = this.onCodeChange.bind(this);
     this.onTabChange = this.onTabChange.bind(this);
     this.onFunctionTest = this.onFunctionTest.bind(this);
+    this.onDuplicate = this.onDuplicate.bind(this);
+    this.onOpenDuplicateModal = this.onOpenDuplicateModal.bind(this);
+    this.onCloseDuplicateModal = this.onCloseDuplicateModal.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   componentDidMount() {
@@ -72,7 +79,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
   }
 
 
-  onChange(event) {
+  onFunctionChange(event) {
     const obj = Object.assign({}, this.state.item);
     obj[event.target.name] = event.target.value;
 
@@ -84,6 +91,12 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     obj.code = newValue;
 
     this.setState({ item: obj, editing: true });
+  }
+
+  onChange(event) {
+    const obj = {};
+    obj[event.target.name] = event.target.value;
+    this.setState(obj);
   }
 
   onFunctionTest(test) {
@@ -141,8 +154,26 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     this.props.updateFunction(fn);
   }
 
+  onCloseDuplicateModal() {
+    this.setState({ showDuplicateModal: false });
+  }
+
+  onOpenDuplicateModal() {
+    this.setState({ showDuplicateModal: true });
+  }
+
+  onDuplicate(event) {
+    event.preventDefault();
+    const { item } = this.state;
+    const fn = Object.assign({}, item);
+    fn.name = this.state.duplicatedFuncName;
+    fn.code = encodeBase64(fn.code);
+    this.props.createFunction(fn);
+    this.onCloseDuplicateModal();
+  }
+
   render() {
-    const { item, activeTab } = this.state;
+    const { item, activeTab, showDuplicateModal } = this.state;
     const { loading, error, functionTest, environments } = this.props;
     if (loading || item === undefined) {
       return <LoadingIndicator />;
@@ -158,7 +189,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
         }
 
         <FunctionForm
-          environments={environments} onChange={this.onChange} item={item}
+          environments={environments} onChange={this.onFunctionChange} item={item}
           onHttpTriggerRemove={this.onHttpTriggerRemove}
           onHttpTriggerCreate={this.onHttpTriggerCreate}
           onKubeWatcherRemove={this.onKubeWatcherRemove}
@@ -173,8 +204,30 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
           functionTest={functionTest}
         />
 
+        <Modal show={showDuplicateModal} onHide={this.onCloseDuplicateModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Name the duplication</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h4>Please rename the duplicated function</h4>
+            <div className="form-group">
+              <label htmlFor="funcName"><FormattedMessage {...commonMessages.name} /></label>
+              <input type="text" className="form-control" id="funcName" name="duplicatedFuncName" onChange={this.onChange} />
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <a className="btn btn-primary" onClick={this.onDuplicate}>
+              <FormattedMessage {...commonMessages.deploy} />
+            </a>
+            <a className="btn btn-default" onClick={this.onCloseDuplicateModal}>
+              <FormattedMessage {...commonMessages.cancel} />
+            </a>
+          </Modal.Footer>
+        </Modal>
+
         <div className="pull-right">
           <a className="btn btn-primary" onClick={this.onSave}><FormattedMessage {...commonMessages.deploy} /></a> { ' ' }
+          <a className="btn btn-warning" onClick={this.onOpenDuplicateModal}><FormattedMessage {...commonMessages.duplicate} /></a> { ' ' }
           <Link to="/" className="btn btn-default"><FormattedMessage {...commonMessages.cancel} /></Link>
         </div>
       </div>
@@ -199,6 +252,7 @@ FunctionEditPage.propTypes = {
   loadTriggersTimerData: PropTypes.func.isRequired,
   loadKubeWatchersData: PropTypes.func.isRequired,
   updateFunction: PropTypes.func.isRequired,
+  createFunction: PropTypes.func.isRequired,
   createTriggerHttp: PropTypes.func.isRequired,
   deleteTriggerHttp: PropTypes.func.isRequired,
   createKubeWatcher: PropTypes.func.isRequired,
@@ -230,6 +284,7 @@ function mapDispatchToProps(dispatch) {
     loadTriggersTimerData: () => dispatch(loadTriggersTimerAction()),
     loadFunctionData: (name) => dispatch(getFunctionAction(name)),
     updateFunction: (fn) => dispatch(updateFunctionAction(fn)),
+    createFunction: (fn) => dispatch(createFunctionAction(fn)),
     createTriggerHttp: (trigger) => dispatch(createTriggerHttpAction(trigger)),
     deleteTriggerHttp: (trigger) => dispatch(deleteTriggerHttpAction(trigger)),
     testFunction: (fn) => dispatch(testFunctionAction(fn)),

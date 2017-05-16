@@ -13,7 +13,10 @@ import { createStructuredSelector } from 'reselect';
 import { makeSelectFunctions, makeSelectError, makeSelectLoading } from 'containers/FunctionsPage/selectors';
 import FunctionsList from 'components/FunctionsList';
 import commonMessages from 'messages';
-import { loadFunctionAction, loadTriggersHttpAction, loadTriggersTimerAction, deleteFunctionAction, loadKubeWatchersAction } from './actions';
+import {
+  loadFunctionAction, loadTriggersHttpAction, loadTriggersTimerAction,
+  deleteFunctionAction, loadKubeWatchersAction,
+} from './actions';
 
 export class FunctionsListPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {

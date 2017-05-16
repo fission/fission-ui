@@ -32,7 +32,10 @@ function FunctionsList({ loading, error, items, onRemove, onChangeSortField }) {
       <tbody>
         {
           items.map((item, index) => (
-            <FunctionListItem item={item} key={`function-${index}`} onRemove={() => { onRemove(item); }} />
+            <FunctionListItem
+              item={item} key={`function-${index}`}
+              onRemove={() => onRemove(item)}
+            />
           ))
         }
       </tbody>

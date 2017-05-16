@@ -23,7 +23,8 @@ export class FunctionListItem extends React.Component { // eslint-disable-line r
           { item.kubeWatchers.length > 0 && renderKubeWatchers(item) }
         </td>
         <td>
-          <Link className="btn btn-primary" to={`/functions/edit/${item.name}`}><FormattedMessage {...commonMessages.edit} /></Link>{ ' ' }
+          <Link className="btn btn-primary" to={`/functions/edit/${item.name}`}><FormattedMessage {...commonMessages.edit} /></Link>
+          { ' ' }
           <a onClick={onRemove} className="btn btn-danger"><FormattedMessage {...commonMessages.delete} /></a>
         </td>
       </tr>

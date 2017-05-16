@@ -108,6 +108,7 @@ export default function createRoutes(store) {
           getComponent(nextState, cb) {
             const importModules = Promise.all([
               System.import('containers/FunctionEditPage/sagas'),
+              System.import('containers/FunctionCreatePage/sagas'),
               System.import('containers/EnvironmentsListPage/sagas'),
 
               System.import('containers/FunctionEditPage'),
@@ -115,8 +116,9 @@ export default function createRoutes(store) {
 
             const renderRoute = loadModule(cb);
 
-            importModules.then(([sagas, sagasEnvironments, component]) => {
+            importModules.then(([sagas, sagasFnCreate, sagasEnvironments, component]) => {
               injectSagas(sagas.default);
+              injectSagas(sagasFnCreate.default);
               injectSagas(sagasEnvironments.default);
 
               renderRoute(component);

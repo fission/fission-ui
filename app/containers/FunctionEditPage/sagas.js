@@ -1,8 +1,7 @@
 import { take, call, put, cancel, takeLatest } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
 import v4 from 'uuid';
 import {
-  getFunction, putFunction, postFunction, restRequest, removeFunction,
+  getFunction, putFunction,
   removeTriggerHttp, postTriggerHttp,
   removeTriggerTimer, postTriggerTimer,
   removeKubeWatcher, postKubeWatcher,
@@ -20,9 +19,6 @@ import {
   CREATE_TRIGGERHTTP_REQUEST,
   CREATE_TRIGGERHTTP_SUCCESS,
   CREATE_TRIGGERHTTP_ERROR,
-  TEST_FUNCTION_REQUEST,
-  TEST_FUNCTION_SUCCESS,
-  TEST_FUNCTION_ERROR,
   CREATE_KUBEWATCHER_REQUEST,
   CREATE_KUBEWATCHER_ERROR,
   CREATE_KUBEWATCHER_SUCCESS,
@@ -76,29 +72,6 @@ function* createTriggerHttp(action) {
     yield put({ type: CREATE_TRIGGERHTTP_SUCCESS, data: trigger });
   } catch (error) {
     yield put({ type: CREATE_TRIGGERHTTP_ERROR, error });
-  }
-}
-function* testFunction(action) {
-  const { fn } = action;
-  const { method, headers, params, body, draft } = fn.test;
-  if (draft) {
-    fn.name = v4();
-  }
-  const url = `/fission-function/${fn.name}`;
-
-  try {
-    if (draft) {
-      yield call(postFunction, fn);
-      yield delay(4 * 1000);
-    }
-    const data = yield call(restRequest, url, method, headers, params, body);
-    if (draft) {
-      yield call(removeFunction, fn);
-    }
-
-    yield put({ type: TEST_FUNCTION_SUCCESS, data });
-  } catch (error) {
-    yield put({ type: TEST_FUNCTION_ERROR, error });
   }
 }
 function* createKubeWatcher(action) {
@@ -170,13 +143,6 @@ export function* createTriggerHttpSaga() {
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
 }
-export function* testFunctionSaga() {
-  const watcher = yield takeLatest(TEST_FUNCTION_REQUEST, testFunction);
-
-  // Suspend execution until location changes
-  yield take(LOCATION_CHANGE);
-  yield cancel(watcher);
-}
 export function* createKubeWatcherSaga() {
   const watcher = yield takeLatest(CREATE_KUBEWATCHER_REQUEST, createKubeWatcher);
 
@@ -212,7 +178,6 @@ export default [
   updateFunctionSaga,
   createTriggerHttpSaga,
   removeTriggerHttpSaga,
-  testFunctionSaga,
   createKubeWatcherSaga,
   deleteKubeWatcherSaga,
   createTriggerTimerSaga,

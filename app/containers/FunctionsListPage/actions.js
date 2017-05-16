@@ -31,9 +31,9 @@ export function loadKubeWatchersAction() {
   };
 }
 
-export function deleteFunctionAction(func) {
+export function deleteFunctionAction(fn) {
   return {
     type: DELETE_FUNCTION_REQUEST,
-    function: func,
+    fn,
   };
 }

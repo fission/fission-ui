@@ -86,7 +86,7 @@ function functionsReducer(state = initialState, action) {
     case DELETE_FUNCTION_SUCCESS:
       return state
         .set('functionLoading', false)
-        .set('functions', state.get('functions').filter((e) => e.getIn(['metadata', 'name']) !== action.function.name));
+        .set('functions', state.get('functions').filter((e) => e.getIn(['metadata', 'name']) !== action.fn.name));
     case DELETE_FUNCTION_REQUEST:
       return state
         .set('functionLoading', true)

@@ -326,4 +326,8 @@ export default defineMessages({
     id: 'app.messages.cron',
     defaultMessage: 'Cron',
   },
+  duplicate: {
+    id: 'app.messages.duplicate',
+    defaultMessage: 'Duplicate',
+  },
 });

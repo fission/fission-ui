@@ -49,7 +49,7 @@ function* loadTriggersTimer() {
   }
 }
 function* deleteFunction(action) {
-  const triggers = action.function.triggersHttp;
+  const triggers = action.fn.triggersHttp;
   for (let i = 0; i < triggers.length; i += 1) {
     const trigger = triggers[i];
     try {
@@ -58,7 +58,7 @@ function* deleteFunction(action) {
       yield put({ type: DELETE_TRIGGERHTTP_ERROR, error });
     }
   }
-  const watchers = action.function.kubeWatchers;
+  const watchers = action.fn.kubeWatchers;
   for (let i = 0; i < watchers.length; i += 1) {
     const watcher = watchers[i];
     try {
@@ -67,7 +67,7 @@ function* deleteFunction(action) {
       yield put({ type: DELETE_KUBEWATCHER_ERROR, error });
     }
   }
-  const timers = action.function.triggersTimer;
+  const timers = action.fn.triggersTimer;
   for (let i = 0; i < timers.length; i += 1) {
     const timer = timers[i];
     try {
@@ -78,8 +78,8 @@ function* deleteFunction(action) {
   }
 
   try {
-    yield call(removeFunction, action.function);
-    yield put({ type: DELETE_FUNCTION_SUCCESS, function: action.function });
+    yield call(removeFunction, action.fn);
+    yield put({ type: DELETE_FUNCTION_SUCCESS, fn: action.fn });
   } catch (error) {
     yield put({ type: DELETE_FUNCTION_ERROR, error });
   }
