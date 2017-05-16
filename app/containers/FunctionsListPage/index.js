@@ -79,7 +79,7 @@ export class FunctionsListPage extends React.Component { // eslint-disable-line 
         stay = stay || w.namespace.includes(filter) || w.objtype.includes(filter) || w.labelselector.includes(filter);
       });
       item.triggersTimer.forEach((t) => {
-        stay = stay || t.cron.includes(filter) || t.desc.includes(filter);
+        stay = stay || t.cron.includes(filter);
       });
       return stay;
     });

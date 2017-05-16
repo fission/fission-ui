@@ -15,7 +15,7 @@ class TriggerTimerCreateForm extends React.Component { // eslint-disable-line re
 
     this.state = {
       cron: '',
-      desc: '',
+      description: '',
     };
     this.onChange = this.onChange.bind(this);
     this.onTriggerCreate = this.onTriggerCreate.bind(this);
@@ -41,7 +41,7 @@ class TriggerTimerCreateForm extends React.Component { // eslint-disable-line re
         </div>
         <div className="form-group">
           <label htmlFor="triggerTimerCreateDesc"><FormattedMessage {...commonMessages.description} /></label>
-          <input type="text" className="form-control" id="triggerTimerCreateDesc" name="desc" onChange={this.onChange} />
+          <input type="text" className="form-control" id="triggerTimerCreateDesc" name="description" onChange={this.onChange} />
         </div>
         <button className="btn btn-default" onClick={this.onTriggerCreate} ><FormattedMessage {...commonMessages.add} /></button>
       </form>

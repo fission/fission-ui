@@ -17,7 +17,7 @@ class Item extends React.Component { // eslint-disable-line react/prefer-statele
     return (
       <tr>
         <td>{trigger.cron}</td>
-        <td>{trigger.desc}</td>
+        <td>{trigger.description}</td>
         <td>
           <a className="btn btn-danger" onClick={onRemove}><FormattedMessage {...commonMessages.delete} /></a> { ' ' }
         </td>

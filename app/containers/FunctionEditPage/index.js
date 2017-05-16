@@ -113,9 +113,13 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
 
   onHttpTriggerCreate(tr) {
     const { item } = this.state;
+    const trigger = Object.assign({}, tr);
+    if (!trigger.urlpattern.startsWith('/')) {
+      trigger.urlpattern = `/${trigger.urlpattern}`;
+    }
     this.props.createTriggerHttp({
-      cron: tr.cron,
-      desc: tr.desc,
+      method: trigger.method,
+      urlpattern: trigger.urlpattern,
       function: item.name,
     });
   }
