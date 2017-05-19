@@ -22,7 +22,6 @@ class TriggerTimerForm extends React.Component { // eslint-disable-line react/pr
           <thead>
             <tr>
               <th><FormattedMessage {...commonMessages.cron} /></th>
-              <th><FormattedMessage {...commonMessages.description} /></th>
               <th><FormattedMessage {...commonMessages.action} /></th>
             </tr>
           </thead>

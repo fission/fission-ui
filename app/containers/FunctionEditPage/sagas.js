@@ -97,7 +97,7 @@ function* deleteKubeWatcher(action) {
 function* createTriggerTimer(action) {
   try {
     const item = action.trigger;
-    const trigger = { metadata: { name: v4() }, cron: item.cron, description: item.description, function: { name: item.function } };
+    const trigger = { metadata: { name: v4() }, cron: item.cron, function: { name: item.function } };
     yield call(postTriggerTimer, trigger);
 
     yield put({ type: CREATE_TRIGGERTIMER_SUCCESS, data: trigger });
