@@ -20,6 +20,7 @@ export class FunctionListItem extends React.Component { // eslint-disable-line r
         <td>
           { item.triggersHttp.length > 0 && renderTriggersHttp(item) }
           { item.triggersTimer.length > 0 && renderTriggersTimer(item) }
+          { item.triggersMQ.length > 0 && renderTriggersMQ(item) }
           { item.kubeWatchers.length > 0 && renderKubeWatchers(item) }
         </td>
         <td>
@@ -59,6 +60,24 @@ function renderTriggersTimer(item) {
           item.triggersTimer.map((timer, index) => (
             <li key={`triggerTimer-${index}`}>
               <span className="label label-info">{timer.cron}</span>{ ' ' }
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  );
+}
+
+function renderTriggersMQ(item) {
+  return (
+    <div>
+      <Link to={`/functions/edit/${item.name}#trigger`}><em><FormattedMessage {...messages.timertriggers} /></em></Link>
+      <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+        {
+          item.triggersMQ.map((mqt, index) => (
+            <li key={`triggerMQ-${index}`}>
+              <span className="label label-info">{mqt.topic}</span>{ ' ' }
+              <span className="label label-info">{mqt.respTopic}</span>{ ' ' }
             </li>
           ))
         }

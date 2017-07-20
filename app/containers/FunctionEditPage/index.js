@@ -21,6 +21,7 @@ import { testFunctionAction, cleanTestFunctionAction } from 'containers/Function
 import { getFunctionAction, loadTriggersHttpAction, deleteTriggerHttpAction, updateFunctionAction, createFunctionAction,
   createTriggerHttpAction, loadKubeWatchersAction, createKubeWatcherAction, deleteKubeWatcherAction,
   createTriggerTimerAction, loadTriggersTimerAction, deleteTriggerTimerAction,
+  createTriggerMQAction, loadTriggersMQAction, deleteTriggerMQAction,
 } from 'containers/FunctionEditPage/actions';
 import commonMessages from 'messages';
 import { encodeBase64 } from 'utils/util';
@@ -47,6 +48,8 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     this.onKubeWatcherCreate = this.onKubeWatcherCreate.bind(this);
     this.onTimerTriggerRemove = this.onTimerTriggerRemove.bind(this);
     this.onTimerTriggerCreate = this.onTimerTriggerCreate.bind(this);
+    this.onMQTriggerRemove = this.onMQTriggerRemove.bind(this);
+    this.onMQTriggerCreate = this.onMQTriggerCreate.bind(this);
     this.onCodeChange = this.onCodeChange.bind(this);
     this.onTabChange = this.onTabChange.bind(this);
     this.onFunctionTest = this.onFunctionTest.bind(this);
@@ -61,6 +64,7 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     this.props.loadTriggersHttpData();
     this.props.loadKubeWatchersData();
     this.props.loadTriggersTimerData();
+    this.props.loadTriggersMQData();
     this.props.loadFunctionData(this.props.params.name);
     this.props.cleanTestFunction();
   }
@@ -146,6 +150,17 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
     this.props.createTriggerTimer(obj);
   }
 
+  onMQTriggerRemove(mqt) {
+    this.props.deleteTriggerMQ(mqt);
+  }
+
+  onMQTriggerCreate(mqt) {
+    const { item } = this.state;
+    const obj = Object.assign({}, mqt);
+    obj.function = item.name;
+    this.props.createTriggerMQ(obj);
+  }
+
   onTabChange(newTabName) {
     this.setState({ activeTab: newTabName });
   }
@@ -200,6 +215,8 @@ export class FunctionEditPage extends React.Component { // eslint-disable-line r
           onKubeWatcherCreate={this.onKubeWatcherCreate}
           onTimerTriggerCreate={this.onTimerTriggerCreate}
           onTimerTriggerRemove={this.onTimerTriggerRemove}
+          onMQTriggerCreate={this.onMQTriggerCreate}
+          onMQTriggerRemove={this.onMQTriggerRemove}
           metadataEditable={Boolean(false)}
           onCodeChange={this.onCodeChange}
           activeTab={activeTab}
@@ -254,6 +271,7 @@ FunctionEditPage.propTypes = {
   loadFunctionData: PropTypes.func.isRequired,
   loadTriggersHttpData: PropTypes.func.isRequired,
   loadTriggersTimerData: PropTypes.func.isRequired,
+  loadTriggersMQData: PropTypes.func.isRequired,
   loadKubeWatchersData: PropTypes.func.isRequired,
   updateFunction: PropTypes.func.isRequired,
   createFunction: PropTypes.func.isRequired,
@@ -263,6 +281,8 @@ FunctionEditPage.propTypes = {
   deleteKubeWatcher: PropTypes.func.isRequired,
   createTriggerTimer: PropTypes.func.isRequired,
   deleteTriggerTimer: PropTypes.func.isRequired,
+  createTriggerMQ: PropTypes.func.isRequired,
+  deleteTriggerMQ: PropTypes.func.isRequired,
   params: PropTypes.object.isRequired,
   testFunction: PropTypes.func.isRequired,
   cleanTestFunction: PropTypes.func.isRequired,
@@ -286,6 +306,7 @@ function mapDispatchToProps(dispatch) {
     loadTriggersHttpData: () => dispatch(loadTriggersHttpAction()),
     loadKubeWatchersData: () => dispatch(loadKubeWatchersAction()),
     loadTriggersTimerData: () => dispatch(loadTriggersTimerAction()),
+    loadTriggersMQData: () => dispatch(loadTriggersMQAction()),
     loadFunctionData: (name) => dispatch(getFunctionAction(name)),
     updateFunction: (fn) => dispatch(updateFunctionAction(fn)),
     createFunction: (fn) => dispatch(createFunctionAction(fn)),
@@ -297,6 +318,8 @@ function mapDispatchToProps(dispatch) {
     deleteKubeWatcher: (watcher) => dispatch(deleteKubeWatcherAction(watcher)),
     createTriggerTimer: (trigger) => dispatch(createTriggerTimerAction(trigger)),
     deleteTriggerTimer: (trigger) => dispatch(deleteTriggerTimerAction(trigger)),
+    createTriggerMQ: (trigger) => dispatch(createTriggerMQAction(trigger)),
+    deleteTriggerMQ: (trigger) => dispatch(deleteTriggerMQAction(trigger)),
   };
 }
 

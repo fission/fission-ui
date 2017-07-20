@@ -56,17 +56,28 @@ import {
   DELETE_TRIGGERTIMER_REQUEST,
   DELETE_TRIGGERTIMER_ERROR,
   DELETE_TRIGGERTIMER_SUCCESS,
+  LOAD_TRIGGERSMQ_REQUEST,
+  LOAD_TRIGGERSMQ_ERROR,
+  LOAD_TRIGGERSMQ_SUCCESS,
+  CREATE_TRIGGERMQ_REQUEST,
+  CREATE_TRIGGERMQ_ERROR,
+  CREATE_TRIGGERMQ_SUCCESS,
+  DELETE_TRIGGERMQ_REQUEST,
+  DELETE_TRIGGERMQ_ERROR,
+  DELETE_TRIGGERMQ_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
   functions: [],
   triggersHttp: [],
   triggersTimer: [],
+  triggersMQ: [],
   kubeWatchers: [],
   functionLoading: false,
   triggerHttpLoading: false,
   kubeWatcherLoading: false,
   triggerTimerLoading: false,
+  triggerMQLoading: false,
   functionTest: { loading: false, response: {} },
   error: false,
   uploadFunctions: [],
@@ -232,6 +243,34 @@ function functionsReducer(state = initialState, action) {
         .set('error', false)
         .set('triggerTimerLoading', false)
         .update('triggersTimer', (timers) => timers.filter((e) => e.getIn(['metadata', 'name']) !== action.data.metadata.name));
+
+    case LOAD_TRIGGERSMQ_REQUEST:
+    case CREATE_TRIGGERMQ_REQUEST:
+    case DELETE_TRIGGERMQ_REQUEST:
+      return state
+        .set('triggerMQLoading', true)
+        .set('error', false);
+    case LOAD_TRIGGERSMQ_ERROR:
+    case CREATE_TRIGGERMQ_ERROR:
+    case DELETE_TRIGGERMQ_ERROR:
+      return state
+        .set('error', fromJS(action.error))
+        .set('triggerMQLoading', false);
+    case LOAD_TRIGGERSMQ_SUCCESS:
+      return state
+        .set('error', false)
+        .set('triggerMQLoading', false)
+        .set('triggersMQ', fromJS(action.data));
+    case CREATE_TRIGGERMQ_SUCCESS:
+      return state
+        .set('error', false)
+        .set('triggerMQLoading', false)
+        .update('triggersMQ', (mqts) => mqts.push(fromJS(action.data)));
+    case DELETE_TRIGGERMQ_SUCCESS:
+      return state
+        .set('error', false)
+        .set('triggerMQLoading', false)
+        .update('triggersMQ', (mqts) => mqts.filter((e) => e.getIn(['metadata', 'name']) !== action.data.metadata.name));
     default:
       return state;
   }

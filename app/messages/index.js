@@ -330,4 +330,16 @@ export default defineMessages({
     id: 'app.messages.duplicate',
     defaultMessage: 'Duplicate',
   },
+  type: {
+    id: 'app.messages.type',
+    defaultMessage: 'Type',
+  },
+  topic: {
+    id: 'app.messages.topic',
+    defaultMessage: 'Topic',
+  },
+  respTopic: {
+    id: 'app.messages.respTopic',
+    defaultMessage: 'Response Topic',
+  },
 });

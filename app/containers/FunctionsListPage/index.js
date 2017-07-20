@@ -15,7 +15,7 @@ import FunctionsList from 'components/FunctionsList';
 import commonMessages from 'messages';
 import {
   loadFunctionAction, loadTriggersHttpAction, loadTriggersTimerAction,
-  deleteFunctionAction, loadKubeWatchersAction,
+  deleteFunctionAction, loadKubeWatchersAction, loadTriggersMQAction,
 } from './actions';
 
 export class FunctionsListPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -41,6 +41,7 @@ export class FunctionsListPage extends React.Component { // eslint-disable-line 
     this.props.loadFunctionsData(); // TODO need improvement, maybe fork in sagas.js
     this.props.loadTriggersHttpData();
     this.props.loadTriggersTimerData();
+    this.props.loadTriggersMQData();
     this.props.loadKubeWatchersData();
   }
 
@@ -122,6 +123,7 @@ FunctionsListPage.propTypes = {
   loadFunctionsData: PropTypes.func,
   loadTriggersHttpData: PropTypes.func,
   loadTriggersTimerData: PropTypes.func,
+  loadTriggersMQData: PropTypes.func,
   loadKubeWatchersData: PropTypes.func,
   deleteFunction: PropTypes.func,
 };
@@ -137,6 +139,7 @@ function mapDispatchToProps(dispatch) {
     loadFunctionsData: () => dispatch(loadFunctionAction()),
     loadTriggersHttpData: () => dispatch(loadTriggersHttpAction()),
     loadTriggersTimerData: () => dispatch(loadTriggersTimerAction()),
+    loadTriggersMQData: () => dispatch(loadTriggersMQAction()),
     loadKubeWatchersData: () => dispatch(loadKubeWatchersAction()),
     deleteFunction: (func) => dispatch(deleteFunctionAction(func)),
   };

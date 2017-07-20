@@ -155,3 +155,18 @@ export function postTriggerTimer(item) {
     .then(checkStatus)
     .then(parseJSON);
 }
+export function getTriggersMQ() {
+  return axios.get(`${basePath}triggers/messagequeue`)
+    .then(checkStatus)
+    .then(parseJSON);
+}
+export function removeTriggerMQ(item) {
+  return axios.delete(`${basePath}triggers/messagequeue/${item.metadata.name}`)
+    .then(checkStatus)
+    .then(parseJSON);
+}
+export function postTriggerMQ(item) {
+  return axios.post(`${basePath}triggers/messagequeue`, item)
+    .then(checkStatus)
+    .then(parseJSON);
+}

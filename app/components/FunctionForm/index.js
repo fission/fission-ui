@@ -9,6 +9,7 @@ import React, { PropTypes } from 'react';
 import FunctionTabForm from 'components/FunctionTabForm';
 import TriggerHttpForm from 'components/TriggerHttpForm';
 import TriggerTimerForm from 'components/TriggerTimerForm';
+import TriggerMQForm from 'components/TriggerMQForm';
 import KubeWatcherForm from 'components/KubeWatcherForm';
 import { FormattedMessage } from 'react-intl';
 import commonMessages from 'messages';
@@ -43,6 +44,7 @@ class FunctionForm extends React.Component { // eslint-disable-line react/prefer
       onHttpTriggerRemove, onHttpTriggerCreate,
       onKubeWatcherRemove, onKubeWatcherCreate,
       onTimerTriggerRemove, onTimerTriggerCreate,
+      onMQTriggerRemove, onMQTriggerCreate,
     } = this.props;
 
     return (
@@ -58,6 +60,7 @@ class FunctionForm extends React.Component { // eslint-disable-line react/prefer
           <TriggerHttpForm triggers={item.triggersHttp} onRemove={onHttpTriggerRemove} onCreate={onHttpTriggerCreate} />
           <KubeWatcherForm watchers={item.kubeWatchers} onRemove={onKubeWatcherRemove} onCreate={onKubeWatcherCreate} />
           <TriggerTimerForm triggers={item.triggersTimer} onRemove={onTimerTriggerRemove} onCreate={onTimerTriggerCreate} />
+          <TriggerMQForm triggers={item.triggersMQ} onRemove={onMQTriggerRemove} onCreate={onMQTriggerCreate} />
         </div>
       </div>
     );
@@ -75,6 +78,8 @@ FunctionForm.propTypes = {
   onHttpTriggerCreate: PropTypes.func,
   onTimerTriggerRemove: PropTypes.func,
   onTimerTriggerCreate: PropTypes.func,
+  onMQTriggerRemove: PropTypes.func,
+  onMQTriggerCreate: PropTypes.func,
   onKubeWatcherRemove: PropTypes.func,
   onKubeWatcherCreate: PropTypes.func,
   metadataEditable: PropTypes.bool,

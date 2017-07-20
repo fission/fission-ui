@@ -1,7 +1,7 @@
 // import { take, call, put, select } from 'redux-saga/effects';
 import { takeLatest, call, put, take, cancel } from 'redux-saga/effects';
-import { getFunctions, getTriggersHttp, getKubeWatchers, getTriggersTimer,
-removeFunction, removeTriggerHttp, removeKubeWatcher, removeTriggerTimer } from 'utils/api';
+import { getFunctions, getTriggersHttp, getKubeWatchers, getTriggersTimer, getTriggersMQ,
+removeFunction, removeTriggerHttp, removeKubeWatcher, removeTriggerTimer, removeTriggerMQ } from 'utils/api';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import {
   LOAD_FUNCTIONS_REQUEST,
@@ -22,6 +22,10 @@ import {
   LOAD_TRIGGERSTIMER_SUCCESS,
   LOAD_TRIGGERSTIMER_ERROR,
   DELETE_TRIGGERTIMER_ERROR,
+  LOAD_TRIGGERSMQ_REQUEST,
+  LOAD_TRIGGERSMQ_SUCCESS,
+  LOAD_TRIGGERSMQ_ERROR,
+  DELETE_TRIGGERMQ_ERROR,
 } from 'containers/FunctionsPage/constants';
 
 function* loadFunctions() {
@@ -46,6 +50,14 @@ function* loadTriggersTimer() {
     yield put({ type: LOAD_TRIGGERSTIMER_SUCCESS, data });
   } catch (error) {
     yield put({ type: LOAD_TRIGGERSTIMER_ERROR, error });
+  }
+}
+function* loadTriggersMQ() {
+  try {
+    const data = yield call(getTriggersMQ);
+    yield put({ type: LOAD_TRIGGERSMQ_SUCCESS, data });
+  } catch (error) {
+    yield put({ type: LOAD_TRIGGERSMQ_ERROR, error });
   }
 }
 function* deleteFunction(action) {
@@ -74,6 +86,15 @@ function* deleteFunction(action) {
       yield call(removeTriggerTimer, timer);
     } catch (error) {
       yield put({ type: DELETE_TRIGGERTIMER_ERROR, error });
+    }
+  }
+  const mqts = action.fn.triggersMQ;
+  for (let i = 0; i < mqts.length; i += 1) {
+    const mqt = mqts[i];
+    try {
+      yield call(removeTriggerMQ, mqt);
+    } catch (error) {
+      yield put({ type: DELETE_TRIGGERMQ_ERROR, error });
     }
   }
 
@@ -128,6 +149,13 @@ export function* getAllTriggersTimerSaga() {
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
 }
+export function* getAllTriggersMQSaga() {
+  const watcher = yield takeLatest(LOAD_TRIGGERSMQ_REQUEST, loadTriggersMQ);
+
+  // Suspend execution until location changes
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
 
 // All sagas to be loaded
 export default [
@@ -136,4 +164,5 @@ export default [
   removeFunctionSaga,
   getAllKubeWatchersSaga,
   getAllTriggersTimerSaga,
+  getAllTriggersMQSaga,
 ];

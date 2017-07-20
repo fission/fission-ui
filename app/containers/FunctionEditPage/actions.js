@@ -11,6 +11,9 @@ import {
   LOAD_TRIGGERSTIMER_REQUEST,
   DELETE_TRIGGERTIMER_REQUEST,
   CREATE_TRIGGERTIMER_REQUEST,
+  LOAD_TRIGGERSMQ_REQUEST,
+  DELETE_TRIGGERMQ_REQUEST,
+  CREATE_TRIGGERMQ_REQUEST,
 } from 'containers/FunctionsPage/constants';
 
 
@@ -92,5 +95,26 @@ export function deleteTriggerTimerAction(trigger) {
 export function loadTriggersTimerAction() {
   return {
     type: LOAD_TRIGGERSTIMER_REQUEST,
+  };
+}
+
+
+export function createTriggerMQAction(trigger) {
+  return {
+    type: CREATE_TRIGGERMQ_REQUEST,
+    trigger,
+  };
+}
+
+export function deleteTriggerMQAction(trigger) {
+  return {
+    type: DELETE_TRIGGERMQ_REQUEST,
+    trigger,
+  };
+}
+
+export function loadTriggersMQAction() {
+  return {
+    type: LOAD_TRIGGERSMQ_REQUEST,
   };
 }

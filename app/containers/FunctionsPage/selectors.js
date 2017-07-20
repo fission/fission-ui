@@ -19,6 +19,7 @@ const makeSelectFunctionByName = () => createSelector(
         triggersHttp: substate.get('triggersHttp').filter((trigger) => trigger.getIn(['function', 'name']) === functionFound.getIn(['metadata', 'name'])).toJS(),
         triggersTimer: substate.get('triggersTimer').filter((trigger) => trigger.getIn(['function', 'name']) === functionFound.getIn(['metadata', 'name'])).toJS(),
         kubeWatchers: substate.get('kubeWatchers').filter((watcher) => watcher.getIn(['function', 'name']) === functionFound.getIn(['metadata', 'name'])).toJS(),
+        triggersMQ: substate.get('triggersMQ').filter((trigger) => trigger.getIn(['function', 'name']) === functionFound.getIn(['metadata', 'name'])).toJS(),
       });
     }
     return false;
@@ -32,6 +33,7 @@ const makeSelectLoading = () => createSelector(
                              substate.get('functionLoading') ||
                              substate.get('kubeWatcherLoading') ||
                              substate.get('triggerTimerLoading') ||
+                             substate.get('triggerMQLoading') ||
                              substateEnv.get('loading')
 );
 
@@ -52,6 +54,7 @@ const makeSelectFunctions = () => createSelector(
     environment: e.getIn(['environment', 'name']),
     triggersHttp: (substate.get('triggersHttp').filter((trigger) => trigger.getIn(['function', 'name']) === e.getIn(['metadata', 'name']))).toJS(), // TODO improve, simplify object
     triggersTimer: (substate.get('triggersTimer').filter((trigger) => trigger.getIn(['function', 'name']) === e.getIn(['metadata', 'name']))).toJS(), // TODO improve, simplify object
+    triggersMQ: (substate.get('triggersMQ').filter((trigger) => trigger.getIn(['function', 'name']) === e.getIn(['metadata', 'name']))).toJS(), // TODO improve, simplify object
     kubeWatchers: (substate.get('kubeWatchers').filter((watcher) => watcher.getIn(['function', 'name']) === e.getIn(['metadata', 'name']))).toJS(),
   })).toJS()
 );
@@ -71,6 +74,11 @@ const makeSelectTriggersTimer = () => createSelector(
   (substate) => substate.get('triggersTimer').toJS()
 );
 
+const makeSelectTriggersMQ = () => createSelector(
+  selectFunctionsPageDomain(),
+  (substate) => substate.get('triggersMQ').toJS()
+);
+
 const makeSelectUploadFunctions = () => createSelector(
   selectFunctionsPageDomain(),
   (substate) => substate.get('uploadFunctions').toJS()
@@ -85,5 +93,6 @@ export {
   makeSelectFunctionTest,
   makeSelectKubeWatchers,
   makeSelectTriggersTimer,
+  makeSelectTriggersMQ,
   makeSelectUploadFunctions,
 };

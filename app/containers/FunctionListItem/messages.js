@@ -18,4 +18,8 @@ export default defineMessages({
     id: 'app.containers.FunctionListItem.timertriggers',
     defaultMessage: 'Timer Triggers',
   },
+  mqtriggers: {
+    id: 'app.containers.FunctionListItem.mqtriggers',
+    defaultMessage: 'MQ Triggers',
+  },
 });
