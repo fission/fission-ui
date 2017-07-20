@@ -116,3 +116,16 @@ The work done has been licensed under Apache License 2.0.
 
 ## Status
 Fission UI is in early alpha. It's not suitable for production use just yet.
+
+## Screenshots
+
+Function List
+![Function List](/documentation/images/function-list.png?raw=true "Function List")
+Function Edit
+![Function Edit](/documentation/images/function-edit.png?raw=true "Function Edit")
+Function Triggers
+![Function Triggers](/documentation/images/function-triggers.png?raw=true "Function Triggers")
+Batch Upload
+![Batch Upload](/documentation/images/batch-upload.png?raw=true "Batch Upload")
+Environment List
+![Environment List](/documentation/images/environment-list.png?raw=true "Environment List")
