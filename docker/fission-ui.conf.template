@@ -33,7 +33,7 @@ server {
 
   location /proxy/controller/ {
 
-    proxy_pass http://controller.fission/;
+    proxy_pass http://controller.${FISSION_NAMESPACE}/;
     proxy_http_version 1.1;
     proxy_set_header X-Forwarded-Proto https;
     proxy_set_header Upgrade $http_upgrade;
@@ -44,7 +44,7 @@ server {
 
  location /proxy/router/ {
 
-    proxy_pass http://router.fission/;
+    proxy_pass http://router.${FISSION_NAMESPACE}/;
     proxy_http_version 1.1;
     proxy_set_header X-Forwarded-Proto https;
     proxy_set_header Upgrade $http_upgrade;
