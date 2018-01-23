@@ -13,12 +13,6 @@ then
     tag=latest
 fi
 
-. build.sh
-
-cp -r ../build ./fission-ui
-
-docker build -t fission-ui .
+docker build -t fission-ui -f docker/Dockerfile .
 docker tag fission-ui $user/fission-ui:$tag
 docker push $user/fission-ui:$tag
-
-rm -rf ./fission-ui
