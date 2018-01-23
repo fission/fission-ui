@@ -108,7 +108,7 @@ Fission-ui is under rapid development like fission, so feel free to get the code
 1. For using k8s TPR endpoint, `export FISSION_k8S=$K8S_PROXY_IP:28001`
 1. Run `npm run start` to see the app at `http://localhost:3000`
 1. Run `npm run build` to build the application into the build folder
-1. Run `cd docker && ./push.sh $DOCKER_HUB_NAME $TAG` to build docker image and push to docker hub
+1. Run `docker/push.sh $DOCKER_HUB_NAME $TAG` to build docker image and push to docker hub
 
 ## License
 
