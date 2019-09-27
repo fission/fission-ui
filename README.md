@@ -1,3 +1,11 @@
+# Important Announcement
+
+This repository is no longer under development nor maintenance. 
+
+If you're interested in contributing/maintaining Fission-UI project, feel free to ping us on fission Slack.
+
+---
+
 # Fission UI [![Build Status](https://travis-ci.org/fission/fission-ui.svg?branch=master)](https://travis-ci.org/fission/fission-ui)
 
 Fission-ui is a web-based UI for [fission](https://github.com/fission/fission).
